@@ -1,0 +1,26 @@
+.testimonial-card {
+    width: 100%;
+    padding: 50px 25px;
+    max-width: 300px;
+    border-radius: 10px;
+    color: var(--c-black);
+    background-color: var(--c-white);
+
+    .-content {
+        gap: 30px;
+        display: flex;
+        font-size: 1rem;
+        font-weight: 400;
+        text-align: center;
+        flex-direction: column;
+
+        p {
+            line-height: 1.5;
+        }
+
+        img {
+            width: 100px;
+            margin: 0 auto;
+        }
+    }
+}

@@ -1,0 +1,132 @@
+/* ----------------------------------------------- *\
+    Form
+\* ----------------------------------------------- */
+form {
+    // 
+    
+    .form-field {
+        flex: 1;
+        display: flex;
+        line-height: 30px;
+        flex-direction: column;
+
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+
+        label {
+            gap: 5px;
+            display: flex;
+            padding-bottom: 5px;
+
+            &[for] {
+                font-weight: 700;
+            }
+
+            span {
+                margin: auto 0;
+            }
+        }
+
+        input:not([type="file"]), textarea, select {
+            border-radius: 5px;
+            background-color: transparent;
+            border: 1px solid var(--c-silver);
+        }
+
+        input:not([type="file"]) {
+            height: 35px;
+            padding: 0 20px;
+        }
+
+        input:disabled {
+            background-color: var(--c-silver);
+        }
+
+        textarea {
+            height: 80px;
+            padding: 20px;
+            resize: vertical;
+        }
+
+        select {
+            outline: 0;
+            height: 35px;
+            cursor: pointer;
+            padding: 0 15px;
+            appearance: none;
+            position: relative;
+            background: 
+                url("./../../../public/content/svg/whitevariation.svg") no-repeat right 0.8em center / 1.4em,
+                linear-gradient(to left, rgba(255, 255, 255, 0.3) 3em, rgba(255, 255, 255, 0.2) 3em)
+            ;
+
+            &[multiple] {
+                height: 150px;
+                scrollbar-width: none;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+            }
+
+            /* Remove IE arrow */
+            &::-ms-expand {
+                display: none;
+            }
+
+            /* Remove focus outline */
+            &:focus {
+                outline: none;
+            }
+
+            option {
+                color: var(--c-black);
+                background-color: var(--c-white);
+            }
+        }
+    }
+
+    .form-field-inline {
+        gap: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+        flex-direction: row;
+
+        .field {
+            flex: 1;
+            border: 1px solid var(--c-silver);
+            border-radius: 0% !important;
+        }
+
+        .form-field {
+            margin-bottom: 0;
+        }
+    }
+
+    .form-informations {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .form-simulator-response {
+        gap: 15px;
+        padding: 25px;
+        display: flex;
+        font-size: 1rem;
+        margin-top: 25px;
+        border-radius: 5px;
+        flex-direction: column;
+        border: 5px solid var(--c-silver);
+        background-color: var(--c-lightGray);
+    }
+
+    .form-actions {
+        text-align: left;
+
+        .btn:not(:first-child) {
+            margin-left: 10px;
+        }
+    }
+}

@@ -1,0 +1,241 @@
+/* ----------------------------------------------- *\
+    Site
+\* ----------------------------------------------- */
+.page-admin {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    font-size: .9rem;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--site-background-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+    .page-header {
+        width: 200px;
+        padding: 10px 25px;
+        background-color: var(--c-white);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.17);
+
+        @include tablet {
+            display: none;
+        }
+
+        .menu-img {
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .menu-horizontal {
+            display: flex;
+            flex-direction: column;
+
+            li {
+                display: flex;
+
+                a {
+                    width: 100%;
+                    padding: 15px;
+                    font-weight: 500;
+                    color: var(--c-black);
+                    text-decoration: none;
+
+                    &:hover {
+                        color: var(--c-white);
+                        background-color: var(--c-black);
+                    }
+                }
+            }
+        }
+    }
+
+    .page-content {
+        min-height: 100vh;
+        width: calc(100% - 200px);
+
+        @include tablet {
+            width: 100%;
+        }
+
+        .page-menu {
+            margin: 0;
+            height: 70px;
+            display: flex;
+            padding: 0 25px;
+            justify-content: end;
+            background-color: var(--c-black);
+            box-shadow: 15px 0 15px rgba(0, 0, 0, 0.17);
+
+            // @include desktop {
+            //     display: none;
+            // }
+
+            .link-avatar {
+                gap: 15px;
+                display: flex;
+                padding: 10px;
+                text-decoration: none;
+
+                // @include tablet {
+                //     display: none;
+                // }
+
+                .avatar-infos {
+                    gap: 5px;
+                    display: flex;
+                    margin: auto 0;
+                    text-align: right;
+                    color: var(--c-white);
+                    // color: var(--c-black);
+                    flex-direction: column;
+
+                    span:nth-child(1) {
+                        font-weight: 600;
+                    }
+                }
+
+                .avatar-img {
+                    display: flex;
+                    margin: auto 0;
+                    border-radius: 50%;
+                    border: 1px solid var(--c-lightGray);
+
+                    img {
+                        width: 30px;
+                        height: 30px;
+                        padding: 10px;
+                        margin: auto 0;
+                    }
+                }
+            }
+
+            .icon-menu {
+                display: none;
+                cursor: pointer;
+                margin: auto 15px auto auto;
+
+                @include tablet {
+                    display: inline-block;
+                }
+
+                img {
+                    width: 35px;
+                    height: 35px;
+                }
+            }
+
+            #burger:checked ~ .mobile-menu {
+                right: 0;
+            }
+            
+            #burger:not(:checked) ~ .mobile-menu {
+                right: -100%;
+            }
+
+            .mobile-menu {
+                top: 0;
+                padding: 0;
+                width: 100%;
+                right: -100%;
+                height: 100vh;
+                z-index: 9999;
+                display: flex;
+                margin-top: 0;
+                position: fixed;
+                transition: 0.7s;
+                text-align: left;
+                list-style: none;
+                padding-top: 70px;
+                overflow-y: hidden;
+                line-height: normal;
+                scroll-behavior: none;
+                flex-direction: column;
+                background-color: var(--c-white);
+
+                li {
+                    display: flex;
+
+                    a {
+                        width: 100%;
+                        font-weight: 500;
+                        padding: 15px 25px;
+                        color: var(--c-black);
+                        text-transform: capitalize;
+
+                        &:hover {
+                            background-color: var(--c-lightGray);
+                        }
+                    }
+                }
+
+                .icon-menu {
+                    right: 0;
+                    top: 17px;
+                    position: absolute;
+                }
+            }
+        }
+    
+        .page-wrapper {
+            margin: auto;
+            padding: 25px 0;
+            // max-width: 1250px;
+            width: calc(100% - 60px);
+        
+            .header-section {
+                padding-bottom: 25px;
+            
+                h3 {
+                    font-weight: 700;
+                    font-size: 1.5rem;
+                    position: relative;
+                    text-align: center;
+                    padding-bottom: 15px;
+            
+                    &::before {
+                        content: '';
+                        height: 1px;
+                        bottom: 1px;
+                        width: 120px;
+                        display: block;
+                        position: absolute;
+                        background: #ddd;
+                        left: calc(50% - 60px);
+                    }
+            
+                    &::after {
+                        content: '';
+                        bottom: 0;
+                        height: 3px;
+                        width: 40px;
+                        display: block;
+                        position: absolute;
+                        left: calc(50% - 20px);
+                        background: var(--c-azure);
+                    }
+                }
+            
+                p {
+                    text-align: center;
+                }
+            }
+        }
+
+        .page-section {
+            padding: 25px 0;
+            position: relative;
+
+            .page-title {
+                margin: 0;
+                font-weight: 600;
+                font-size: 1.4rem;
+                text-align: center;
+            }
+        }
+
+        .page-button {
+            text-align: right;
+            padding-top: 15px;
+        }
+    }
+}

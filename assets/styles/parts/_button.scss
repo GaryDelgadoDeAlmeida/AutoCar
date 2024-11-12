@@ -1,0 +1,167 @@
+/* ----------------------------------------------- *\
+    Button
+\* ----------------------------------------------- */
+button.btn {
+    cursor: pointer;
+}
+
+.btn {
+    z-index: 1;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 7px 1.3rem;
+    user-select: none;
+    text-align: center;
+    white-space: nowrap;
+    display: inline-block;
+    text-decoration: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    border: 1px solid transparent;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &.btn-rounded {
+        border-radius: 25px;
+    }
+
+    &.btn-semirounded {
+        border-radius: 15px;
+    }
+
+    &.-inline-flex {
+        gap: 10px;
+        display: inline-flex;
+
+        span {
+            margin: auto 0;
+        }
+    
+        img {
+            height: 25px;
+        }
+    }
+
+    &.btn-sm {
+        padding: 5px;
+        margin: auto 0;
+        font-size: .8rem;
+
+        img {
+            height: 15px;
+        }
+    }
+
+    &.btn-m {
+        padding: 10px 1.5rem;
+    }
+
+    &.btn-primary {
+        color: var(--c-secondary);
+        border-color: var(--c-primary);
+        background-color: var(--c-primary);
+
+        &:hover {
+            color: var(--c-primary);
+            background-color: var(--c-secondary);
+        }
+    }
+
+    &.btn-secondary {
+        color: var(--c-primary);
+        border-color: var(--c-secondary);
+        background-color: var(--c-secondary);
+
+        &:hover {
+            color: var(--c-secondary);
+            background-color: var(--c-primary);
+        }
+    }
+
+    &.btn-outline-secondary {
+        color: var(--c-secondary);
+        background-color: transparent;
+        border-color: var(--c-secondary);
+
+        &:hover {
+            color: var(--c-primary);
+            background-color: var(--c-secondary);
+        }
+    }
+    
+    &.btn-blue {
+        color: var(--c-white);
+        border-color: var(--c-blue);
+        background-color: var(--c-blue);
+
+        // &:hover {
+        //     color: var(--c-blue);
+        //     background-color: transparent;
+        // }
+    }
+    
+    &.btn-dark-blue {
+        font-weight: 600;
+        padding: 10px 1.5rem;
+        color: var(--c-white);
+        border-color: var(--c-darkBlue);
+        background-color: var(--c-darkBlue);
+
+        // &:hover {
+        //     color: var(--c-darkBlue);
+        //     background-color: transparent;
+        // }
+    }
+
+    &.btn-green {
+        color: var(--c-white);
+        border: 1px solid var(--c-green);
+        background-color: var(--c-green);
+    
+        // &:hover {
+        //     color: var(--c-green);
+        //     background-color: transparent;
+        // }
+    }
+
+    &.btn-red {
+        color: var(--c-white);
+        border: 1px solid var(--c-red);
+        background-color: var(--c-red);
+
+        // &:hover {
+        //     color: var(--c-red);
+        //     background-color: transparent;
+        // }
+    }
+
+    &.btn-orange {
+        color: var(--c-black);
+        border: 1px solid var(--c-orange);
+        background-color: var(--c-orange);
+    
+        // &:hover {
+        //     color: var(--c-orange);
+        //     background-color: transparent;
+        // }
+    }
+
+    &.btn-grey {
+        color: var(--c-white);
+        border: 1px solid var(--c-gray);
+        background-color: var(--c-gray);
+    
+        // &:hover {
+        //     color: var(--c-gray);
+        //     background-color: transparent;
+        // }
+    }
+
+    &.btn-radient-green {
+        color: var(--c-white);
+        border: linear-gradient(to right, #179D92, #71B353);
+        background-image: linear-gradient(to right, #179D92, #71B353);
+        box-shadow: 0 0.46875rem 2.1875rem rgba(0,0,0,.03), 0 0.9375rem 1.40625rem rgba(0,0,0,.03), 0 0.25rem 0.53125rem rgba(0,0,0,.05), 0 0.125rem 0.1875rem rgba(0,0,0,.03);
+    }
+}

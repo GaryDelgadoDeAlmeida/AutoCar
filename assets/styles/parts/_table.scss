@@ -1,0 +1,72 @@
+.table {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px 5px 0 0;
+    border-collapse: collapse;
+    background-color: var(--c-white);
+
+    thead {
+        color: var(--c-white);
+        background-color: var(--c-blue);
+
+        @include tablet {
+            display: none;
+        }
+
+        th {
+            padding: 10px;
+            min-width: 100px;
+
+            @include tablet {
+                width: 100%;
+            }
+        }
+    }
+
+    tbody {
+        // 
+
+        tr {
+            &:nth-child(even) {
+                background-color: var(--c-lightGray);
+            }
+
+            &:hover {
+                background-color: var(--c-silver);
+            }
+
+            @include tablet {
+                display: flex;
+                padding: 0 25px;
+                flex-direction: column;
+            }
+
+            td {
+                padding: 10px;
+
+                @include tablet {
+                    text-align: left;
+                    padding-left: 40%;
+                    position: relative;
+                    margin: 5px 0;
+                    
+                    &::before {
+                        content: attr("data-column");
+                        top: 0;
+                        left: 0;
+                        width: 30%;
+                        padding: 10px;
+                        font-size: 14px;
+                        line-height: 1.2;
+                        position: absolute;
+                        font-weight: unset;
+                        color: var(--c-black);
+                    }
+                }
+            }
+        }
+    }
+}

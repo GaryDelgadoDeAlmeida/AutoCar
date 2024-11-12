@@ -1,0 +1,35 @@
+/* ----------------------------------------------- *\
+    Pagination
+\* ----------------------------------------------- */
+.pagination {
+    flex: 1;
+    width: 100%;
+    height: auto;
+    display: flex;
+    padding: 10px 0;
+    margin-top: 25px;
+    flex-direction: row;
+    justify-content: center;
+    background-color: var(--c-white);
+
+    .item {
+        border: none;
+        min-width: 25px;
+        min-height: 25px;
+        text-align: center;
+        color: var(--c-black);
+        text-decoration: none;
+        border-radius: 25px;
+        background-color: var(--c-gray85);
+
+        &:not(:last-child) {
+            margin-right: 10px;
+        }
+
+        &.current-page {
+            cursor: auto;
+            color: var(--c-white);
+            background-color: var(--c-blue);
+        }
+    }
+}

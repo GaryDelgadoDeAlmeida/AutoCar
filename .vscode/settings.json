@@ -1,0 +1,10 @@
+{
+    "settings": {
+        "editor.fontSize": 18,
+        "files.autoSave": "afterDelay"
+    },
+    "editor.tabSize": 4,
+    "[php][javascript][javascriptreact][html][css][scss][yaml]": {
+        "editor.tabSize": 4,
+    }
+}

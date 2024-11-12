@@ -1,0 +1,35 @@
+.bubble {
+    gap: 10px;
+    width: 100%;
+    max-height: 100px;
+    height: 100%;
+    max-width: 100px;
+    padding: 40px 35px;
+    display: flex;
+    flex-wrap: wrap;
+    font-weight: 800;
+    text-align: center;
+    border-radius: 50%;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--c-white);
+
+    &.bubble-secondary {
+        color: var(--c-primary);
+        background-color: var(--c-secondary);
+    }
+
+    &.bubble-primary {
+        color: var(--c-secondary);
+        background-color: var(--c-primary);
+    }
+
+    > .-title {
+        font-size: 2rem;
+        letter-spacing: 5px;
+    }
+
+    > .-description {
+        text-transform: capitalize;
+    }
+}

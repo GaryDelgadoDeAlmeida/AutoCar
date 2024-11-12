@@ -1,0 +1,21 @@
+.car-type-card {
+    flex: 1;
+    gap: 15px;
+    padding: 15px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    text-transform: none;
+    text-decoration: none;
+    color: var(--c-black);
+    background-color: var(--c-white);
+    box-shadow: 15px 0 15px rgba(125, 125, 125, 0.17);
+
+    &:not(:last-child) {
+        border-right: 1px solid var(--c-gray85);
+    }
+
+    img {
+        width: 100%;
+    }
+}
