@@ -85,6 +85,14 @@ form {
                 background-color: var(--c-white);
             }
         }
+
+        .ck-placeholder {
+            min-height: 200px;
+
+            p {
+                min-height: 200px;
+            }
+        }
     }
 
     .form-field-inline {

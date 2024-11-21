@@ -20,5 +20,25 @@
 
     .-content {
         padding: 25px;
+
+        p {
+            line-height: 1.5;
+            letter-spacing: .5px;
+        }
+
+        .-svg {
+            padding: 15px;
+            min-height: 50px;
+            min-width: 50px;
+            width: fit-content;
+            margin-bottom: 25px;
+            border-radius: 50%;
+            background-color: var(--c-secondary);
+
+            img {
+                width: 50px;
+                margin: 0 auto;
+            }
+        }
     }
 }

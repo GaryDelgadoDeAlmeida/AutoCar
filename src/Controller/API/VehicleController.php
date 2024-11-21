@@ -3,7 +3,7 @@
 namespace App\Controller\API;
 
 use App\Manager\SerializeManager;
-use App\Repository\VehiculeRepository;
+use App\Repository\VehicleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,18 +14,18 @@ use Symfony\Component\Routing\Attribute\Route;
 class VehicleController extends AbstractController
 {
     private SerializeManager $serializeManager;
-    private VehiculeRepository $vehiculeRepository;
+    private VehicleRepository $vehicleRepository;
 
-    function __construct(SerializeManager $serializeManager, VehiculeRepository $vehiculeRepository) {
+    function __construct(SerializeManager $serializeManager, VehicleRepository $vehicleRepository) {
         $this->serializeManager = $serializeManager;
-        $this->vehiculeRepository = $vehiculeRepository;
+        $this->vehicleRepository = $vehicleRepository;
     }
 
     #[Route('/vehicles', name: 'get_vehicles', methods: ["GET"])]
     public function get_vehicles(Request $request): JsonResponse {
         $limit = 12;
         $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
-        $vehicles = $this->vehiculeRepository->findBy([], ["createdAt" => "DESC"], $limit, ($offset - 1) * $limit);
+        $vehicles = $this->vehicleRepository->findBy([], ["createdAt" => "DESC"], $limit, ($offset - 1) * $limit);
         
         return $this->json([
             "offset" => $offset,
@@ -36,7 +36,7 @@ class VehicleController extends AbstractController
 
     #[Route('/vehicle/{vehicleID}', name: 'get_vehicle', methods: ["GET"])]
     public function get_vehicle(int $vehicleID): JsonResponse {
-        $vehicle = $this->vehiculeRepository->find($vehicleID);
+        $vehicle = $this->vehicleRepository->find($vehicleID);
         if(empty($vehicle)) {
             return $this->json([
                 "message" => "Vehicle not found"

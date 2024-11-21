@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import Notification from "../components/Notification"
+import ImageField from "./parts/ImageField";
 import WyziwigField from "./parts/WyziwigField"
+import Notification from "../components/Notification"
 import axios from "axios";
 
 export default function ArticleForm() {
 
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
+        photo: null,
         title: "",
         content: "",
     })
@@ -52,6 +54,7 @@ export default function ArticleForm() {
 
                 setFormResponse({classname: "danger", message: errorMessage})
             })
+        ;
     }
 
     return (
@@ -61,6 +64,19 @@ export default function ArticleForm() {
             )}
 
             <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
+                <div className={"form-field"}>
+                    <ImageField
+                        fieldName={"photo"}
+                        fieldValue={credentials.photo}
+                        updateCredentials={(fieldName, fieldValue) => {
+                            setCredentials({
+                                ...credentials,
+                                [fieldName]: fieldValue
+                            })
+                        }}
+                    />
+                </div>
+
                 <div className={"form-field"}>
                     <input 
                         type={"text"}

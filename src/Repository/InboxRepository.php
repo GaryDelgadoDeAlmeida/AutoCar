@@ -39,4 +39,17 @@ class InboxRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * Count all received message from this website
+     * 
+     * @return int
+     */
+    public function countInboxs(): int{
+        return $this->createQueryBuilder("inbox")
+            ->select("COUNT(inbox.id) as nbrInboxs")
+            ->getQuery()
+            ->getSingleResult()["nbrInboxs"]
+        ;
+    }
 }

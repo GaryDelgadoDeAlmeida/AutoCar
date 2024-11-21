@@ -29,7 +29,7 @@ export default function Header(props) {
                             <div className={"menu"}>
                                 <Link to={"/"}>Home</Link>
                                 <Link to={"/about"}>About</Link>
-                                <Link to={"/brands"}>Brands</Link>
+                                <Link to={"/makers"}>Makers</Link>
                                 <Link to={"/vehicles"}>Vehicles</Link>
                                 <Link to={"/fuels"}>Fuels</Link>
                                 <Link to={"/blog"}>Blog</Link>
@@ -58,7 +58,7 @@ export default function Header(props) {
                                     <div className={"menu"}>
                                         <li className={"-item"}><Link to={"/"}>Home</Link></li>
                                         <li className={"-item"}><Link to={"/about"}>About</Link></li>
-                                        <li className={"-item"}><Link to={"/brands"}>Brands</Link></li>
+                                        <li className={"-item"}><Link to={"/makers"}>Makers</Link></li>
                                         <li className={"-item"}><Link to={"/vehicles"}>Vehicles</Link></li>
                                         <li className={"-item"}><Link to={"/fuels"}>Fuels</Link></li>
                                         <li className={"-item"}><Link to={"/fuel-simulator"}>Fuel Simulator</Link></li>
@@ -107,7 +107,7 @@ export default function Header(props) {
                                 <div className={"-content"}>
                                     <li><Link to={"/"}>Home</Link></li>
                                     <li><Link to={"/about"}>About us</Link></li>
-                                    <li><Link to={"/brands"}>Brands</Link></li>
+                                    <li><Link to={"/makers"}>Makers</Link></li>
                                     <li><Link to={"/fuels"}>Fuels</Link></li>
                                     <li><Link to={"/vehicles"}>Vehicles</Link></li>
                                     <li><Link to={"/fuel-simulator"}>Fuel Simulator</Link></li>

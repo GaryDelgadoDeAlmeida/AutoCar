@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import TableCard from "../../components/TableCard"
+import Pagination from "../../components/Pagination"
 import HeaderAdmin from "../../components/HeaderAdmin";
-import PrivateResources from "../../hooks/PrivateResources"
 import Notification from "../../components/Notification"
+import PrivateResources from "../../hooks/PrivateResources"
 
 export default function Vehicles() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/backoffice/vehicles?offset=${offset}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicles?offset=${offset}`)
 
     useEffect(() => {
         load()
@@ -14,21 +17,43 @@ export default function Vehicles() {
 
     return (
         <HeaderAdmin>
-            {loading && (
-                <Notification classname={"information"} message={"Loading ..."} />
-            )}
+            <Link className={"btn btn-green"} to={"/admin/vehicles/add"}>Add a vehicle</Link>
 
-            {!loading && (
-                <>
-                    {Object.keys(error).length > 0 && (
-                        <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
-                    )}
+            <section className={"page-section"}>
+                {loading && (
+                    <Notification classname={"information"} message={"Loading ..."} />
+                )}
 
-                    {Object.keys(items ?? {}).length > 0 && (
-                        <section className={"page-section"}></section>
-                    )}
-                </>
-            )}
+                {!loading && (
+                    <>
+                        {Object.keys(error).length > 0 && (
+                            <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                        )}
+
+                        {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
+                            <>
+                                <div className={"table-list"}>
+                                    {Object.values(items.results).map((item, index) => (
+                                        <TableCard
+                                            key={index}
+                                            imgPath={""}
+                                            title={""}
+                                            description={""}
+                                            link={`/admin/vehicle/${item.id}`}
+                                        />
+                                    ))}
+                                </div>
+
+                                <Pagination
+                                    offset={offset}
+                                    setOffset={setOffset}
+                                    maxOffset={items.maxOffset}
+                                />
+                            </>
+                        )}
+                    </>
+                )}
+            </section>
         </HeaderAdmin>
     )
 }

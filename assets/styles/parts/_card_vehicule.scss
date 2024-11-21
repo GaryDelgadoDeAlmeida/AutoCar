@@ -31,30 +31,31 @@
     }
 
     .-content {
-        padding-top: 15px;
-        gap: 10px;
+        gap: 7px;
         display: flex;
+        padding-top: 15px;
         flex-direction: column;
 
-        .-title {
-            font-size: 1rem;
-        }
+        // .-title, .-sub-title {
+        //     font-size: 1rem;
+        // }
 
-        .-sub-title {
-            font-size: 1rem;
+        .-title {
+            font-weight: 600;
         }
 
         .-caracteristics {
-            gap: 10px;
+            gap: 15px;
             display: flex;
             flex-wrap: wrap;
+            padding-top: 10px;
 
             .-caracteristic {
                 gap: 5px;
                 display: flex;
 
                 img {
-                    height: 25px;
+                    height: 15px;
                 }
 
                 span {

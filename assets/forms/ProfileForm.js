@@ -28,26 +28,28 @@ export default function ProfileForm() {
             )}
 
             <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
-                <div className={"form-field"}>
-                    <input
-                        type={"text"}
-                        maxLength={100}
-                        value={credentials.firstname}
-                        placeholder={"Your firstname"}
-                        onChange={(e) => handleChange(e, "firstname")}
-                        required
-                    />
-                </div>
-                
-                <div className={"form-field"}>
-                    <input
-                        type={"text"}
-                        maxLength={255}
-                        value={credentials.lastname}
-                        placeholder={"Your lastname"}
-                        onChange={(e) => handleChange(e, "lastname")}
-                        required
-                    />
+                <div className={"form-field-inline"}>
+                    <div className={"form-field"}>
+                        <input
+                            type={"text"}
+                            maxLength={100}
+                            value={credentials.firstname}
+                            placeholder={"Your firstname"}
+                            onChange={(e) => handleChange(e, "firstname")}
+                            required
+                        />
+                    </div>
+                    
+                    <div className={"form-field"}>
+                        <input
+                            type={"text"}
+                            maxLength={255}
+                            value={credentials.lastname}
+                            placeholder={"Your lastname"}
+                            onChange={(e) => handleChange(e, "lastname")}
+                            required
+                        />
+                    </div>
                 </div>
                 
                 <div className={"form-field"}>

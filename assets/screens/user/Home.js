@@ -6,6 +6,7 @@ import ArticleCard from "../../components/ArticleCard";
 import TestimonialCard from "../../components/TestimonialCard";
 import FuelSimulatorForm from "../../forms/FuelSimulatorForm";
 import VehiculeTypeCard from "../../components/VehicleTypeCard";
+import Notification from "../../components/Notification";
 
 export default function Home() {
 
@@ -136,23 +137,25 @@ export default function Home() {
                         <div className={"-right"}>
                             <h2>Want to buy or sell a vehicle ?</h2>
                             <p>You can put your vehicles for sales by registering on our website. Whether your are a dealer or sell personally. Sell your vehicle in the most profitable way. With this system, which has million of members, you will be able to buy and sell vehicles quickly.</p>
-                            <div className={""}>
-                                <img src={`${window.location.origin}/content/svg/car.svg`} alt={""} />
-                                <div className={""}>
-                                    <label>Model vehicles</label>
-                                    <span>We are sure that you will find vehicles of suitable models on our website.</span>
+                            <div className={"d-col -g-25 py-25"}>
+                                <div className={"d-flex -g-15"}>
+                                    <img className={"w-50px"} src={`${window.location.origin}/content/svg/car.svg`} alt={""} />
+                                    <div className={"d-col -g-5 mx-auto -item"}>
+                                        <label className={"fw-bold fs-20"}>Model vehicles</label>
+                                        <span>We are sure that you will find vehicles of suitable models on our website.</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className={""}>
-                                <img src={`${window.location.origin}/content/svg/car-repair.svg`} alt={""} />
-                                <div className={""}>
-                                    <label>2nd Hand Vehicules</label>
-                                    <span>You put your used vehicles for sale bu adding them to our website.</span>
+                                <div className={"d-flex -g-15"}>
+                                    <img className={"w-50px"} src={`${window.location.origin}/content/svg/car-repair.svg`} alt={""} />
+                                    <div className={"d-col -g-5 mx-auto -item"}>
+                                        <label className={"fw-bold fs-20"}>2nd Hand Vehicules</label>
+                                        <span>You put your used vehicles for sale bu adding them to our website.</span>
+                                    </div>
                                 </div>
                             </div>
 
                             <div className={"mt-25"}>
-                                <Link className={"btn btn-secondary btn-m fw-bold"} to={"/about"}>Get to know us</Link>
+                                <Link className={"btn btn-secondary btn-m fw-bold btn-mx"} to={"/about"}>Get to know us</Link>
                             </div>
                         </div>
                     </div>
@@ -245,6 +248,10 @@ export default function Home() {
                 <div className={"page-wrapper"}>
                     <h2 className={"page-title"}>Fuel Simulator</h2>
                     <p className={"page-description"}>Calculate your potential costs on fuels</p>
+
+                    <div className={"card"}>
+                        <Notification classname={"information"} message={"Any information displayed in this simulation is an estimation. Cost on fuels can be a little bit higher."} />
+                    </div>
                     
                     <div className={"card"}>
                         <div className={"-content"}>

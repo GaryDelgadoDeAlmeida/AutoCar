@@ -21,8 +21,8 @@ import 'ckeditor5/ckeditor5.css';
 
 export default function WyziwigField({fieldName, fieldValue, placeholder, updateCredentials}) {
 
-    const handleChange = (e) => {
-        updateCredentials(fieldName, e.currentTarget.value)
+    const handleChange = (editor) => {
+        updateCredentials(fieldName, editor.getData())
     }
 
     return (
@@ -30,15 +30,26 @@ export default function WyziwigField({fieldName, fieldValue, placeholder, update
             <CKEditor
                 editor={ClassicEditor}
                 config={{
-                    style: [{
-                        "min-height": "200px"
-                    }],
                     toolbar: [
                         'undo', 'redo', '|',
                         'heading', '|', 'bold', 'italic', '|',
                         'link', 'insertTable', 'mediaEmbed', '|',
                         'bulletedList', 'numberedList', 'indent', 'outdent'
                     ],
+                    style: {
+                        definitions: [
+                            {
+                                name: 'Article category',
+                                element: 'h3',
+                                classes: [ 'category' ]
+                            },
+                            {
+                                name: 'Info box',
+                                element: 'p',
+                                classes: [ 'info-box' ]
+                            },
+                        ]
+                    },
                     plugins: [
                         Bold,
                         Essentials,
@@ -56,7 +67,8 @@ export default function WyziwigField({fieldName, fieldValue, placeholder, update
                     initialData: fieldValue,
                     placeholder: placeholder
                 }}
-                onChange={(e) => handleChange(e)}
+                onChange={(e, editor) => handleChange(editor)}
+                // onReady={editor => editor.setData(fieldValue)}
             />
         </CKEditorContext>
     )

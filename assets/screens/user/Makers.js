@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import PrivateRessource from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
 import Pagination from "../../components/Pagination";
-import { Link } from "react-router-dom";
+import MakerCard from "../../components/MakerCard";
 
 export default function Brands() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/brands?offset=${offset}`)
+    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/makers?offset=${offset}`)
 
     useEffect(() => {
         load()
@@ -21,10 +22,10 @@ export default function Brands() {
                     <img src={`${window.location.origin}/content/img/background-home-2.jpg`} alt={""} />
                 </div>
                 <div className={"hero-wrapper"}>
-                    <h1 className={"-hero-title"}>Brands</h1>
+                    <h1 className={"-hero-title"}>Makers</h1>
                     <div className={"-hero-breadcrumbs"}>
                         <Link to={"/"}>Home</Link>
-                        <span>Brands</span>
+                        <span>Makers</span>
                     </div>
                 </div>
             </section>
@@ -46,11 +47,14 @@ export default function Brands() {
                                     {Object.keys(items.results ?? {}).length > 0 ? (
                                         <div className={""}>
                                             {Object.values(items.results ?? {}).map((item, index) => (
-                                                <div key={index} className={"brand-card"}></div>
+                                                <MakerCard 
+                                                    key={index}
+                                                    name={item.name}
+                                                />
                                             ))}
                                         </div>
                                     ) : (
-                                        <Notification classname={"danger"} message={"No brands has been found"} />
+                                        <Notification classname={"danger"} message={"No maker has been found"} />
                                     )}
                                     
                                     <Pagination

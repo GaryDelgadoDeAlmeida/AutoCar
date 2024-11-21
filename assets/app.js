@@ -14,7 +14,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // User
 import Home from './screens/user/Home';
 import About from './screens/user/About';
-import Brands from './screens/user/Brands';
+import Makers from './screens/user/Makers';
+import Maker from './screens/user/Maker';
 import Fuels from './screens/user/Fuels';
 import Vehicles from './screens/user/Vehicles';
 import Vehicle from './screens/user/Vehicle';
@@ -30,14 +31,14 @@ import Login from './screens/user/Login';
 // Admin
 import AdminHome from "./screens/admin/Home";
 import AdminProfile from "./screens/admin/Profile";
-import AdminBrands from "./screens/admin/Brands";
-import AdminBrand from "./screens/admin/Brand";
-import AdminBrandSingle from "./screens/admin/BrandSingle";
+import AdminMakers from "./screens/admin/Makers";
+import AdminMakerNew from "./screens/admin/MakerNew";
+import AdminMakerSingle from "./screens/admin/MakerSingle";
 import AdminVehicles from "./screens/admin/Vehicles";
 import AdminVehicle from "./screens/admin/Vehicle";
 import AdminVehicleType from "./screens/admin/VehicleType";
 import AdminFuels from "./screens/admin/Fuels";
-import AdminFuel from "./screens/admin/Fuel";
+import AdminFuelNew from "./screens/admin/FuelNew";
 import AdminFuelSingle from "./screens/admin/FuelSingle";
 import AdminFuelsHistory from "./screens/admin/FuelsHistory";
 import AdminArticles from "./screens/admin/Articles";
@@ -55,7 +56,8 @@ root.render(
                 {/* Public */}
                 <Route path={"/"} element={<Home />} />
                 <Route path={"/about"} element={<About />} />
-                <Route path={"/brands"} element={<Brands />} />
+                <Route path={"/makers"} element={<Makers />} />
+                <Route path={"/maker/:makerID"} element={<Maker />} />
                 <Route path={"/fuels"} element={<Fuels />} />
                 <Route path={"/vehicles"} element={<Vehicles />} />
                 <Route path={"/vehicle/:vehicleID"} element={<Vehicle />} />
@@ -71,11 +73,11 @@ root.render(
                 <Route path={"/admin/vehicles/add"} element={<AdminHome />} />
                 <Route path={"/admin/vehicle/:vehicleID"} element={<AdminVehicle />} />
                 <Route path={"/admin/vehicle-types"} element={<AdminVehicleType />} />
-                <Route path={"/admin/brands"} element={<AdminBrands />} />
-                <Route path={"/admin/brands/add"} element={<AdminBrand />} />
-                <Route path={"/admin/brand/:brandID"} element={<AdminBrandSingle />} />
+                <Route path={"/admin/makers"} element={<AdminMakers />} />
+                <Route path={"/admin/makers/add"} element={<AdminMakerNew />} />
+                <Route path={"/admin/maker/:makerID"} element={<AdminMakerSingle />} />
                 <Route path={"/admin/fuels"} element={<AdminFuels />} />
-                <Route path={"/admin/fuels/add"} element={<AdminFuel />} />
+                <Route path={"/admin/fuels/add"} element={<AdminFuelNew />} />
                 <Route path={"/admin/fuel/:fuelID"} element={<AdminFuelSingle />} />
                 <Route path={"/admin/fuels-history"} element={<AdminFuelsHistory />} />
                 <Route path={"/admin/blog"} element={<AdminArticles />} />

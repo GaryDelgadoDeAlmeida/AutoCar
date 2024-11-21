@@ -10,18 +10,18 @@ export default function CarCard({carItem}) {
             </div>
             <div className={"-content"}>
                 <label className={"-title"}>{carItem.title}</label>
-                <span className={"-sup-title"}>SUV</span>
+                <span className={"-sub-title"}>SUV</span>
                 <div className={"-caracteristics"}>
                     <label className={"-caracteristic"}>
-                        <img src={`${window.location.origin}/content/svg/euro.svg`} alt={""} />
+                        <img src={`${window.location.origin}/content/svg/dollar-sign.svg`} alt={""} />
                         <span>20 000</span>
                     </label>
                     <label className={"-caracteristic"}>
-                        <img src={`${window.location.origin}/content/company.svg`} alt={""} />
+                        <img src={`${window.location.origin}/content/svg/car.svg`} alt={""} />
                         <span>Volsvagan</span>
                     </label>
                     <label className={"-caracteristic"}>
-                        <img src={`${window.location.origin}/content/svg/fuel.svg`} alt={""} />
+                        <img src={`${window.location.origin}/content/svg/gas-pump.svg`} alt={""} />
                         <span>Diesel</span>
                     </label>
                 </div>

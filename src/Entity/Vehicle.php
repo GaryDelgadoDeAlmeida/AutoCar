@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\VehiculeRepository;
+use App\Repository\VehicleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: VehiculeRepository::class)]
-class Vehicule
+#[ORM\Entity(repositoryClass: VehicleRepository::class)]
+class Vehicle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,9 +19,6 @@ class Vehicule
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
-
-    #[ORM\ManyToOne(inversedBy: 'vehicules')]
-    private ?VehiculeMotor $vehiculeMotor = null;
 
     // Fuel tank capacity (? L)
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
@@ -78,18 +75,6 @@ class Vehicule
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getVehiculeMotor(): ?VehiculeMotor
-    {
-        return $this->vehiculeMotor;
-    }
-
-    public function setVehiculeMotor(?VehiculeMotor $vehiculeMotor): static
-    {
-        $this->vehiculeMotor = $vehiculeMotor;
 
         return $this;
     }

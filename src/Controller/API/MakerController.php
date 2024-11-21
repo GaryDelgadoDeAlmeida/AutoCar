@@ -3,7 +3,7 @@
 namespace App\Controller\API;
 
 use App\Manager\SerializeManager;
-use App\Repository\BrandRepository;
+use App\Repository\MakerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,43 +11,43 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api', name: 'api_')]
-class BrandController extends AbstractController
+class MakerController extends AbstractController
 {
     private SerializeManager $serializeManager;
-    private BrandRepository $brandRepository;
+    private MakerRepository $makerRepository;
     
     function __construct(
         SerializeManager $serializeManager, 
-        BrandRepository $brandRepository
+        MakerRepository $makerRepository
     ) {
         $this->serializeManager = $serializeManager;
-        $this->brandRepository = $brandRepository;
+        $this->makerRepository = $makerRepository;
     }
 
-    #[Route('/brands', name: 'get_brands', methods: ["GET"])]
-    public function get_brands(Request $request): JsonResponse {
+    #[Route('/makers', name: 'get_makers', methods: ["GET"])]
+    public function get_makers(Request $request): JsonResponse {
         $limit = 12;
         $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
-        $brands = $this->brandRepository->findBy([], ["name" => "ASC"], $limit, ($offset - 1) * $limit);
+        $makers = $this->makerRepository->findBy([], ["name" => "ASC"], $limit, ($offset - 1) * $limit);
 
         return $this->json([
             "offset" => $offset,
             "maxOffset" => 1,
-            "results" => $brands ?? $this->serializeManager->serializeContent($brands)
+            "results" => $makers ?? $this->serializeManager->serializeContent($makers)
         ]);
     }
 
-    #[Route('/brand/{brandID}', name: 'get_brand', methods: ["GET"])]
-    public function get_brand(int $brandID) : JsonResponse {
-        $brand = $this->brandRepository->find($brandID);
-        if(empty($brand)) {
+    #[Route('/maker/{makerID}', name: 'get_maker', methods: ["GET"])]
+    public function get_maker(int $makerID) : JsonResponse {
+        $maker = $this->makerRepository->find($makerID);
+        if(empty($maker)) {
             return $this->json([
-                "message" => "Brand not found"
+                "message" => "Maker not found"
             ], Response::HTTP_NOT_FOUND);
         }
 
         return $this->json(
-            $this->serializeManager->serializeContent($brand),
+            $this->serializeManager->serializeContent($maker),
             Response::HTTP_OK
         );
     }

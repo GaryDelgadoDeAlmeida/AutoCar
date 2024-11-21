@@ -79,31 +79,33 @@ export default function FuelForm({fuel}) {
             )}
 
             <form onSubmit={(e) => handleSubmit(e)}>
-                <div className={"form-field"}>
-                    <input 
-                        type={"text"}
-                        maxLength={255}
-                        value={credentials.title}
-                        placeholder={"Name of the fuel"}
-                        onChange={(e) => handleChange(e, "title")}
-                        required
-                    />
-                </div>
-                
-                <div className={"form-field"}>
-                    <input
-                        type={"number"}
-                        step={"any"}
-                        min={0}
-                        value={credentials.price}
-                        placeholder={"Price of the fuel"}
-                        onChange={(e) => handleChange(e, "price")}
-                        required
-                    />
+                <div className={"form-field-inline"}>
+                    <div className={"form-field"}>
+                        <input 
+                            type={"text"}
+                            maxLength={255}
+                            value={credentials.title}
+                            placeholder={"Name of the fuel"}
+                            onChange={(e) => handleChange(e, "title")}
+                            required
+                        />
+                    </div>
+                    
+                    <div className={"form-field"}>
+                        <input
+                            type={"number"}
+                            step={"any"}
+                            min={0}
+                            value={credentials.price}
+                            placeholder={"Price of the fuel"}
+                            onChange={(e) => handleChange(e, "price")}
+                            required
+                        />
+                    </div>
                 </div>
                 
                 <div className={"form-actions"}>
-                    <button type={"submit"} className={"btn btn-blue"}>Submit</button>
+                    <button type={"submit"} className={"btn btn-secondary"}>Submit</button>
                 </div>
             </form>
         </>

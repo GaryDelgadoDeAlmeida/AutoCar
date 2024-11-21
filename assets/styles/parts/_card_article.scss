@@ -1,5 +1,4 @@
 .article-card {
-    padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -17,7 +16,7 @@
     }
 
     .-content {
-        padding: 15px 0;
+        padding: 15px 15px 10px;
 
         > .-title {
             font-weight: 700;
@@ -31,6 +30,7 @@
     }
 
     .-footer {
+        padding: 0 15px 15px;
         text-align: center;
     }
 }

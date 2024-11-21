@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Vehicule;
+use App\Entity\Vehicle;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Vehicule>
+ * @extends ServiceEntityRepository<Vehicle>
  */
-class VehiculeRepository extends ServiceEntityRepository
+class VehicleRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Vehicule::class);
+        parent::__construct($registry, Vehicle::class);
     }
 
     /**
-     * @param Vehicule entity
+     * @param Vehicle entity
      * @param bool flush
      */
-    public function save(Vehicule $entity, bool $flush = false) {
+    public function save(Vehicle $entity, bool $flush = false) {
         $this->getEntityManager()->persist($entity);
 
         if($flush) {
@@ -29,10 +29,10 @@ class VehiculeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Vehicule entity
+     * @param Vehicle entity
      * @param bool flush
      */
-    public function remove(Vehicule $entity, bool $flush = false) {
+    public function remove(Vehicle $entity, bool $flush = false) {
         $this->getEntityManager()->remove($entity);
 
         if($flush) {

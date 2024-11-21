@@ -15,7 +15,6 @@ export default function Profile() {
 
             <section className={"page-section"}>
                 <div className={"card"}>
-                    <div className={"-header"}></div>
                     <div className={"-content"}>
                         <ProfileForm />
                     </div>

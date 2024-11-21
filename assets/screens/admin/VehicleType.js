@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import TableCard from "../../components/TableCard"
 import HeaderAdmin from "../../components/HeaderAdmin"
 import Notification from "../../components/Notification"
 import PrivateResources from "../../hooks/PrivateResources"
-import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination";
 
 export default function VehicleType() {
@@ -28,42 +29,34 @@ export default function VehicleType() {
                             <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
                         )}
 
-                        {Object.keys(items ?? {}).length > 0 && (
+                        {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
                             <>
-                                <table className={"table"}>
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td data-column={"Title"}>SUV</td>
-                                            <td data-column={"Actions"}></td>
-                                        </tr>
-                                        <tr>
-                                            <td data-column={"Title"}>Pick-up</td>
-                                            <td data-column={"Actions"}></td>
-                                        </tr>
-                                        <tr>
-                                            <td data-column={"Title"}>Coupe</td>
-                                            <td data-column={"Actions"}></td>
-                                        </tr>
-                                        <tr>
-                                            <td data-column={"Title"}>Sport cars</td>
-                                            <td data-column={"Actions"}></td>
-                                        </tr>
-                                        <tr>
-                                            <td data-column={"Title"}>Sedan</td>
-                                            <td data-column={"Actions"}></td>
-                                        </tr>
-                                        <tr>
-                                            <td data-column={"Title"}>Hatchback</td>
-                                            <td data-column={"Actions"}></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div className={"table-list"}>
+                                    <TableCard
+                                        title={"SUV"}
+                                        link={""}
+                                    />
+                                    <TableCard
+                                        title={"Pick-up"}
+                                        link={""}
+                                    />
+                                    <TableCard
+                                        title={"Coupe"}
+                                        link={""}
+                                    />
+                                    <TableCard
+                                        title={"Sport cars"}
+                                        link={""}
+                                    />
+                                    <TableCard
+                                        title={"Sedan"}
+                                        link={""}
+                                    />
+                                    <TableCard
+                                        title={"Hatchback"}
+                                        link={""}
+                                    />
+                                </div>
 
                                 <Pagination
                                     maxOffset={1}

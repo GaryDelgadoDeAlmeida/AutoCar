@@ -113,7 +113,7 @@ export default function ContactForm() {
                 </div>
                 
                 <div className={"form-actions"}>
-                    <button type={"submit"} className={"btn btn-secondary btn-rounded btn-m"}>Send</button>
+                    <button type={"submit"} className={"btn btn-secondary btn-m"}>Send message</button>
                 </div>
             </form>
         </>

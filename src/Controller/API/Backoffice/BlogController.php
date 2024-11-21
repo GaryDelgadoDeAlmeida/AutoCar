@@ -59,7 +59,7 @@ class BlogController extends AbstractController
 
             return $this->json([
                 "message" => $e->getMessage()
-            ], isset(Response::$statusTexts[$code]) && $code != 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
+            ], isset(Response::$statusTexts[$code]) && $code !== Response::HTTP_OK ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->json(
@@ -101,7 +101,7 @@ class BlogController extends AbstractController
 
             return $this->json([
                 "message" => $e->getMessage()
-            ], isset(Response::$statusTexts[$code]) && $code != 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
+            ], isset(Response::$statusTexts[$code]) && $code !== Response::HTTP_OK ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->json(
@@ -136,7 +136,7 @@ class BlogController extends AbstractController
 
             return $this->json([
                 "message" => $e->getMessage()
-            ], isset(Response::$statusTexts[$code]) && $code != 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
+            ], isset(Response::$statusTexts[$code]) && $code !== Response::HTTP_OK ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->json(
@@ -167,7 +167,7 @@ class BlogController extends AbstractController
 
             return $this->json([
                 "message" => $e->getMessage()
-            ], isset(Response::$statusTexts[$code]) && $code != 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
+            ], isset(Response::$statusTexts[$code]) && $code !== Response::HTTP_OK ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->json(null, Response::HTTP_NO_CONTENT);

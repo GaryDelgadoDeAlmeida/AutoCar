@@ -4,6 +4,7 @@ import  HeaderAdmin from "../../components/HeaderAdmin"
 import PrivateResources from "../../hooks/PrivateResources"
 import Notification from "../../components/Notification";
 import Pagination from "../../components/Pagination";
+import TableCard from "../../components/TableCard";
 
 export default function Fuels() {
 
@@ -33,7 +34,12 @@ export default function Fuels() {
                             <>
                                 <div className={"table-list"}>
                                     {Object.values(items.results).map((item, index) => (
-                                        <div key={index} className={"table-card"}>{item.title}</div>
+                                        <TableCard
+                                            key={index}
+                                            title={item.title}
+                                            description={""}
+                                            link={""}
+                                        />
                                     ))}
                                 </div>
 

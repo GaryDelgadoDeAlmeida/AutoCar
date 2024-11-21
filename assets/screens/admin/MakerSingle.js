@@ -4,22 +4,22 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import PrivateRessource from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
 
-export default function BrandSingle() {
+export default function MakerSingle() {
 
-    const { brandID } = useParams()
-    if(isNaN(brandID)) {
-        return <Navigate to={"/admin/brands"} />
+    const { makerID } = useParams()
+    if(isNaN(makerID)) {
+        return <Navigate to={"/admin/makers"} />
     }
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/backoffice/brand/${brandID}`)
+    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/maker/${makerID}`)
 
     useEffect(() => {
         load()
-    }, [brandID])
+    }, [makerID])
 
     return (
         <HeaderAdmin>
-            <Link className={"btn btn-blue"} to={"/admin/brands"}>Return</Link>
+            <Link className={"btn btn-blue"} to={"/admin/makers"}>Return</Link>
             <section className={"page-section"}>
                 {loading && (
                     <Notification classname={"information"} message={"Loading ..."} />

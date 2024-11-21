@@ -54,7 +54,7 @@ export default function NewsletterForm() {
                     />
                 </div>
                 <div className={"form-actions"}>
-                    <button type={"submit"} className={"btn btn-primary btn-semirounded"}>Register</button>
+                    <button type={"submit"} className={"btn btn-primary btn-semirounded w-100"}>Register</button>
                 </div>
             </form>
         </>

@@ -34,15 +34,15 @@ class Fuel
     private Collection $fuelPriceHistories;
 
     /**
-     * @var Collection<int, Vehicule>
+     * @var Collection<int, Vehicle>
      */
-    #[ORM\OneToMany(targetEntity: Vehicule::class, mappedBy: 'fuel')]
-    private Collection $vehicules;
+    #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'fuel')]
+    private Collection $vehicles;
 
     public function __construct()
     {
         $this->fuelPriceHistories = new ArrayCollection();
-        $this->vehicules = new ArrayCollection();
+        $this->vehicles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,29 +129,29 @@ class Fuel
     }
 
     /**
-     * @return Collection<int, Vehicule>
+     * @return Collection<int, Vehicle>
      */
-    public function getVehicules(): Collection
+    public function getVehicles(): Collection
     {
-        return $this->vehicules;
+        return $this->vehicles;
     }
 
-    public function addVehicule(Vehicule $vehicule): static
+    public function addVehicle(Vehicle $vehicle): static
     {
-        if (!$this->vehicules->contains($vehicule)) {
-            $this->vehicules->add($vehicule);
-            $vehicule->setFuel($this);
+        if (!$this->vehicles->contains($vehicle)) {
+            $this->vehicles->add($vehicle);
+            $vehicle->setFuel($this);
         }
 
         return $this;
     }
 
-    public function removeVehicule(Vehicule $vehicule): static
+    public function removeVehicle(Vehicle $vehicle): static
     {
-        if ($this->vehicules->removeElement($vehicule)) {
+        if ($this->vehicles->removeElement($vehicle)) {
             // set the owning side to null (unless already changed)
-            if ($vehicule->getFuel() === $this) {
-                $vehicule->setFuel(null);
+            if ($vehicle->getFuel() === $this) {
+                $vehicle->setFuel(null);
             }
         }
 

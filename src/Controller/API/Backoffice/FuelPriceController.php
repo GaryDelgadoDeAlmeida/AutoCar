@@ -3,6 +3,7 @@
 namespace App\Controller\API\Backoffice;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -10,10 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class FuelPriceController extends AbstractController
 {
     #[Route('/fuel/price', name: 'get_fuel_price')]
-    public function index(): Response
-    {
-        return $this->render('api/backoffice/fuel_price/index.html.twig', [
-            'controller_name' => 'FuelPriceController',
-        ]);
+    public function index(): JsonResponse {
+        return $this->json([], Response::HTTP_OK);
     }
 }

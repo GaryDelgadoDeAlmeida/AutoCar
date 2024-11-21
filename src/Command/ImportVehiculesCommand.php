@@ -3,9 +3,9 @@
 namespace App\Command;
 
 use App\Entity\Maker;
-use App\Entity\Vehicule;
+use App\Entity\Vehicle;
 use App\Repository\MakerRepository;
-use App\Repository\VehiculeRepository;
+use App\Repository\VehicleRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,13 +21,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ImportVehiculesCommand extends Command
 {
     private MakerRepository $makerRepository;
-    private VehiculeRepository $vehiculeRepository;
+    private VehicleRepository $vehicleRepository;
 
-    public function __construct(MakerRepository $makerRepository, VehiculeRepository $vehiculeRepository)
+    public function __construct(MakerRepository $makerRepository, VehicleRepository $vehicleRepository)
     {
         parent::__construct();
         $this->makerRepository = $makerRepository;
-        $this->vehiculeRepository = $vehiculeRepository;
+        $this->vehicleRepository = $vehicleRepository;
     }
 
     protected function configure(): void
@@ -62,7 +62,7 @@ class ImportVehiculesCommand extends Command
                     $this->makerRepository->save($maker, true);
                 }
 
-                $vehicule = (new Vehicule())
+                $vehicule = (new Vehicle())
                     ->setBasemodel($vehiculeData["basemodel"])
                     ->setName($vehiculeData["model"])
                     ->setPrice(0)
@@ -73,13 +73,13 @@ class ImportVehiculesCommand extends Command
 
                 // Save changes into database every 100 persists of vehicules
                 if($index % 100 == 0) {
-                    $this->vehiculeRepository->save($vehicule, true);
+                    $this->vehicleRepository->save($vehicule, true);
                 } else {
-                    $this->vehiculeRepository->save($vehicule);
+                    $this->vehicleRepository->save($vehicule);
                 }
             }
 
-            $this->vehiculeRepository->save($vehicule, true);
+            $this->vehicleRepository->save($vehicule, true);
         } while($offset < $maxOffset);
 
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
