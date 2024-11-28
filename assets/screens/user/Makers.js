@@ -61,7 +61,7 @@ export default function Brands() {
                                         />
                                     </>
                                 ) : (
-                                    <Notification classname={"danger"} message={"No maker has been found"} />
+                                    <Notification classname={"warning"} message={"No maker has been found"} />
                                 )
                             )}
                         </>

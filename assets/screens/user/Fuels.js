@@ -41,14 +41,18 @@ export default function Fuels() {
                             )}
 
                             {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                                Object.values(items.results ?? {}).map((item, index) => (
-                                    <TableCard
-                                        key={index}
-                                        title={item.title}
-                                        description={`${item.price} €`}
-                                        link={`/fuel/${item.id}`}
-                                    />
-                                ))
+                                Object.keys(items.results ?? {}).length > 0 ? (
+                                    Object.values(items.results ?? {}).map((item, index) => (
+                                        <TableCard
+                                            key={index}
+                                            title={item.title}
+                                            description={`${item.price} €`}
+                                            link={`/fuel/${item.id}`}
+                                        />
+                                    ))
+                                ) : (
+                                    <Notification classname={"warning"} message={"No fuels has been found"} />
+                                )
                             )}
                         </>
                     )}
