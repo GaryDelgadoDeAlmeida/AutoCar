@@ -31,24 +31,28 @@ export default function Fuels() {
                         )}
 
                         {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                            <>
-                                <div className={"table-list"}>
-                                    {Object.values(items.results).map((item, index) => (
-                                        <TableCard
-                                            key={index}
-                                            title={item.title}
-                                            description={item.price + " €/L"}
-                                            link={"/admin/fuel/" + item.id}
-                                        />
-                                    ))}
-                                </div>
+                            Object.keys(items.results ?? {}).length > 0 ? (
+                                <>
+                                    <div className={"table-list"}>
+                                        {Object.values(items.results).map((item, index) => (
+                                            <TableCard
+                                                key={index}
+                                                title={item.title}
+                                                description={item.price + " €/L"}
+                                                link={"/admin/fuel/" + item.id}
+                                            />
+                                        ))}
+                                    </div>
 
-                                <Pagination
-                                    offset={offset}
-                                    setOffset={setOffset}
-                                    maxOffset={items.maxOffset}
-                                />
-                            </>
+                                    <Pagination
+                                        offset={offset}
+                                        setOffset={setOffset}
+                                        maxOffset={items.maxOffset}
+                                    />
+                                </>
+                            ) : (
+                                <Notification classname={"danger"} message={"There is no fuels registered"} />
+                            )
                         )}
                     </>
                 )}

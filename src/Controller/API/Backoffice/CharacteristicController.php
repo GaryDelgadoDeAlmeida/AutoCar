@@ -29,14 +29,14 @@ class CharacteristicController extends AbstractController
         $jsonContent = json_decode($request->getContent(), true);
         if(empty($jsonContent)) {
             return $this->json([
-                "message" => "",
+                "message" => "An error has been encountered with the sended body",
             ], Response::HTTP_PRECONDITION_FAILED);
         }
 
         try {
             $fields = $this->characteristicManager->checkFields($jsonContent);
             if(empty($fields)) {
-                throw new \Exception("", Response::HTTP_PRECONDITION_FAILED);
+                throw new \Exception("An error has been encountered with the sended body", Response::HTTP_PRECONDITION_FAILED);
             }
 
             $characteristic = $this->characteristicManager->fillCharacteristic($fields);
