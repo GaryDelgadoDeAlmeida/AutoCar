@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
+import TableCard from "../../components/TableCard";
 import Notification from "../../components/Notification";
 import PrivateRessource from "../../hooks/PrivateResources";
 
@@ -41,15 +42,12 @@ export default function Fuels() {
 
                             {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
                                 Object.values(items.results ?? {}).map((item, index) => (
-                                    <div className={"table-card"}>
-                                        <div className={"-left"}>
-                                            <label className={"-title"}>{item.label}</label>
-                                            <p className={"-price"}>{item.price} €</p>
-                                        </div>
-                                        <div className={"-right"}>
-                                            <Link className={"btn btn-primary"} to={`/fuel/${item.id}`}>See details</Link>
-                                        </div>
-                                    </div>
+                                    <TableCard
+                                        key={index}
+                                        title={item.title}
+                                        description={`${item.price} €`}
+                                        link={`/fuel/${item.id}`}
+                                    />
                                 ))
                             )}
                         </>

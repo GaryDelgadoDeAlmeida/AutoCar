@@ -1,11 +1,13 @@
 import React from "react";
 
-export default function MakerCard() {
+export default function MakerCard({name}) {
 
     return (
-        <div key={index} className={"maker-card"}>
+        <div className={"maker-card"}>
             <div className={"-header"}></div>
-            <div className={"-content"}></div>
+            <div className={"-content"}>
+                <label>{name}</label>
+            </div>
         </div>
     )
 }

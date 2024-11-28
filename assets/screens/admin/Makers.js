@@ -33,7 +33,7 @@ export default function Makers() {
                                         <TableCard 
                                             key={index}
                                             title={item.name}
-                                            description={""}
+                                            description={item.description}
                                             link={"/admin/brand/" + item.id}
                                         />
                                     ))}
@@ -48,67 +48,6 @@ export default function Makers() {
                         )}
                     </>
                 )}
-
-                {/* Temporary: Start */}
-                <div className={"table-list"}>
-                    <TableCard 
-                        title={"Volvo"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                    <TableCard 
-                        title={"Volkswagen"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                    <TableCard 
-                        title={"Toyota"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                    <TableCard 
-                        title={"Ford"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                    <TableCard 
-                        title={"Mercedes-Benz"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                    <TableCard 
-                        title={"BMW"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                    <TableCard 
-                        title={"Kia"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                    <TableCard 
-                        title={"Audi"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                    <TableCard 
-                        title={"Renault"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                    <TableCard 
-                        title={"Peugeot"}
-                        description={""}
-                        link={"/admin/brand/1"}
-                    />
-                </div>
-
-                <Pagination
-                    offset={offset}
-                    setOffset={setOffset}
-                    maxOffset={10}
-                />
-                {/* Temporary: End */}
             </section>
         </HeaderAdmin>
     )

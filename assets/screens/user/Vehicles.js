@@ -51,7 +51,7 @@ export default function Vehicles() {
                                             ))}
                                         </div>
                                     ) : (
-                                        <Notification classname={"danger"} message={"No vehicle has been found"} />
+                                        <Notification classname={"warning"} message={"No vehicle has been found"} />
                                     )}
 
                                     <Pagination

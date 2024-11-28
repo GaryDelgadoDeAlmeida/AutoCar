@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VehicleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -49,6 +51,17 @@ class Vehicle
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
+
+    /**
+     * @var Collection<int, VehicleCharacteristic>
+     */
+    #[ORM\OneToMany(targetEntity: VehicleCharacteristic::class, mappedBy: 'vehicle')]
+    private Collection $vehicleCharacteristics;
+
+    public function __construct()
+    {
+        $this->vehicleCharacteristics = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -184,6 +197,36 @@ class Vehicle
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VehicleCharacteristic>
+     */
+    public function getVehicleCharacteristics(): Collection
+    {
+        return $this->vehicleCharacteristics;
+    }
+
+    public function addVehicleCharacteristic(VehicleCharacteristic $vehicleCharacteristic): static
+    {
+        if (!$this->vehicleCharacteristics->contains($vehicleCharacteristic)) {
+            $this->vehicleCharacteristics->add($vehicleCharacteristic);
+            $vehicleCharacteristic->setVehicle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleCharacteristic(VehicleCharacteristic $vehicleCharacteristic): static
+    {
+        if ($this->vehicleCharacteristics->removeElement($vehicleCharacteristic)) {
+            // set the owning side to null (unless already changed)
+            if ($vehicleCharacteristic->getVehicle() === $this) {
+                $vehicleCharacteristic->setVehicle(null);
+            }
+        }
 
         return $this;
     }

@@ -30,19 +30,23 @@ export default function Articles() {
                         )}
 
                         {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                            <>
-                                <div className={"table-list"}>
-                                    {Object.values(items.results).map((item, index) => (
-                                        <Link key={index} className={"table-card"} to={"/admin/blog/" + item.id}>{item.title}</Link>
-                                    ))}
-                                </div>
-                                
-                                <Pagination
-                                    offset={offset}
-                                    setOffset={setOffset}
-                                    maxOffset={items.maxOffset}
-                                />
-                            </>
+                            Object.keys(items.results ?? {}).length > 0 ? (
+                                <>
+                                    <div className={"table-list"}>
+                                        {Object.values(items.results).map((item, index) => (
+                                            <Link key={index} className={"table-card"} to={"/admin/blog/" + item.id}>{item.title}</Link>
+                                        ))}
+                                    </div>
+                                    
+                                    <Pagination
+                                        offset={offset}
+                                        setOffset={setOffset}
+                                        maxOffset={items.maxOffset}
+                                    />
+                                </>
+                            ) : (
+                                <Notification classname={"warning"} message={"There is article registered in the database"} />
+                            )
                         )}
                     </>
                 )}

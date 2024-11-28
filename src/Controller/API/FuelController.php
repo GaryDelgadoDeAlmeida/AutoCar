@@ -22,10 +22,10 @@ class FuelController extends AbstractController
 
     #[Route('/fuels', name: 'get_fuels', methods: ["GET"])]
     public function get_fuels(): JsonResponse {
+        $fuels = $this->fuelRepository->findAll();
+
         return $this->json([
-            "results" => $this->serializeManager->serializeContent(
-                $this->fuelRepository->findAll()
-            )
+            "results" => $fuels
         ], Response::HTTP_OK);
     }
 }

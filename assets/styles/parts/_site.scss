@@ -498,6 +498,41 @@ html, body {
                 }
             }
         }
+
+        .page-vehicle {
+            gap: 25px;
+            display: flex;
+            margin-top: 10px;
+            padding-top: 25px;
+            border-top: 1px solid var(--c-black);
+
+            .-left {
+                flex: 1;
+
+                img {
+                    width: 100%;
+                }
+
+                .-markup {
+                    margin: 0;
+                    padding: 0;
+                    font-size: 1rem;
+                    line-height: 1.5;
+
+                    h1, h2, h3, h4, h5 {
+                        margin: 30px 0;
+                    }
+                }
+
+                .-characteristics {
+                    margin-top: 35px;
+                }
+            }
+
+            .-right {
+                width: 300px;
+            }
+        }
     }
     
     .page-footer {

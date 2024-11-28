@@ -51,7 +51,7 @@ export default function Articles() {
                                             ))}
                                         </div>
                                     ) : (
-                                        <Notification classname={"warning"} message={"No vehicles has been found"} />
+                                        <Notification classname={"warning"} message={"No article has been found"} />
                                     )}
 
                                     <Pagination

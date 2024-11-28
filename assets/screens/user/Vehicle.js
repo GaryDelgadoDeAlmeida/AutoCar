@@ -34,17 +34,64 @@ export default function Vehicle() {
             
             <section className={"page-section"}>
                 <div className={"page-wrapper"}>
-                    <Link className={"btn btn-blue"} to={"/vehicles"}>Return</Link>
+                    <Link className={"btn btn-secondary"} to={"/vehicles"}>Return</Link>
+                    
+                    <h2 className={"page-title txt-left"}>Vehicle</h2>
 
                     <div className={"page-vehicle"}>
                         <div className={"-left"}>
-                            <h2 className={"page-title"}>Vehicle</h2>
-                            <img src={`${window.location.origin}/content/img/`} alt={""} />
+                            <img src={`${window.location.origin}/content/img/cars/2019-vw-t-cross.jpg`} alt={""} />
                             <div className={"-markup"}>
-                                <h1>Non odio dolor ut vero voluptatem. </h1><p>Lorem ipsum dolor sit amet. Qui amet sunt <strong>Eos consequatur</strong> eum eius accusantium eos dignissimos cumque. Aut esse quisquam <em>Id omnis hic ipsa culpa ut eaque voluptas est provident velit</em> id suscipit modi et nisi facere. Ut exercitationem quia eum autem quasi <a href="https://www.loremipzum.com" target="_blank">Ut suscipit ut deleniti nihil non quam cumque et voluptate eligendi</a>. </p><h2>Aut corrupti quia et voluptas porro. </h2><p>Est labore repudiandae eum nesciunt omnis <em>Aut vero qui neque omnis quo laboriosam corrupti sed expedita asperiores</em>. Sed voluptas itaque et recusandae fugiatnon tenetur. </p><ol><li>At praesentium harum ut sint officia ea ducimus ratione sit officia labore. </li><li>Et explicabo omnis qui distinctio repellat sit enim dicta. </li><li>Ut vero beatae sed consequatur sint eum nemo omnis! </li><li>Est dignissimos illum sed dolor provident. </li><li>Qui voluptatem sequi et Quis culpa. </li></ol><ul><li>Sit omnis eveniet vel quibusdam praesentium et suscipit dolor. </li><li>In tempore excepturi qui iste fugiat. </li></ul><blockquote cite="https://www.loremipzum.com">At quod dolore aut ipsam atque sit minima voluptatem sed quidem explicabo rem aperiam perferendis 33 quidem repudiandae. </blockquote><h3>Et possimus sunt et ipsum commodi? </h3><p>Ut ratione sunt <a href="https://www.loremipzum.com" target="_blank">Nam sint</a> et quia dicta. Aut omnis dignissimoseum sunt non obcaecati iure. </p><dl><dt><dfn>Vel nostrum dignissimos. </dfn></dt><dd>Et sint temporibus sed unde rerum qui quia natus. </dd><dt><dfn>Qui eligendi excepturi. </dfn></dt><dd>Et voluptas illum vel quos inventore. </dd><dt><dfn>A impedit Quis qui architecto delectus. </dfn></dt><dd>Sit adipisci iure et earum quia id alias voluptatem hic dicta nihil. </dd></dl>
+                                <h1>Vel praesentium optio quo commodi molestiae. </h1><p>Lorem ipsum dolor sit amet. Et vero doloresUt repellat ut nostrum internos ea enim modi. Et sint repellendus <strong>Et magnam cum voluptate voluptas sed vitae repellendus</strong>. </p><h2>Et quae quis ut iure nihil et quaerat dicta. </h2><p>Qui rerum animi <strong>Ea illo ex deleniti quia est optio quia sed consequatur voluptas</strong>. Sit omnis recusandae <a href="https://www.loremipzum.com" target="_blank">Quo voluptatem</a> et magnam deserunt. Qui animi repellendus <em>Cum animi id error laudantium qui ducimus velit est dolorum reiciendis</em>. </p><h3>Ex autem sunt et enim quis. </h3><p>Est quae ipsam qui esse minus <em>Ut cumque et dicta magni cum quos exercitationem sit galisum iusto</em> ut dolore eaque. Et consequatur illo <a href="https://www.loremipzum.com" target="_blank">Et nostrum</a> 33 galisum blanditiis 33 dignissimos provident! At quaerat laboriosam <strong>Ut quia ea adipisci dolorum est explicabo consequuntur</strong> aut dolores animi. </p><h4>Et alias placeat est doloribus facere. </h4><p>Aut magni eaque <em>Aut labore quo amet consequatur ex quod voluptates</em> vel cupiditate quibusdam ut voluptas magni aut voluptatem deserunt. Quo aperiam molestiae <a href="https://www.loremipzum.com" target="_blank">Ut voluptatum quo alias cumque vel inventore repellendus</a> vel provident inventore et accusamus tempore. Quo nobis nulla non facere quia <strong>Id voluptate</strong>. Et alias quisquam rem rerum beataeut voluptates! </p><ul><li>Et vero dolores ad molestiae deserunt ut totam doloremque! </li><li>Aut ipsam quisquam ut repudiandae odit? </li><li>Sit praesentium enim eos officia laboriosam est provident voluptates. </li><li>Aut voluptatem sint est amet assumenda et dolorem porro qui molestiae dolor. </li><li>Quo enim officiis et recusandae nulla. </li></ul><h5>Qui asperiores odio qui nihil distinctio. </h5><p>In sequi vero vel ducimus optioNam molestiae et animi ducimus est sint fuga. Cum tenetur culpa <strong>Vel eligendi non quasi reprehenderit vel voluptatum adipisci</strong> 33 nostrum eveniet non labore itaque. Non sint accusamus vel enim necessitatibus <em>Qui aliquid eum sapiente quod</em> et rerum nisi aut dicta cupiditate eos obcaecati similique. Rem quaerat rerum ut perspiciatis doloreset distinctio est illo similique! </p><p>Sit harum obcaecati <em>Et necessitatibus et nihil rerum et explicabo vitae eos porro minima</em>. Sit assumenda provident <strong>Rem numquam et consequatur cumque et molestiae porro</strong>. </p><p>Et ullam magnam <a href="https://www.loremipzum.com" target="_blank">In delectus cum reprehenderit unde ea ipsa quos</a> sit provident dolores aut amet nisi. Et tempore beatae non nihil iure <em>Qui nemo ut praesentium repellendus nam quasi eligendi</em>! </p><p>Ut necessitatibus velit <a href="https://www.loremipzum.com" target="_blank">Aut corrupti in reiciendis praesentium est error voluptates vel culpa adipisci</a> At eligendi harum et ipsum magnam. A doloribus similique et dolorum incidunt <em>Ut placeat id provident quia ea velit itaque qui repellat molestiae</em> ut quibusdam magnam. Vel voluptatibus temporeEt nesciunt et veritatis harum est sapiente cupiditate sed veniam quia. Et dicta nihilEa quos id optio quae ut commodi consequatur sed architecto doloribus. </p><ol><li>Sit repellat reiciendis est repellendus dolor ut sint voluptatem. </li><li>Ut odio quasi hic voluptatibus quia et facilis culpa eum molestias eligendi. </li><li>Eum voluptates galisum et quis odio rem asperiores perferendis? </li><li>Qui consequatur ducimus et eius sunt id voluptatem consequatur. </li><li>Et excepturi sequi qui possimus consectetur est galisum reiciendis. </li><li>Ea aliquam vero est impedit quae aut magni magnam. </li></ol>
+                            </div>
+
+                            <div className={"-characteristics"}>
+                                <h3>Characteristics</h3>
+                                {/* <div className={"mw-50 w-100 -m-mw-100"}> */}
+                                <div className={"w-100"}>
+                                    <table className={"table"}>
+                                        <thead className={"-secondary"}>
+                                            <tr>
+                                                <th className={"txt-left"}>Characteristic</th>
+                                                <th className={"txt-left"}>Value</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td data-column={"Characteristic"}>label</td>
+                                                <td data-column={"Value"}>value</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        <div className={"-right"}></div>
+                        <div className={"-right"}>
+                            <div className={"card"}>
+                                <div className={"-content d-col -g-15"}>
+                                    <div className={"d-flex -g-10"}>
+                                        <label>Maker</label>
+                                        <span>Audi</span>
+                                    </div>
+                                    <div className={"d-flex -g-10"}>
+                                        <label>Model</label>
+                                        <span>Audi</span>
+                                    </div>
+                                    <div className={"d-flex -g-10"}>
+                                        <label>Fuel</label>
+                                        <span>Diesel</span>
+                                    </div>
+                                    <div className={"d-flex -g-10"}>
+                                        <label>Gearbox</label>
+                                        <span>Manual</span>
+                                    </div>
+                                    <div className={"d-flex -g-10"}>
+                                        <label>Price</label>
+                                        <span>35 000€</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

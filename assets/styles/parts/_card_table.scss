@@ -12,6 +12,7 @@
     }
 }
 .table-card {
+    gap: 15px;
     padding: 15px;
     display: flex;
     background-color: var(--c-primary);
@@ -32,6 +33,7 @@
         }
 
         .-infos {
+            flex: 1;
             gap: 5px;
             display: flex;
             flex-direction: column;

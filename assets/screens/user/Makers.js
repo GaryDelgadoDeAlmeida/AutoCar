@@ -42,9 +42,9 @@ export default function Brands() {
                                 <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
                             )}
 
-                            {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
-                                <>
-                                    {Object.keys(items.results ?? {}).length > 0 ? (
+                            {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
+                                Object.keys(items.results ?? {}).length > 0 ? (
+                                    <>
                                         <div className={""}>
                                             {Object.values(items.results ?? {}).map((item, index) => (
                                                 <MakerCard 
@@ -53,16 +53,16 @@ export default function Brands() {
                                                 />
                                             ))}
                                         </div>
-                                    ) : (
-                                        <Notification classname={"danger"} message={"No maker has been found"} />
-                                    )}
-                                    
-                                    <Pagination
-                                        offset={offset}
-                                        setOffset={setOffset}
-                                        maxOffset={items.maxOffset}
-                                    />
-                                </>
+                                        
+                                        <Pagination
+                                            offset={offset}
+                                            setOffset={setOffset}
+                                            maxOffset={items.maxOffset}
+                                        />
+                                    </>
+                                ) : (
+                                    <Notification classname={"danger"} message={"No maker has been found"} />
+                                )
                             )}
                         </>
                     )}

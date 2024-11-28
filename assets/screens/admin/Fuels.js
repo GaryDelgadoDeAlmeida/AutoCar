@@ -37,8 +37,8 @@ export default function Fuels() {
                                         <TableCard
                                             key={index}
                                             title={item.title}
-                                            description={""}
-                                            link={""}
+                                            description={item.price + " €/L"}
+                                            link={"/admin/fuel/" + item.id}
                                         />
                                     ))}
                                 </div>

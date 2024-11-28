@@ -38,6 +38,9 @@ class VehicleTypeController extends AbstractController
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return $this->json($this->serializeManager->serializeContent($vehicle_type));
+        return $this->json(
+            $this->serializeManager->serializeContent($vehicle_type),
+            Response::HTTP_OK
+        );
     }
 }

@@ -39,4 +39,15 @@ class MakerRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * @return int Return the number of makers stored in the dabase
+     */
+    public function countMakers() : int {
+        return $this->createQueryBuilder("maker")
+            ->select("COUNT(maker.id) as nbrMakers")
+            ->getQuery()
+            ->getSingleResult()["nbrMakers"]
+        ;
+    }
 }

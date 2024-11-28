@@ -9,8 +9,13 @@
     background-color: var(--c-white);
 
     thead {
-        color: var(--c-white);
-        background-color: var(--c-blue);
+        color: var(--c-secondary);
+        background-color: var(--c-primary);
+
+        &.-secondary {
+            color: var(--c-primary);
+            background-color: var(--c-secondary);
+        }
 
         @include tablet {
             display: none;
@@ -54,7 +59,7 @@
                     margin: 5px 0;
                     
                     &::before {
-                        content: attr("data-column");
+                        content: attr(data-column);
                         top: 0;
                         left: 0;
                         width: 30%;

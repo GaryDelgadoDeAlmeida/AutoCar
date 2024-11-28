@@ -24,6 +24,7 @@ export default function HeaderAdmin(props) {
                     <nav className={"menu-horizontal"}>
                         <li><Link to={"/admin"}>Home</Link></li>
                         <li><Link to={"/admin/makers"}>Makers</Link></li>
+                        <li><Link to={"/admin/characteristics"}>Characteristics</Link></li>
                         <li><Link to={"/admin/vehicle-types"}>Vehicle Types</Link></li>
                         <li><Link to={"/admin/vehicles"}>Vehicles</Link></li>
                         <li><Link to={"/admin/fuels"}>Fuels</Link></li>

@@ -6,7 +6,7 @@ import Notification from "../../components/Notification"
 import PrivateResources from "../../hooks/PrivateResources"
 import Pagination from "../../components/Pagination";
 
-export default function VehicleType() {
+export default function VehicleTypes() {
 
     const [offset, setOffset] = useState(1)
     const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicle-types?offset=${offset}`)

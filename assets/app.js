@@ -36,7 +36,10 @@ import AdminMakerNew from "./screens/admin/MakerNew";
 import AdminMakerSingle from "./screens/admin/MakerSingle";
 import AdminVehicles from "./screens/admin/Vehicles";
 import AdminVehicle from "./screens/admin/Vehicle";
-import AdminVehicleType from "./screens/admin/VehicleType";
+import AdminVehicleNew from "./screens/admin/VehicleNew";
+import AdminVehicleTypes from "./screens/admin/VehicleTypes";
+import AdminVehicleTypeNew from "./screens/admin/VehicleTypeNew";
+import AdminCharacteristics from "./screens/admin/Characteristics";
 import AdminFuels from "./screens/admin/Fuels";
 import AdminFuelNew from "./screens/admin/FuelNew";
 import AdminFuelSingle from "./screens/admin/FuelSingle";
@@ -70,9 +73,11 @@ root.render(
                 <Route path={"/admin"} element={<AdminHome />} />
                 <Route path={"/admin/profile"} element={<AdminProfile />} />
                 <Route path={"/admin/vehicles"} element={<AdminVehicles />} />
-                <Route path={"/admin/vehicles/add"} element={<AdminHome />} />
+                <Route path={"/admin/vehicles/add"} element={<AdminVehicleNew />} />
                 <Route path={"/admin/vehicle/:vehicleID"} element={<AdminVehicle />} />
-                <Route path={"/admin/vehicle-types"} element={<AdminVehicleType />} />
+                <Route path={"/admin/vehicle-types"} element={<AdminVehicleTypes />} />
+                <Route path={"/admin/vehicle-types/add"} element={<AdminVehicleTypeNew />} />
+                <Route path={"/admin/characteristics"} element={<AdminCharacteristics />} />
                 <Route path={"/admin/makers"} element={<AdminMakers />} />
                 <Route path={"/admin/makers/add"} element={<AdminMakerNew />} />
                 <Route path={"/admin/maker/:makerID"} element={<AdminMakerSingle />} />

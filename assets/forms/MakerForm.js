@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import ImageField from "./parts/ImageField"
 import WyziwigField from "./parts/WyziwigField"
 import Notification from "../components/Notification"
+import axios from "axios";
 
 export default function MakerForm({maker = null}) {
 
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
-        logo: "",
         name: "",
         description: "",
         founded_at: "",
         location: ""
+    })
+
+    const [credentialsPhoto, setCredentialsPhoto] = useState({
+        logo: "",
     })
 
     const handleChange = (e, fieldName) => {
@@ -24,7 +28,26 @@ export default function MakerForm({maker = null}) {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        setFormResponse({classname: "success", message: "Form submitted"})
+        axios
+            .post(`${window.location.origin}/api/backoffice/maker`, credentials, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + (localStorage.getItem("token") ?? "")
+                }
+            })
+            .then((response) => {
+                setFormResponse({classname: "success", message: "The car maker has been successfully added into the database"})
+            })
+            .catch((error) => {
+                let errorMessage = "An error has been encountered. Please, retry more later"
+                if(error.response.data.message) {
+                    errorMessage = error.response.data.message
+                } else if(error.response.data.detail) {
+                    errorMessage = error.response.data.detail
+                }
+
+                setFormResponse({classname: "danger", message: errorMessage})
+            })
     }
 
     return (
@@ -37,10 +60,10 @@ export default function MakerForm({maker = null}) {
                 <div className={"form-field"}>
                     <ImageField
                         fieldName={"logo"}
-                        fieldValue={credentials.logo}
+                        fieldValue={credentialsPhoto.logo}
                         updateCredentials={(fieldName, fieldValue) => {
-                            setCredentials({
-                                ...credentials,
+                            setCredentialsPhoto({
+                                ...credentialsPhoto,
                                 [fieldName]: fieldValue
                             })
                         }}
