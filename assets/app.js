@@ -39,6 +39,7 @@ import AdminVehicle from "./screens/admin/Vehicle";
 import AdminVehicleNew from "./screens/admin/VehicleNew";
 import AdminVehicleTypes from "./screens/admin/VehicleTypes";
 import AdminVehicleTypeNew from "./screens/admin/VehicleTypeNew";
+import AdminConsumptions from "./screens/admin/Consumptions";
 import AdminCharacteristics from "./screens/admin/Characteristics";
 import AdminFuels from "./screens/admin/Fuels";
 import AdminFuelNew from "./screens/admin/FuelNew";
@@ -77,6 +78,7 @@ root.render(
                 <Route path={"/admin/vehicle/:vehicleID"} element={<AdminVehicle />} />
                 <Route path={"/admin/vehicle-types"} element={<AdminVehicleTypes />} />
                 <Route path={"/admin/vehicle-types/add"} element={<AdminVehicleTypeNew />} />
+                <Route path={"/admin/consumptions"} element={<AdminConsumptions />} />
                 <Route path={"/admin/characteristics"} element={<AdminCharacteristics />} />
                 <Route path={"/admin/makers"} element={<AdminMakers />} />
                 <Route path={"/admin/makers/add"} element={<AdminMakerNew />} />

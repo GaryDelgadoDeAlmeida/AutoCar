@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\VehiculeCategory;
+use App\Entity\VehicleConsumption;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<VehiculeCategory>
+ * @extends ServiceEntityRepository<VehicleConsumption>
  */
-class VehiculeCategoryRepository extends ServiceEntityRepository
+class VehicleConsumptionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, VehiculeCategory::class);
+        parent::__construct($registry, VehicleConsumption::class);
     }
 
     //    /**
-    //     * @return VehiculeCategory[] Returns an array of VehiculeCategory objects
+    //     * @return VehicleConsumption[] Returns an array of VehicleConsumption objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class VehiculeCategoryRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?VehiculeCategory
+    //    public function findOneBySomeField($value): ?VehicleConsumption
     //    {
     //        return $this->createQueryBuilder('v')
     //            ->andWhere('v.exampleField = :val')

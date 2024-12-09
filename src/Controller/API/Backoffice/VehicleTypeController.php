@@ -3,8 +3,8 @@
 namespace App\Controller\API\Backoffice;
 
 use App\Manager\SerializeManager;
-use App\Manager\VehicleCategoyManager;
-use App\Repository\VehiculeCategoryRepository;
+use App\Manager\VehicleTypeManager;
+use App\Repository\VehicleTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,17 +15,17 @@ use Symfony\Component\Routing\Attribute\Route;
 class VehicleTypeController extends AbstractController
 {
     private SerializeManager $serializeManager;
-    private VehicleCategoyManager $vehicleCategoyManager;
-    private VehiculeCategoryRepository $vehiculeCategoryRepository;
+    private VehicleTypeManager $vehicleTypeManager;
+    private VehicleTypeRepository $vehicleTypeRepository;
 
     function __construct(
         SerializeManager $serializeManager,
-        VehicleCategoyManager $vehicleCategoyManager,
-        VehiculeCategoryRepository $vehiculeCategoryRepository
+        VehicleTypeManager $vehicleTypeManager,
+        VehicleTypeRepository $vehicleTypeRepository
     ) {
         $this->serializeManager = $serializeManager;
-        $this->vehicleCategoyManager = $vehicleCategoyManager;
-        $this->vehiculeCategoryRepository = $vehiculeCategoryRepository;
+        $this->vehicleTypeManager = $vehicleTypeManager;
+        $this->vehicleTypeRepository = $vehicleTypeRepository;
     }
 
     #[Route('/vehicle-type', name: 'post_vehicle_type', methods: ["POST"])]
@@ -38,17 +38,17 @@ class VehicleTypeController extends AbstractController
         }
 
         try {
-            $fields = $this->vehicleCategoyManager->checkFields($jsonContent);
+            $fields = $this->vehicleTypeManager->checkFields($jsonContent);
             if(empty($fields)) {
                 throw new \Exception("An error has been encountered with the sended body", Response::HTTP_PRECONDITION_FAILED);
             }
 
-            $vehicleType = $this->vehicleCategoyManager->fillVehicleCategory($fields);
+            $vehicleType = $this->vehicleTypeManager->fillVehicleCategory($fields);
             if(is_string($vehicleType)) {
                 throw new \Exception($vehicleType, Response::HTTP_INTERNAL_SERVER_ERROR);
             }
 
-            $this->vehiculeCategoryRepository->save($vehicleType, true);
+            $this->vehicleTypeRepository->save($vehicleType, true);
         } catch(\Exception $e) {
             $code = $e->getCode();
 

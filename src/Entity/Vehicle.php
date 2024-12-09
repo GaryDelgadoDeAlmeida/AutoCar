@@ -58,9 +58,16 @@ class Vehicle
     #[ORM\OneToMany(targetEntity: VehicleCharacteristic::class, mappedBy: 'vehicle')]
     private Collection $vehicleCharacteristics;
 
+    /**
+     * @var Collection<int, VehicleConsumption>
+     */
+    #[ORM\OneToMany(targetEntity: VehicleConsumption::class, mappedBy: 'vehicle')]
+    private Collection $vehicleConsumptions;
+
     public function __construct()
     {
         $this->vehicleCharacteristics = new ArrayCollection();
+        $this->vehicleConsumptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -225,6 +232,36 @@ class Vehicle
             // set the owning side to null (unless already changed)
             if ($vehicleCharacteristic->getVehicle() === $this) {
                 $vehicleCharacteristic->setVehicle(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VehicleConsumption>
+     */
+    public function getVehicleConsumptions(): Collection
+    {
+        return $this->vehicleConsumptions;
+    }
+
+    public function addVehicleConsumption(VehicleConsumption $vehicleConsumption): static
+    {
+        if (!$this->vehicleConsumptions->contains($vehicleConsumption)) {
+            $this->vehicleConsumptions->add($vehicleConsumption);
+            $vehicleConsumption->setVehicle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVehicleConsumption(VehicleConsumption $vehicleConsumption): static
+    {
+        if ($this->vehicleConsumptions->removeElement($vehicleConsumption)) {
+            // set the owning side to null (unless already changed)
+            if ($vehicleConsumption->getVehicle() === $this) {
+                $vehicleConsumption->setVehicle(null);
             }
         }
 

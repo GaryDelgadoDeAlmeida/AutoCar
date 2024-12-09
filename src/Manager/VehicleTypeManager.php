@@ -2,9 +2,9 @@
 
 namespace App\Manager;
 
-use App\Entity\VehiculeCategory;
+use App\Entity\VehicleType;
 
-class VehicleCategoyManager {
+class VehicleTypeManager {
 
     public function checkFields(array $jsonContent) : array {
         $fields = [];
@@ -21,22 +21,22 @@ class VehicleCategoyManager {
         return $fields;
     }
 
-    public function fillVehicleCategory(array $fields, ?VehiculeCategory $vehiculeCategory = new VehiculeCategory()) : VehiculeCategory {
+    public function fillVehicleCategory(array $fields, ?VehicleType $vehicleType = new VehicleType()) : VehicleType {
         try {
             $currentTime = new \DateTimeImmutable();
-            if($vehiculeCategory->getId()) {
-                $vehiculeCategory->setUpdatedAt($currentTime);
+            if($vehicleType->getId()) {
+                $vehicleType->setUpdatedAt($currentTime);
             } else {
-                $vehiculeCategory->setCreatedAt($currentTime);
+                $vehicleType->setCreatedAt($currentTime);
             }
 
             foreach($fields as $fieldName => $fieldValue) {
-                if($fieldName == "") $vehiculeCategory->setType($fieldValue);
+                if($fieldName == "") $vehicleType->setType($fieldValue);
             }
         } catch(\Exception $e) {
             return $e->getMessage();
         }
 
-        return $vehiculeCategory;
+        return $vehicleType;
     }
 }

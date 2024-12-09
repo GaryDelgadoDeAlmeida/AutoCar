@@ -29,7 +29,7 @@ class VehicleController extends AbstractController
         
         return $this->json([
             "offset" => $offset,
-            "maxOffet" => 1,
+            "maxOffet" => ceil($this->vehicleRepository->countVehicles() / $limit),
             "results" => $vehicles ?? $this->serializeManager->serializeContent($vehicles)
         ]);
     }

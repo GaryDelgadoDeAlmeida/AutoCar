@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\VehiculeCategoryRepository;
+use App\Repository\VehicleTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: VehiculeCategoryRepository::class)]
-class VehiculeCategory
+#[ORM\Entity(repositoryClass: VehicleTypeRepository::class)]
+class VehicleType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

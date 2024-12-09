@@ -3,7 +3,7 @@
 namespace App\Controller\API;
 
 use App\Manager\SerializeManager;
-use App\Repository\VehiculeCategoryRepository;
+use App\Repository\VehicleTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,25 +13,25 @@ use Symfony\Component\Routing\Attribute\Route;
 class VehicleTypeController extends AbstractController
 {
     private SerializeManager $serializeManager;
-    private VehiculeCategoryRepository $vehiculeCategoryRepository;
+    private VehicleTypeRepository $vehicleTypeRepository;
 
-    function __construct(SerializeManager $serializeManager, VehiculeCategoryRepository $vehiculeCategoryRepository) {
+    function __construct(SerializeManager $serializeManager, VehicleTypeRepository $vehicleTypeRepository) {
         $this->serializeManager = $serializeManager;
-        $this->vehiculeCategoryRepository = $vehiculeCategoryRepository;
+        $this->vehicleTypeRepository = $vehicleTypeRepository;
     }
 
     #[Route('/vehicle-types', name: 'get_vehicle_types', methods: ["GET"])]
     public function get_vehicle_types(): JsonResponse {
         return $this->json([
             "results" => $this->serializeManager->serializeContent(
-                $this->vehiculeCategoryRepository->findAll()
+                $this->vehicleTypeRepository->findAll()
             )
         ]);
     }
 
     #[Route('/vehicle-type/{vehicleTypeID}', name: 'get_vehicle_type', methods: ["GET"])]
     public function get_vehicle_type(int $vehicleTypeID) : JsonResponse {
-        $vehicle_type = $this->vehiculeCategoryRepository->find($vehicleTypeID);
+        $vehicle_type = $this->vehicleTypeRepository->find($vehicleTypeID);
         if(empty($vehicle_type)) {
             return $this->json([
                 "message" => "The vehicle type couldn't be found"

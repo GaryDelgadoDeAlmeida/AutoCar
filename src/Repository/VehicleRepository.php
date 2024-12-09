@@ -39,4 +39,15 @@ class VehicleRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * @return int
+     */
+    public function countVehicles() : int {
+        return $this->createQueryBuilder("vehicle")
+            ->select("COUNT(vehicle.id) as nbrVehicles")
+            ->getQuery()
+            ->getSingleResult()["nbrVehicles"]
+        ;
+    }
 }

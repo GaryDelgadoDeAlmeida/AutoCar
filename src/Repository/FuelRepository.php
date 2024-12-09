@@ -41,4 +41,15 @@ class FuelRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * @return int
+     */
+    public function countFuels() : int {
+        return $this->createQueryBuilder("fuel")
+            ->select("COUNT(fuel.id) as nbrFuels")
+            ->getQuery()
+            ->getSingleResult()["nbrFuels"]
+        ;
+    }
 }
