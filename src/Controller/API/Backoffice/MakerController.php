@@ -107,11 +107,65 @@ class MakerController extends AbstractController
 
     #[Route("/maker/{makerID}/photo/update", name: "update_maker_photo", methods: ["UPDATE", "PUT"])]
     public function update_maker_photo(Request $request, int $makerID) : JsonResponse {
-        return $this->json([], Response::HTTP_OK);
+        $maker = $this->makerRepository->find($makerID);
+        if(empty($maker)) {
+            return $this->json([
+                "message" => "Maker coundl't be found"
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $makerLogo = $request->file->get("logo");
+        if(empty($makerLogo)) {
+            return $this->json([
+                "message" => "An error has been encountered with the sended body."
+            ], Response::HTTP_PRECONDITION_FAILED);
+        }
+
+        try {
+            $fields = $this->makerManager->checkFields(["logo" => $makerLogo]);
+            if(empty($fields)) {
+                throw new \Exception("An error has been encountered with the sended body.", Response::HTTP_PRECONDITION_FAILED);
+            }
+
+            $maker = $this->makerManager->fillMaker($fields, $maker);
+            if(is_string($maker)) {
+                throw new \Exception($maker);
+            }
+
+            $this->makerRepository->save($maker, true);
+        } catch(\Exception $e) {
+            $code = $e->getCode();
+
+            return $this->json([
+                "message" => $e->getMessage()
+            ], isset(Response::$statusTexts[$code]) && $code !== 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return $this->json(
+            $this->serializeManager->serializeContent($maker), 
+            Response::HTTP_OK
+        );
     }
 
     #[Route("/maker/{makerID}/remove", name: "remove_maker", methods: ["DELETE"])]
     public function remove_maker(Request $request, int $makerID) : JsonResponse {
+        $maker = $this->makerRepository->find($makerID);
+        if(empty($maker)) {
+            return $this->json([
+                "message" => "Maker coundl't be found"
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        try {
+            // 
+        } catch(\Exception $e) {
+            $code = $e->getCode();
+
+            return $this->json([
+                "message" => $e->getMessage()
+            ], isset(Response::$statusTexts[$code]) && $code !== 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
         return $this->json([], Response::HTTP_OK);
     }
 }

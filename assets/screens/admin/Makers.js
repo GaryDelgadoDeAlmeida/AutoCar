@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { stripHTML } from "../../hooks/DomControl";
 import TableCard from "../../components/TableCard";
 import Pagination from "../../components/Pagination";
 import HeaderAdmin from "../../components/HeaderAdmin";
@@ -34,7 +35,7 @@ export default function Makers() {
                                             <TableCard 
                                                 key={index}
                                                 title={item.name}
-                                                description={item.description}
+                                                description={stripHTML(item.description).substring(0, 150) + "..."}
                                                 link={"/admin/brand/" + item.id}
                                             />
                                         ))}

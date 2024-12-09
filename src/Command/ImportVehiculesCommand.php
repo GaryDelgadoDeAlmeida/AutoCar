@@ -4,15 +4,19 @@ namespace App\Command;
 
 use App\Entity\Maker;
 use App\Entity\Vehicle;
+use App\Enum\MakerEnum;
+use App\Enum\VehicleEnum;
+use App\Manager\MakerManager;
+use App\Manager\VehicleManager;
 use App\Repository\MakerRepository;
 use App\Repository\VehicleRepository;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:import-vehicules',
@@ -20,12 +24,20 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ImportVehiculesCommand extends Command
 {
+    private MakerManager $makerManager;
+    private VehicleManager $vehicleManager;
     private MakerRepository $makerRepository;
     private VehicleRepository $vehicleRepository;
 
-    public function __construct(MakerRepository $makerRepository, VehicleRepository $vehicleRepository)
-    {
+    public function __construct(
+        MakerManager $makerManager,
+        VehicleManager $vehicleManager,
+        MakerRepository $makerRepository, 
+        VehicleRepository $vehicleRepository
+    ) {
         parent::__construct();
+        $this->makerManager = $makerManager;
+        $this->vehicleManager = $vehicleManager;
         $this->makerRepository = $makerRepository;
         $this->vehicleRepository = $vehicleRepository;
     }
@@ -54,22 +66,20 @@ class ImportVehiculesCommand extends Command
             foreach($response["results"] as $index => $vehiculeData) {
                 $maker = $this->makerRepository->findOneBy(["name" => $vehiculeData["make"]]);
                 if(empty($maker)) {
-                    $maker = (new Maker())
-                        ->setName($vehiculeData["make"])
-                        ->setCreatedAt($currentTime)
-                    ;
+                    $maker = $this->makerManager->fillMaker([
+                        MakerEnum::MAKER_NAME => $vehiculeData["make"]
+                    ]);
 
                     $this->makerRepository->save($maker, true);
                 }
 
-                $vehicule = (new Vehicle())
-                    ->setBasemodel($vehiculeData["basemodel"])
-                    ->setName($vehiculeData["model"])
-                    ->setPrice(0)
-                    ->setFuel(null)
-                    ->setBuildAt(new \DateTimeImmutable($vehiculeData["createdon"]))
-                    ->setCreatedAt($currentTime)
-                ;
+                $vehicule = $this->vehicleManager->fillVehicle([
+                    VehicleEnum::VEHICLE_BASEMODE => $vehiculeData["basemodel"],
+                    VehicleEnum::VEHICLE_NAME => $vehiculeData["model"],
+                    VehicleEnum::VEHICLE_PRICE => 0,
+                    VehicleEnum::VEHICLE_FUEL => null,
+                    VehicleEnum::VEHICLE_BUILD_AT => new \DateTimeImmutable($vehiculeData["createdon"])
+                ]);
 
                 // Save changes into database every 100 persists of vehicules
                 if($index % 100 == 0) {

@@ -87,3 +87,15 @@ export function formatDate(date, format = "en") {
 
     return formatedDate;
 }
+
+/**
+ * Return a string without any html elements
+ * 
+ * @param {*} htmlValue 
+ * @returns 
+ */
+export function stripHTML(htmlValue) {
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = htmlValue;
+    return tmp.textContent || tmp.innerText || "";
+}

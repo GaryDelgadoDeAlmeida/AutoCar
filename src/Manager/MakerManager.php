@@ -8,7 +8,8 @@ use App\Enum\MakerEnum;
 class MakerManager {
 
     /**
-     * 
+     * @param array json content
+     * @return array
      */
     public function checkFields(array $jsonContent) : array {
         $fields = [];
@@ -26,7 +27,9 @@ class MakerManager {
     }
 
     /**
-     * 
+     * @param array fields
+     * @param ?Maker
+     * @return Maker|string
      */
     public function fillMaker(array $fields, ?Maker $maker = new Maker()) : Maker|string {
         try {
