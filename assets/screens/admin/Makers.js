@@ -27,24 +27,28 @@ export default function Makers() {
                         )}
 
                         {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                            <>
-                                <div className={"table-list"}>
-                                    {Object.values(items.results ?? {}).map((item, index) => (
-                                        <TableCard 
-                                            key={index}
-                                            title={item.name}
-                                            description={item.description}
-                                            link={"/admin/brand/" + item.id}
-                                        />
-                                    ))}
-                                </div>
+                            Object.keys(items.results ?? {}).length > 0 ? (
+                                <>
+                                    <div className={"table-list"}>
+                                        {Object.values(items.results ?? {}).map((item, index) => (
+                                            <TableCard 
+                                                key={index}
+                                                title={item.name}
+                                                description={item.description}
+                                                link={"/admin/brand/" + item.id}
+                                            />
+                                        ))}
+                                    </div>
 
-                                <Pagination
-                                    offset={offset}
-                                    setOffset={setOffset}
-                                    maxOffset={items.maxOffset}
-                                />
-                            </>
+                                    <Pagination
+                                        offset={offset}
+                                        setOffset={setOffset}
+                                        maxOffset={items.maxOffset}
+                                    />
+                                </>
+                            ) : (
+                                <Notification classname={"warning"} message={"There is makers registered"} />
+                            )
                         )}
                     </>
                 )}

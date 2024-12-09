@@ -41,7 +41,9 @@ export default function HeaderAdmin(props) {
                                 <span>Garry ALMEIDA</span>
                                 <span>Administrator</span>
                             </div>
-                            <img className={"avatar-img"} src={`${window.location.origin}/public/content/img/avatar.png`} alt="" />
+                            <div className={"avatar-img"}>
+                                <img src={`${window.location.origin}/content/img/avatar.jpeg`} alt="" />
+                            </div>
                         </Link>
                     </div>
                     <div className={"page-wrapper"}>

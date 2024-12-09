@@ -97,14 +97,15 @@
                 .avatar-img {
                     display: flex;
                     margin: auto 0;
+                    overflow: hidden;
                     border-radius: 50%;
                     border: 1px solid var(--c-lightGray);
 
                     img {
-                        width: 30px;
-                        height: 30px;
-                        padding: 10px;
+                        width: 50px;
+                        height: 50px;
                         margin: auto 0;
+                        object-fit: cover;
                     }
                 }
             }
