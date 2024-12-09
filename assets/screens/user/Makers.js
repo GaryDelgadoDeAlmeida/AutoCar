@@ -45,11 +45,11 @@ export default function Brands() {
                             {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
                                 Object.keys(items.results ?? {}).length > 0 ? (
                                     <>
-                                        <div className={""}>
+                                        <div className={"d-grid -col-4 -g-25"}>
                                             {Object.values(items.results ?? {}).map((item, index) => (
                                                 <MakerCard 
                                                     key={index}
-                                                    name={item.name}
+                                                    item={item}
                                                 />
                                             ))}
                                         </div>

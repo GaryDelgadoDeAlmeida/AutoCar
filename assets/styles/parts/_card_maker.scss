@@ -1,11 +1,32 @@
 .maker-card {
-    // 
+    padding: 25px;
+    text-align: center;
+    border-radius: 7px;
+    text-transform: none;
+    text-decoration: none;
+    color: var(--c-black);
+    background-color: var(--c-white);
+    box-shadow: 7px 0 15px rgba(0, 0, 0, 0.17);
 
     .-header {
-        // 
+        display: flex;
+
+        img {
+            width: 100%;
+            margin: auto;
+            max-width: 100px;
+        }
     }
 
     .-content {
-        // 
+        gap: 5px;
+        display: flex;
+        flex-direction: column;
+
+        .-title {
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+        }
     }
 }
