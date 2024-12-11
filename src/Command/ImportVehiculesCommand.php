@@ -86,6 +86,10 @@ class ImportVehiculesCommand extends Command
             $maxOffset = !empty($response["total_count"]) ? ceil($response["total_count"] / $limit) : $maxOffset;
             
             foreach($response["results"] as $index => $vehicleData) {
+                if(intval($vehicleData["year"]) < 2015) {
+                    continue;
+                }
+
                 $maker = $this->makerRepository->findOneBy(["name" => $vehicleData["make"]]);
                 if(empty($maker)) {
                     $maker = $this->makerManager->fillMaker([
