@@ -52,7 +52,7 @@ export default function Vehicles() {
                                     />
                                 </>
                             ) : (
-                                <Notification classname={"warning"} message={"There is vehicle in the database"} />
+                                <Notification classname={"warning"} message={"There is no vehicle registered in the database"} />
                             )
                         )}
                     </>

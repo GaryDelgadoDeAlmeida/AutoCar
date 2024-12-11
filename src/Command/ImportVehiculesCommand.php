@@ -84,10 +84,14 @@ class ImportVehiculesCommand extends Command
         do {
             $response = $this->getVehiculesFromAPI($offset, $limit);
             $maxOffset = !empty($response["total_count"]) ? ceil($response["total_count"] / $limit) : $maxOffset;
+
+            if(empty($response)) {
+                break;
+            }
             
             foreach($response["results"] as $index => $vehicleData) {
                 if(intval($vehicleData["year"]) < 2015) {
-                    continue;
+                    break;
                 }
 
                 $maker = $this->makerRepository->findOneBy(["name" => $vehicleData["make"]]);
@@ -183,7 +187,8 @@ class ImportVehiculesCommand extends Command
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?offset={$offset}&limit={$limit}",
+            // CURLOPT_URL => "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?offset={$offset}&limit={$limit}",
+            CURLOPT_URL => "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?offset={$offset}&limit={$limit}&order_by=year+desc",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HEADER => false
