@@ -18,6 +18,9 @@ class Fuel
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $fuelKey = null;
+
     #[ORM\Column]
     private ?float $price = null;
 
@@ -36,7 +39,7 @@ class Fuel
     /**
      * @var Collection<int, Vehicle>
      */
-    #[ORM\OneToMany(targetEntity: Vehicle::class, mappedBy: 'fuel')]
+    #[ORM\ManyToMany(targetEntity: Vehicle::class, mappedBy: 'fuels')]
     private Collection $vehicles;
 
     public function __construct()
@@ -58,6 +61,18 @@ class Fuel
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getFuelKey(): ?string
+    {
+        return $this->fuelKey;
+    }
+
+    public function setFuelKey(string $fuelKey): static
+    {
+        $this->fuelKey = $fuelKey;
 
         return $this;
     }
@@ -140,7 +155,7 @@ class Fuel
     {
         if (!$this->vehicles->contains($vehicle)) {
             $this->vehicles->add($vehicle);
-            $vehicle->setFuel($this);
+            $vehicle->addFuel($this);
         }
 
         return $this;
@@ -149,10 +164,7 @@ class Fuel
     public function removeVehicle(Vehicle $vehicle): static
     {
         if ($this->vehicles->removeElement($vehicle)) {
-            // set the owning side to null (unless already changed)
-            if ($vehicle->getFuel() === $this) {
-                $vehicle->setFuel(null);
-            }
+            $vehicle->removeFuel($this);
         }
 
         return $this;

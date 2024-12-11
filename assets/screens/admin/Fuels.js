@@ -40,6 +40,7 @@ export default function Fuels() {
                                                 title={item.title}
                                                 description={item.price + " €/L"}
                                                 link={"/admin/fuel/" + item.id}
+                                                removalLink={`${window.location.origin}/api/backoffice/fuel/${item.id}/remove`}
                                             />
                                         ))}
                                     </div>

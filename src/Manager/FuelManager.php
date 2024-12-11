@@ -23,6 +23,8 @@ class FuelManager {
                 // 
             } elseif($fieldName == FuelEnum::FUEL_PRICE) {
                 // 
+            } elseif($fieldName == FuelEnum::FUEL_KEY) {
+                // 
             }
 
             $fields[$fieldName] = $fieldValue;
@@ -48,6 +50,7 @@ class FuelManager {
             foreach($fields as $fieldName => $fieldValue) {
                 if($fieldName == FuelEnum::FUEL_TITLE) $fuel->setTitle($fieldValue);
                 elseif($fieldName == FuelEnum::FUEL_PRICE) $fuel->setPrice(floatval($fieldValue));
+                elseif($fieldName == FuelEnum::FUEL_KEY) $fuel->setFuelKey($fieldValue);
             }
         } catch(\Exception $e) {
             return $e->getMessage();

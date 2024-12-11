@@ -70,6 +70,15 @@ git pull --allow-unrelated-histories
 symfony console security:hash-password
 ```
 
+### Commandes internes
+
+Pour importer les données de vehicle d'une API, veuillez utiliser la commande suivante :
+```bash
+php -d memory_limit=-1 bin/console app:import-vehicules
+```
+
+Étant donnée que l'importer est beaucoup trop lourd, j'ai utiliser l'attribut `memory_limit=-1` pour ne pas limiter la mémoire PHP et continuer l'import jusqu'à la fin.
+
 ## Issues
 
 Lors de l'installation de symfony, le package `AssetMapper` (c'est l'équivalent de `webpack-encore`) est automatiquement installé. Pour le désinstaller de symfony :

@@ -8,7 +8,8 @@ export default function FuelForm({fuel}) {
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
         title: null,
-        price: null
+        price: null,
+        key: null
     })
 
     const handleChange = (e, fieldName) => {
@@ -87,6 +88,17 @@ export default function FuelForm({fuel}) {
                             value={credentials.title}
                             placeholder={"Name of the fuel"}
                             onChange={(e) => handleChange(e, "title")}
+                            required
+                        />
+                    </div>
+
+                    <div className={"form-field"}>
+                        <input 
+                            type={"text"}
+                            maxLength={255}
+                            value={credentials.key}
+                            placeholder={"Key of the fuel"}
+                            onChange={(e) => handleChange(e, "key")}
                             required
                         />
                     </div>

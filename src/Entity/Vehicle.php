@@ -16,6 +16,12 @@ class Vehicle
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(inversedBy: 'vehicles')]
+    private ?Maker $maker = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $photo = null;
+
     #[ORM\Column(length: 255)]
     private ?string $basemodel = null;
 
@@ -40,9 +46,6 @@ class Vehicle
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 4)]
     private ?string $price = null;
 
-    #[ORM\ManyToOne(inversedBy: 'vehicules')]
-    private ?Fuel $fuel = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $buildAt = null;
 
@@ -64,15 +67,46 @@ class Vehicle
     #[ORM\OneToMany(targetEntity: VehicleConsumption::class, mappedBy: 'vehicle')]
     private Collection $vehicleConsumptions;
 
+    /**
+     * @var Collection<int, Fuel>
+     */
+    #[ORM\ManyToMany(targetEntity: Fuel::class, inversedBy: 'vehicles')]
+    private Collection $fuels;
+
     public function __construct()
     {
         $this->vehicleCharacteristics = new ArrayCollection();
         $this->vehicleConsumptions = new ArrayCollection();
+        $this->fuels = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getMaker(): ?Maker
+    {
+        return $this->maker;
+    }
+
+    public function setMaker(?Maker $maker): static
+    {
+        $this->maker = $maker;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): static
+    {
+        $this->photo = $photo;
+
+        return $this;
     }
 
     public function getBasemodel(): ?string
@@ -98,7 +132,6 @@ class Vehicle
 
         return $this;
     }
-    
 
     public function getFuelTank(): ?string
     {
@@ -156,18 +189,6 @@ class Vehicle
     public function setPrice(string $price): static
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getFuel(): ?Fuel
-    {
-        return $this->fuel;
-    }
-
-    public function setFuel(?Fuel $fuel): static
-    {
-        $this->fuel = $fuel;
 
         return $this;
     }
@@ -264,6 +285,30 @@ class Vehicle
                 $vehicleConsumption->setVehicle(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Fuel>
+     */
+    public function getFuels(): Collection
+    {
+        return $this->fuels;
+    }
+
+    public function addFuel(Fuel $fuel): static
+    {
+        if (!$this->fuels->contains($fuel)) {
+            $this->fuels->add($fuel);
+        }
+
+        return $this;
+    }
+
+    public function removeFuel(Fuel $fuel): static
+    {
+        $this->fuels->removeElement($fuel);
 
         return $this;
     }

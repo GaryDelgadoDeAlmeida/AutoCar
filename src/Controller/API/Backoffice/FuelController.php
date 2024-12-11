@@ -115,7 +115,7 @@ class FuelController extends AbstractController
         $fuel = $this->fuelRepository->find($fuelID);
         if(empty($fuel)) {
             return $this->json([
-                "message" => "Fuel type not found"
+                "message" => "Fuel couldn't be found"
             ], Response::HTTP_NOT_FOUND);
         }
 

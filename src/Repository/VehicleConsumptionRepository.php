@@ -16,28 +16,29 @@ class VehicleConsumptionRepository extends ServiceEntityRepository
         parent::__construct($registry, VehicleConsumption::class);
     }
 
-    //    /**
-    //     * @return VehicleConsumption[] Returns an array of VehicleConsumption objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @param VehicleConsumption
+     * @param bool
+     * @return void
+     */
+    public function save(VehicleConsumption $entity, bool $flush = false) {
+        $this->getEntityManager()->persist($entity);
 
-    //    public function findOneBySomeField($value): ?VehicleConsumption
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * @param VehicleConsumption
+     * @param bool
+     * @return void
+     */
+    public function remove(VehicleConsumption $entity, bool $flush = false) {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }

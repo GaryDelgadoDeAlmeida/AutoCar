@@ -16,28 +16,30 @@ class VehicleCharacteristicRepository extends ServiceEntityRepository
         parent::__construct($registry, VehicleCharacteristic::class);
     }
 
-    //    /**
-    //     * @return VehicleCharacteristic[] Returns an array of VehicleCharacteristic objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    
+    /**
+     * @param VehicleCharacteristic
+     * @param bool
+     * @return void
+     */
+    public function save(VehicleCharacteristic $entity, bool $flush = false) {
+        $this->getEntityManager()->persist($entity);
 
-    //    public function findOneBySomeField($value): ?VehicleCharacteristic
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * @param VehicleCharacteristic
+     * @param bool
+     * @return void
+     */
+    public function remove(VehicleCharacteristic $entity, bool $flush = false) {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }
