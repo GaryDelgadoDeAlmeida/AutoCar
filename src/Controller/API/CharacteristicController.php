@@ -33,8 +33,7 @@ class CharacteristicController extends AbstractController
         return $this->json([
             "offset" => $offset,
             "maxOffset" => ceil($this->characteristicRepository->countCharacteristics() / $limit),
-            // "results" => empty($characteristics) ? $characteristics : $this->serializeManager->serializeContent($characteristics),
-            "results" => $characteristics,
+            "results" => !empty($characteristics) ? $this->serializeManager->serializeContent($characteristics) : $characteristics,
         ], Response::HTTP_OK);
     }
 
@@ -48,8 +47,7 @@ class CharacteristicController extends AbstractController
         }
 
         return $this->json(
-            // $this->serializeManager->serializeContent($characteristic),
-            $characteristic,
+            $this->serializeManager->serializeContent($characteristic),
             Response::HTTP_OK
         );
     }

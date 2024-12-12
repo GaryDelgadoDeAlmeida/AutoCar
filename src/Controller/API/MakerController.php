@@ -33,7 +33,7 @@ class MakerController extends AbstractController
         return $this->json([
             "offset" => $offset,
             "maxOffset" => ceil($this->makerRepository->countMakers() / $limit),
-            "results" => $makers ?? $this->serializeManager->serializeContent($makers)
+            "results" => !empty($makers) ? $this->serializeManager->serializeContent($makers) : $makers
         ]);
     }
 

@@ -38,8 +38,7 @@ class ConsumptionController extends AbstractController
         return $this->json([
             "offset" => $offset,
             "maxOffset" => ceil($this->consumptionRepository->countConsumptions() / $limit),
-            // "results" => !empty($consumptions) ? $this->serializeManager->serializeContent($consumptions) : $consumptions
-            "results" => $consumptions
+            "results" => !empty($consumptions) ? $this->serializeManager->serializeContent($consumptions) : $consumptions,
         ]);
     }
 

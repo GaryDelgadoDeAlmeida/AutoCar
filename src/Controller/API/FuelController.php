@@ -25,7 +25,7 @@ class FuelController extends AbstractController
         $fuels = $this->fuelRepository->findAll();
 
         return $this->json([
-            "results" => $fuels
+            "results" => !empty($fuels) ? $this->serializeManager->serializeContent($fuels) : $fuels
         ], Response::HTTP_OK);
     }
 }
