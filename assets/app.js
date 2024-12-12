@@ -48,6 +48,7 @@ import AdminFuelsHistory from "./screens/admin/FuelsHistory";
 import AdminArticles from "./screens/admin/Articles";
 import AdminArticle from "./screens/admin/Article";
 import AdminArticleNew from "./screens/admin/ArticleNew";
+import AdminNewsletters from "./screens/admin/Newsletters";
 
 // Common
 import Page404 from "./screens/Page404"
@@ -90,6 +91,7 @@ root.render(
                 <Route path={"/admin/blog"} element={<AdminArticles />} />
                 <Route path={"/admin/blog/add"} element={<AdminArticleNew />} />
                 <Route path={"/admin/blog/:blogID"} element={<AdminArticle />} />
+                <Route path={"/admin/newsletters"} element={<AdminNewsletters />} />
                 
                 {/* Common */}
                 <Route path={"/faq"} element={<Faq />} />

@@ -19,7 +19,7 @@ export default function NewsletterForm() {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        axios.post(`${window.location.origin}/api/newsletters`, credentials, {
+        axios.post(`${window.location.origin}/api/newsletter`, credentials, {
             headers: {
                 "Content-Type": "application/json",
             }

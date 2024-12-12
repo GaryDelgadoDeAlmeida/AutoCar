@@ -50,7 +50,10 @@ export default function TableCard({imgPath, title, description, link, removalLin
                         onClick={(e) => handleRemove(e)}
                     >Remove</button>
                 )}
-                <Link className={"btn btn-secondary"} to={link}>See more</Link>
+                
+                {link != null && (
+                    <Link className={"btn btn-secondary"} to={link}>See more</Link>
+                )}
             </div>
         </div>
     )
