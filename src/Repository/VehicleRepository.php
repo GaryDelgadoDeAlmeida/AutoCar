@@ -41,6 +41,22 @@ class VehicleRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int maker id
+     * @param int offset
+     * @param int limit
+     */
+    public function getMakerVehicles(int $makerID, int $offset, int $limit) : array {
+        return $this->createQueryBuilder("vehicle")
+            ->where("vehicle.maker = :maker_id")
+            ->setParameter("maker_id", $makerID)
+            ->setFirstResult(($offset - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @return int
      */
     public function countVehicles() : int {

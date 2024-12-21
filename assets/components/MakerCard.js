@@ -12,7 +12,7 @@ export default function MakerCard({item}) {
             </div>
             <div className={"-content"}>
                 <label className={"-title"}>{item.name}</label>
-                <span>0 vehicles</span>
+                <span>{item.nbrVehicles} vehicles</span>
             </div>
         </Link>
     )

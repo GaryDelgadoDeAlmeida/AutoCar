@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class SerializeManager {
 
@@ -20,9 +21,11 @@ class SerializeManager {
         return $this->serializer->serialize(
             $entities, 
             "json", 
-            ["circular_reference_handler" => function ($object) {
-                return $object->getId();
-            }]
+            [
+                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object) {
+                    return $object->getId();
+                },
+            ]
         );
     }
 }

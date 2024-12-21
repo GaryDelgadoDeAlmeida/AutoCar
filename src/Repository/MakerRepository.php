@@ -41,6 +41,27 @@ class MakerRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int offset
+     * @param int limit
+     * @return Maker[]|array
+     */
+    public function getMakers(int $offset, int $limit) : array {
+        return $this->createQueryBuilder("maker")
+            ->select("
+                maker.id, 
+                maker.logo, 
+                maker.name, 
+                (SELECT COUNT(vehicle.id) FROM \App\Entity\Vehicle as vehicle WHERE vehicle.maker = maker.id) as nbrVehicles
+            ")
+            ->orderBy("maker.name", "ASC")
+            ->setFirstResult(($offset - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @return int Return the number of makers stored in the dabase
      */
     public function countMakers() : int {
