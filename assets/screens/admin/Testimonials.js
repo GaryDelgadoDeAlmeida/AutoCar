@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { stripHTML } from "../../hooks/DomControl";
-import TableCard from "../../components/TableCard";
-import Pagination from "../../components/Pagination";
-import HeaderAdmin from "../../components/HeaderAdmin";
-import Notification from "../../components/Notification"
+import HeaderAdmin from "../../components/HeaderAdmin"
 import PrivateResources from "../../hooks/PrivateResources"
+import { Link } from "react-router-dom";
+import Notification from "../../components/Notification";
+import Pagination from "../../components/Pagination";
+import TableCard from "../../components/TableCard";
 
-export default function Makers() {
+export default function Testimonials() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/makers?offset=${offset}`)
-    
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/testimonials?offset=${offset}&limit=10`)
+
     useEffect(() => {
         load()
     }, [offset])
 
     return (
         <HeaderAdmin>
-            <Link className={"btn btn-green"} to={"/admin/makers/add"}>Add a maker</Link>
+            <Link className={"btn btn-secondary"} to={"/admin/testimonial/add"}>Add a testimonial</Link>
 
             <section className={"page-section"}>
                 {loading && (
                     <Notification classname={"information"} message={"Loading ..."} />
                 )}
-                
+
                 {!loading && (
                     <>
                         {Object.keys(error).length > 0 && (
@@ -32,15 +31,17 @@ export default function Makers() {
                         )}
 
                         {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                            Object.keys(items.results ?? {}).length > 0 ? (
+                            Object.keys(items.results).length > 0 ? (
                                 <>
                                     <div className={"table-list"}>
-                                        {Object.values(items.results ?? {}).map((item, index) => (
-                                            <TableCard 
+                                        {Object.values(items.results).map((item, index) => (
+                                            <TableCard
                                                 key={index}
-                                                title={item.name}
-                                                description={stripHTML(item.description).substring(0, 150) + "..."}
-                                                link={"/admin/brand/" + item.id}
+                                                imgPath={item.imgPath}
+                                                title={item.firstname + " " + item.lastname}
+                                                description={item.comment}
+                                                link={"/admin/testimonial/" + item.id}
+                                                removalLink={`${window.location.origin}/api/backoffice/testimonial/${item.id}/remove`}
                                             />
                                         ))}
                                     </div>
@@ -52,7 +53,7 @@ export default function Makers() {
                                     />
                                 </>
                             ) : (
-                                <Notification classname={"warning"} message={"There is makers registered"} />
+                                <Notification classname={"warning"} message={"There is no testimonials registered"} />
                             )
                         )}
                     </>

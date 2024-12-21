@@ -49,6 +49,7 @@ import AdminArticles from "./screens/admin/Articles";
 import AdminArticle from "./screens/admin/Article";
 import AdminArticleNew from "./screens/admin/ArticleNew";
 import AdminNewsletters from "./screens/admin/Newsletters";
+import AdminTestimonials from "./screens/admin/Testimonials";
 
 // Common
 import Page404 from "./screens/Page404"
@@ -92,6 +93,9 @@ root.render(
                 <Route path={"/admin/blog/add"} element={<AdminArticleNew />} />
                 <Route path={"/admin/blog/:blogID"} element={<AdminArticle />} />
                 <Route path={"/admin/newsletters"} element={<AdminNewsletters />} />
+                <Route path={"/admin/testimonials"} element={<AdminTestimonials />} />
+                <Route path={"/admin/testimonial/add"} element={<AdminNewsletters />} />
+                <Route path={"/admin/testimonial/:testimonialID"} element={<AdminNewsletters />} />
                 
                 {/* Common */}
                 <Route path={"/faq"} element={<Faq />} />

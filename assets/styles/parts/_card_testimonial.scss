@@ -8,11 +8,13 @@
 
     .-content {
         gap: 30px;
+        height: 100%;
         display: flex;
         font-size: 1rem;
         font-weight: 400;
         text-align: center;
         flex-direction: column;
+        justify-content: space-between;
 
         p {
             line-height: 1.5;

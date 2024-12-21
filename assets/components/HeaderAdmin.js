@@ -31,6 +31,7 @@ export default function HeaderAdmin(props) {
                         <li><Link to={"/admin/fuels"}>Fuels</Link></li>
                         <li><Link to={"/admin/fuels-history"}>Fuels Histories</Link></li>
                         <li><Link to={"/admin/blog"}>Articles</Link></li>
+                        <li><Link to={"/admin/testimonials"}>Testimonials</Link></li>
                         <li><Link to={"/admin/newsletters"}>Newsletters</Link></li>
                         <li><Link to={"#logout"} onClick={(e) => handleLogout(e)}>Logout</Link></li>
                     </nav>

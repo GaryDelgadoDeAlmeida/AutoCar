@@ -107,9 +107,8 @@ export default function Home() {
                     </div>
 
                     <div className={"txt-center mt-50"}>
-                        <Link className={"btn btn-secondary fw-bold btn-m -inline-flex"} to={"/cars"}>
+                        <Link className={"btn btn-secondary fw-bold btn-m"} to={"/cars"}>
                             <span>Show All Cars</span>
-                            <img src={`${window.location.origin}/content/svg/right-arrow-white.svg`} alt={""} />
                         </Link>
                     </div>
                 </div>
@@ -236,9 +235,8 @@ export default function Home() {
                     </div>
                     
                     <div className={"txt-center mt-50"}>
-                        <Link className={"btn btn-secondary fw-bold btn-m -inline-flex"} to={"/blog"}>
+                        <Link className={"btn btn-secondary fw-bold btn-m"} to={"/blog"}>
                             <span>Show More</span>
-                            <img src={`${window.location.origin}/content/svg/right-arrow-white.svg`} alt={""} />
                         </Link>
                     </div>
                 </div>
