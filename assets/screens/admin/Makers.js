@@ -35,14 +35,17 @@ export default function Makers() {
                             Object.keys(items.results ?? {}).length > 0 ? (
                                 <>
                                     <div className={"table-list"}>
-                                        {Object.values(items.results ?? {}).map((item, index) => (
-                                            <TableCard 
-                                                key={index}
-                                                title={item.name}
-                                                description={stripHTML(item.description).substring(0, 150) + "..."}
-                                                link={"/admin/brand/" + item.id}
-                                            />
-                                        ))}
+                                        {Object.values(items.results ?? {}).map((item, index) => {
+                                            let makerDescription = stripHTML(item.description)
+                                            return (
+                                                <TableCard 
+                                                    key={index}
+                                                    title={item.name}
+                                                    description={makerDescription.substring(0, 150) + (makerDescription.length > 150 ? "..." : "")}
+                                                    link={"/admin/maker/" + item.id}
+                                                />
+                                            )
+                                        })}
                                     </div>
 
                                     <Pagination

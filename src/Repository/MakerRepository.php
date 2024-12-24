@@ -51,6 +51,7 @@ class MakerRepository extends ServiceEntityRepository
                 maker.id, 
                 maker.logo, 
                 maker.name, 
+                maker.description,
                 (SELECT COUNT(vehicle.id) FROM \App\Entity\Vehicle as vehicle WHERE vehicle.maker = maker.id) as nbrVehicles
             ")
             ->orderBy("maker.name", "ASC")

@@ -91,7 +91,7 @@ class ImportVehiculesCommand extends Command
             
             foreach($response["results"] as $index => $vehicleData) {
                 if(intval($vehicleData["year"]) < 2015) {
-                    break;
+                    continue;
                 }
 
                 $maker = $this->makerRepository->findOneBy(["name" => $vehicleData["make"]]);
@@ -136,7 +136,7 @@ class ImportVehiculesCommand extends Command
                     VehicleEnum::VEHICLE_BASEMODEL => $vehicleData["basemodel"],
                     VehicleEnum::VEHICLE_NAME => $vehicleData["model"],
                     VehicleEnum::VEHICLE_PRICE => 0,
-                    VehicleEnum::VEHICLE_BUILD_AT => new \DateTimeImmutable($vehicleData["createdon"])
+                    VehicleEnum::VEHICLE_BUILD_AT => (new \DateTimeImmutable())::createFromFormat("Y-m-d", $vehicleData["createdon"])
                 ]);
 
                 $vehicle->addFuel($fuel);
@@ -188,7 +188,8 @@ class ImportVehiculesCommand extends Command
 
         curl_setopt_array($curl, [
             // CURLOPT_URL => "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?offset={$offset}&limit={$limit}",
-            CURLOPT_URL => "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?offset={$offset}&limit={$limit}&order_by=year+desc",
+            // CURLOPT_URL => "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?offset={$offset}&limit={$limit}&order_by=year+desc",
+            CURLOPT_URL => "https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?offset={$offset}&limit={$limit}&refine=" . urlencode('make:"Peugeot"'),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HEADER => false
