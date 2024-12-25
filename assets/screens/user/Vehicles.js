@@ -47,7 +47,10 @@ export default function Vehicles() {
                                     {Object.keys(items.results ?? {}).length > 0 ? (
                                         <div className={"d-grid -col-4 mt-50"}>
                                             {Object.values(items.results).map((item, index) => (
-                                                <CarCard key={index} carItem={item} />
+                                                <CarCard 
+                                                    key={index} 
+                                                    carItem={item}
+                                                />
                                             ))}
                                         </div>
                                     ) : (
@@ -63,57 +66,6 @@ export default function Vehicles() {
                             )}
                         </>
                     )}
-
-                    {/* Temporaire */}
-                    <div className={"d-grid -col-4 mt-50"}>
-                        <CarCard carItem={{
-                            id: 1,
-                            imgPath: "/content/img/cars/2019-vw-t-cross.jpg",
-                            title: "VW T Cross"
-                        }} />
-                        <CarCard carItem={{
-                            id: 2,
-                            imgPath: "/content/img/cars/bmw88.jpg",
-                            title: "BMW"
-                        }} />
-                        <CarCard carItem={{
-                            id: 3,
-                            imgPath: "/content/img/cars/bmw-8-series-convertible-technical-data-sp-desktop.jpg",
-                            title: "BMW S8"
-                        }} />
-                        <CarCard carItem={{
-                            id: 4,
-                            imgPath: "/content/img/cars/makyajli-2022-seat-arona-1.jpg",
-                            title: "Makyajli"
-                        }} />
-                        <CarCard carItem={{
-                            id: 1,
-                            imgPath: "/content/img/cars/2019-vw-t-cross.jpg",
-                            title: "VW T Cross"
-                        }} />
-                        <CarCard carItem={{
-                            id: 2,
-                            imgPath: "/content/img/cars/bmw88.jpg",
-                            title: "BMW"
-                        }} />
-                        <CarCard carItem={{
-                            id: 3,
-                            imgPath: "/content/img/cars/bmw-8-series-convertible-technical-data-sp-desktop.jpg",
-                            title: "BMW S8"
-                        }} />
-                        <CarCard carItem={{
-                            id: 4,
-                            imgPath: "/content/img/cars/makyajli-2022-seat-arona-1.jpg",
-                            title: "Makyajli"
-                        }} />
-                    </div>
-
-                    <Pagination
-                        offset={offset}
-                        setOffset={setOffset}
-                        maxOffset={10}
-                    />
-                    {/* Fin Temporaire */}
                 </div>
             </section>
         </Header>

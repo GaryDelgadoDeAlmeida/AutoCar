@@ -33,12 +33,10 @@ class ConsumptionController extends AbstractController
         $limit = 20;
         $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
 
-        $consumptions = $this->consumptionRepository->findBy([], ["createdAt" => "DESC"], $limit, ($offset - 1) * $limit);
-
         return $this->json([
             "offset" => $offset,
             "maxOffset" => ceil($this->consumptionRepository->countConsumptions() / $limit),
-            "results" => !empty($consumptions) ? $this->serializeManager->serializeContent($consumptions) : $consumptions,
+            "results" => $this->consumptionRepository->getConsumptions($offset, $limit)
         ]);
     }
 

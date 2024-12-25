@@ -59,6 +59,26 @@ class FuelRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int vehicleID
+     * @return Fuel[]
+     */
+    public function getVehicleFuels(int $vehicleID) : array {
+        return $this->createQueryBuilder("fuel")
+            ->select("
+                fuel.id,
+                fuel.title,
+                fuel.fuelKey,
+                fuel.price
+            ")
+            ->innerJoin("fuel.vehicles", "vehicle")
+            ->where("vehicle.id = :vehicleID")
+            ->setParameter("vehicleID", $vehicleID)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @return int
      */
     public function countFuels() : int {

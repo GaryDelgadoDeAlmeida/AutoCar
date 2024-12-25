@@ -41,6 +41,45 @@ class CharacteristicRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int characteristicID
+     * @return Characteristic|null
+     */
+    public function getCharacteristic(int $characteristicID) : Characteristic|null {
+        return $this->createQueryBuilder("characteristic")
+            ->select("
+                characteristic.id,
+                characteristic.title,
+                characteristic.description
+            ")
+            ->where("characteristic.id = :characteristicID")
+            ->setParameter("characteristicID", $characteristicID)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
+     * @param int offset
+     * @param int limit
+     * @return Characteristic[]
+     */
+    public function getCharacteristics(int $offset, int $limit) : array {
+        return $this->createQueryBuilder("characteristic")
+            ->select("
+                characteristic.id,
+                characteristic.title,
+                characteristic.description
+            ")
+            ->orderBy("characteristic.title", "ASC")
+            ->setFirstResult(($offset - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @return int
      */
     public function countCharacteristics() : int {

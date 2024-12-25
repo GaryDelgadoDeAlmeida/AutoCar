@@ -7,7 +7,7 @@ import PrivateResources from "../../hooks/PrivateResources"
 export default function Newsletters() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/backoffice/newsletter?offset=${offset}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/backoffice/newsletters?offset=${offset}`)
 
     useEffect(() => {
         load()

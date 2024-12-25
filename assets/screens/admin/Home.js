@@ -55,41 +55,26 @@ export default function Home() {
                             </div>
 
                             <div className={"page-section"}>
-                                <div className={"table-list"}>
-                                    <TableCard
-                                        imgPath={""}
-                                        title={"Vehicle1"}
-                                        description={"07_11_2024"}
-                                        link={"/admin/vehicle/1"}
-                                    />
-                                    <TableCard
-                                        imgPath={""}
-                                        title={"Vehicle2"}
-                                        description={"07_11_2024"}
-                                        link={"/admin/vehicle/1"}
-                                    />
-                                    <TableCard
-                                        imgPath={""}
-                                        title={"Vehicle3"}
-                                        description={"07_11_2024"}
-                                        link={"/admin/vehicle/1"}
-                                    />
-                                    <TableCard
-                                        imgPath={""}
-                                        title={"Vehicle4"}
-                                        description={"07_11_2024"}
-                                        link={"/admin/vehicle/1"}
-                                    />
-                                    <TableCard
-                                        imgPath={""}
-                                        title={"Vehicle5"}
-                                        description={"07_11_2024"}
-                                        link={"/admin/vehicle/1"}
-                                    />
-                                </div>
-                                <div className={"mt-25 txt-right"}>
-                                    <Link className={"btn btn-secondary btn-m fw-bold"} to={"/admin/vehicles"}>See all vehicles</Link>
-                                </div>
+                                {Object.keys(items.latestVehicles).length > 0 ? (
+                                    <>
+                                        <div className={"table-list"}>
+                                            {Object.values(items.latestVehicles).map((item, index) => (
+                                                <TableCard
+                                                    key={index}
+                                                    imgPath={item.photo}
+                                                    title={item.name}
+                                                    description={item.maker_name}
+                                                    link={"/admin/vehicle/" + item.id}
+                                                />
+                                            ))}
+                                        </div>
+                                        <div className={"mt-25 txt-right"}>
+                                            <Link className={"btn btn-secondary btn-m fw-bold"} to={"/admin/vehicles"}>See all vehicles</Link>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <Notification classname={"warning"} message={"There is no vehicles registered"} />
+                                )}
                             </div>
                         </>
                     )}

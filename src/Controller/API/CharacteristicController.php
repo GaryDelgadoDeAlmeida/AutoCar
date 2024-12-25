@@ -28,18 +28,17 @@ class CharacteristicController extends AbstractController
     public function get_characteristics(Request $request): JsonResponse {
         $limit = 20;
         $offset = !empty($request->get("offset")) && is_numeric($request->get("offset")) && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
-        $characteristics = $this->characteristicRepository->findBy([], ["title" => "ASC"], $limit, ($offset - 1) * $limit);
 
         return $this->json([
             "offset" => $offset,
             "maxOffset" => ceil($this->characteristicRepository->countCharacteristics() / $limit),
-            "results" => !empty($characteristics) ? $this->serializeManager->serializeContent($characteristics) : $characteristics,
+            "results" => $this->characteristicRepository->getCharacteristics($offset, $limit)
         ], Response::HTTP_OK);
     }
 
     #[Route('/characteristic/{characteristicID}', name: 'get_characteristic', methods: ["GET"])]
     public function get_characteristic(int $characteristicID) : JsonResponse {
-        $characteristic = $this->characteristicRepository->find($characteristicID);
+        $characteristic = $this->characteristicRepository->getCharacteristic($characteristicID);
         if(empty($characteristic)) {
             return $this->json([
                 "message" => "Characteristic couldn't be found"
@@ -47,7 +46,7 @@ class CharacteristicController extends AbstractController
         }
 
         return $this->json(
-            $this->serializeManager->serializeContent($characteristic),
+            $characteristic,
             Response::HTTP_OK
         );
     }

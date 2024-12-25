@@ -20,10 +20,13 @@ class NewsletterController extends AbstractController
     
     #[Route('/newsletters', name: 'get_newsletters', methods: ["GET"])]
     public function get_newsletters(Request $request): JsonResponse {
+        $limit = 20;
+        $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
+
         return $this->json([
-            "offset" => 1,
-            "maxOffset" => 1,
-            "results" => []
+            "offset" => $offset,
+            "maxOffset" => ceil($this->newsletterRepository->countNewsletters() / $limit),
+            "results" => $this->newsletterRepository->findBy([], ["email" => "ASC"], $limit, ($offset - 1) * $limit)
         ], Response::HTTP_OK);
     }
 

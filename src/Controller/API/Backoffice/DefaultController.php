@@ -37,14 +37,12 @@ class DefaultController extends AbstractController
 
     #[Route('/home', name: 'get_home', methods: ["GET"])]
     public function index(): JsonResponse {
-        $latestVehicles = $this->vehicleRepository->findBy([], ["createdAt" => "DESC"], 5);
-
         return $this->json([
             "nbrMakers" => $this->makerRepository->countMakers(),
             "nbrVehicles" => $this->vehicleRepository->countVehicles(),
             "nbrVehicleTypes" => $this->vehicleTypeRepository->countTypes(),
             "nbrFuels" => $this->fuelRepository->countFuels(),
-            "latestVehicles" => !empty($latestVehicles) ? $this->serializeManager->serializeContent($latestVehicles) : $latestVehicles
+            "latestVehicles" => $latestVehicles = $this->vehicleRepository->getLatestVehicles(5)
         ], Response::HTTP_OK);
     }
 }

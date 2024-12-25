@@ -39,4 +39,15 @@ class NewsletterRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * @return int
+     */
+    public function countNewsletters() : int {
+        return $this->createQueryBuilder("newsletter")
+            ->select("COUNT(newsletter.id) as nbrNewsletter")
+            ->getQuery()
+            ->getSingleResult()["nbrNewsletter"]
+        ;
+    }
 }

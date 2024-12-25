@@ -41,6 +41,27 @@ class ConsumptionRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int offset
+     * @param int limit
+     * @return Consumption[]
+     */
+    public function getConsumptions(int $offset, int $limit) : array {
+        return $this->createQueryBuilder("consumption")
+            ->select("
+                consumption.id,
+                consumption.title,
+                consumption.description,
+                consumption.category
+            ")
+            ->orderBy("consumption.title", "ASC")
+            ->setFirstResult(($offset - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @return int
      */
     public function countConsumptions() : int {

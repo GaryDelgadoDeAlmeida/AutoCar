@@ -41,6 +41,56 @@ class VehicleRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param int offset
+     * @param int limit
+     * @return Vehicle[] Return an array of vehicle object or an empty array if found nothing
+     */
+    public function getVehicles(int $offset, int $limit) : array {
+        return $this->createQueryBuilder("vehicle")
+            ->select("
+                vehicle.id,
+                vehicle.photo,
+                maker.name as maker_name,
+                vehicle.basemodel,
+                vehicle.name,
+                vehicle.price,
+                vehicle.buildAt,
+                vehicle.createdAt
+            ")
+            ->innerJoin("vehicle.maker", "maker")
+            ->orderBy("vehicle.buildAt", "DESC")
+            ->setFirstResult(($offset - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @param int limit
+     * @return Vehicle[]
+     */
+    public function getLatestVehicles(int $limit = 5) : array {
+        return $this->createQueryBuilder("vehicle")
+            ->select("
+                vehicle.id,
+                vehicle.photo,
+                maker.name as maker_name,
+                vehicle.basemodel,
+                vehicle.name,
+                vehicle.price,
+                vehicle.buildAt,
+                vehicle.createdAt
+            ")
+            ->innerJoin("vehicle.maker", "maker")
+            ->orderBy("vehicle.buildAt", "DESC")
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @param int maker id
      * @param int offset
      * @param int limit
