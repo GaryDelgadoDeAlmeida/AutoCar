@@ -22,8 +22,6 @@ export default function FuelForm({fuel = null}) {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        console.log("Hello world")
-
         if(fuel == null) {
             axios
                 .post(`${window.location.origin}/api/backoffice/fuel`, credentials, {
@@ -92,16 +90,18 @@ export default function FuelForm({fuel = null}) {
                         />
                     </div>
 
-                    <div className={"form-field"}>
-                        <input 
-                            type={"text"}
-                            maxLength={255}
-                            value={credentials.key}
-                            placeholder={"Key of the fuel"}
-                            onChange={(e) => handleChange(e, "key")}
-                            required
-                        />
-                    </div>
+                    {fuel === null && (
+                        <div className={"form-field"}>
+                            <input 
+                                type={"text"}
+                                maxLength={255}
+                                value={credentials.key}
+                                placeholder={"Key of the fuel"}
+                                onChange={(e) => handleChange(e, "key")}
+                                required
+                            />
+                        </div>
+                    )}
                     
                     <div className={"form-field"}>
                         <input

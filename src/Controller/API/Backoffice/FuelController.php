@@ -2,12 +2,14 @@
 
 namespace App\Controller\API\Backoffice;
 
+use App\Enum\FuelEnum;
 use App\Manager\FuelManager;
+use App\Entity\FuelPriceHistory;
 use App\Manager\SerializeManager;
-use App\Repository\FuelPriceHistoryRepository;
 use App\Repository\FuelRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\FuelPriceHistoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -57,6 +59,15 @@ class FuelController extends AbstractController
             }
 
             $this->fuelRepository->save($fuel, true);
+
+            // Save an history of the price
+            $priceHistory = (new FuelPriceHistory())
+                ->setFuel($fuel)
+                ->setPrice($fuel->getPrice())
+                ->setCreatedAt(new \DateTimeImmutable())
+            ;
+
+            $this->fuelPriceHistoryRepository->save($priceHistory, true);
         } catch(\Exception $e) {
             $code = $e->getCode();
 
@@ -91,6 +102,18 @@ class FuelController extends AbstractController
             $fields = $this->fuelManager->checkFields($jsonContent);
             if(empty($fields)) {
                 throw new \Exception("An error has been encountered with the sended body", Response::HTTP_PRECONDITION_FAILED);
+            }
+
+            // Check if we have to archive the previous price
+            if($fuel->getPrice() != $fields[FuelEnum::FUEL_PRICE]) {
+                // Save an history of the old price
+                $priceHistory = (new FuelPriceHistory())
+                    ->setFuel($fuel)
+                    ->setPrice($fuel->getPrice())
+                    ->setCreatedAt(new \DateTimeImmutable())
+                ;
+
+                $this->fuelPriceHistoryRepository->save($priceHistory, true);
             }
 
             $response = $this->fuelManager->fillFuel($fields, $fuel);
