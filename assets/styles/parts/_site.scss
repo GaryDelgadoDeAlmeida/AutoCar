@@ -19,8 +19,9 @@ html, body {
     .page-header {
         z-index: 3;
         width: 100%;
+        top: 0;
         min-height: 100px;
-        position: relative;
+        position: absolute;
         align-content: center;
         background-color: var(--c-white);
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.17);
@@ -30,7 +31,6 @@ html, body {
         -webkit-transition: .3s;
 
         &.-fixed {
-            top: 0;
             position: fixed;
             // transition: .3s;
         }
@@ -186,6 +186,7 @@ html, body {
     
     .page-content {
         width: 100%;
+        margin-top: 100px;
         // min-height: 100vh;
     
         .page-wrapper {
@@ -500,11 +501,9 @@ html, body {
         }
 
         .page-vehicle {
-            gap: 25px;
+            gap: 50px;
             display: flex;
-            margin-top: 10px;
             padding-top: 25px;
-            border-top: 1px solid var(--c-black);
 
             .-left {
                 flex: 1;
@@ -513,24 +512,26 @@ html, body {
                     width: 100%;
                 }
 
-                .-markup {
-                    margin: 0;
-                    padding: 0;
-                    font-size: 1rem;
-                    line-height: 1.5;
-
-                    h1, h2, h3, h4, h5 {
-                        margin: 30px 0;
-                    }
-                }
-
                 .-characteristics {
                     margin-top: 35px;
                 }
             }
 
             .-right {
-                width: 300px;
+                width: 350px;
+            }
+        }
+
+        .page-article {
+            gap: 50px;
+            display: flex;
+
+            .-left {
+                flex: 1;
+            }
+
+            .-right {
+                width: 400px;
             }
         }
     }
