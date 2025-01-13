@@ -43,7 +43,7 @@ import AdminConsumptions from "./screens/admin/Consumptions";
 import AdminCharacteristics from "./screens/admin/Characteristics";
 import AdminFuels from "./screens/admin/Fuels";
 import AdminFuelNew from "./screens/admin/FuelNew";
-import AdminFuelSingle from "./screens/admin/FuelSingle";
+import AdminFuelSingle from "./screens/admin/FuelEdit";
 import AdminFuelsHistory from "./screens/admin/FuelsHistory";
 import AdminArticles from "./screens/admin/Articles";
 import AdminArticle from "./screens/admin/Article";

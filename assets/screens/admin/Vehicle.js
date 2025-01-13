@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import PrivateResources from "../../hooks/PrivateResources"

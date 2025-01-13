@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import Notification from "../components/Notification";
 import axios from "axios";
 
-export default function FuelForm({fuel}) {
+export default function FuelForm({fuel = null}) {
 
     const storageUser = localStorage.getItem("token") ?? ""
     const [formResponse, setFormResponse] = useState({})
-    const [credentials, setCredentials] = useState({
+    const [credentials, setCredentials] = useState(fuel ?? {
         title: null,
         price: null,
         key: null
