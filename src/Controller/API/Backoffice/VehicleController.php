@@ -54,7 +54,7 @@ class VehicleController extends AbstractController
 
             return $this->json([
                 "message" => $e->getMessage()
-            ], isset(Response::$statusCode[$code]) && $code !== 200 ? $code : Response::HTTP_OK);
+            ], isset(Response::$statusCode[$code]) && $code !== 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->json(["Route under construction"], Response::HTTP_OK);
@@ -69,17 +69,41 @@ class VehicleController extends AbstractController
 
     #[Route('/vehicle/{vehicleID}/photo', name: 'update_vehicle_photo', methods: ["UPDATE", "PUT"])]
     public function update_vehicle_photo(int $vehicleID, Request $request) : JsonResponse {
-        $vehicle_photo = $request->files->get("logo");
-        $vehicle_photos_previews = $request->files->get("photos");
-
         try {
-            // 
+            $fields = $this->vehicleManager->checkFields([
+                "logo" => $request->file->get("logo"),
+                "previews" => $request->file->get("photos")
+            ]);
+            if(empty($fields)) {
+                throw new \Exception("An error has been encountered with the sended body", Response::HTTP_PRECONDITION_FAILED);
+            }
+
+            // Save files in vehicle repository
+            $vehicleDirectory = "";
+
+            // Update vehicle object
+            $vehicle = $this->vehicleManager->fillVehicle($fields);
+            if(is_string($vehicle)) {
+                throw new \Exception($vehicle, Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            // Save changes into database
+            $this->vehicleRepository->save($vehicle, true);
         } catch(\Exception $e) {
-            // 
+            $code = $e->getCode();
+
+            return $this->json([
+                "message" => $e->getMessage()
+            ], isset(Response::$statusCode[$code]) && $code !== 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->json([
             "message" => ""
-        ], Response::HTTP_OK);
+        ], Response::HTTP_ACCEPTED);
+    }
+
+    #[Route('/vehicle/{vehicleID}/remove', name: 'remove_vehicle_photo', methods: ["DELETE"])]
+    public function remove_vehicle(int $vehicleID) : JsonResponse {
+        return $this->json(null, Response::HTTP_NO_CONTENT);
     }
 }

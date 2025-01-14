@@ -22,12 +22,15 @@ class FileManager {
             mkdir($destination_path, 0777, true);
         }
 
-        $filepath = "/content/sponsors/{$filename}";
-        if(!rename($file->getPath(), $destination_path . "/{$filename}")) {
+        if(file_exists("{$destination_path}/{$filename}")) {
+            unlink("{$destination_path}/{$filename}");
+        }
+
+        if(!copy($file->getPathname(), "{$destination_path}/{$filename}")) {
             throw new \Exception("An error has been encountered. The sended image couldn't be save in the destination directory.");
         }
 
-        return $filepath;
+        return $filename;
     }
 
     /**

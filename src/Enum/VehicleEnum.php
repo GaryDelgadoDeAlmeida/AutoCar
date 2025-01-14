@@ -15,6 +15,7 @@ abstract class VehicleEnum {
     public const VEHICLE_AVERAGE_FUELD_CONSUMPTION = "average_fuel_consumption";
     public const VEHICLE_PRICE = "price";
     public const VEHICLE_BUILD_AT = "build_at";
+    public const VEHICLE_PREVIEWS = "previews";
 
     private array $typeName = [
         self::VEHICLE_MAKER => "Maker",
@@ -27,7 +28,8 @@ abstract class VehicleEnum {
         self::VEHICLE_MAX_SPEED => "Max speed",
         self::VEHICLE_AVERAGE_FUELD_CONSUMPTION => "Average fuel consumption",
         self::VEHICLE_PRICE => "Price",
-        self::VEHICLE_BUILD_AT => "Build at"
+        self::VEHICLE_BUILD_AT => "Build at",
+        self::VEHICLE_PREVIEWS => "Previews"
     ];
 
     public function getRequiredFields() : array {
@@ -47,6 +49,7 @@ abstract class VehicleEnum {
             self::VEHICLE_MAX_SPEED,
             self::VEHICLE_AVERAGE_FUELD_CONSUMPTION,
             self::VEHICLE_BUILD_AT,
+            self::VEHICLE_PREVIEWS,
         ];
     }
 

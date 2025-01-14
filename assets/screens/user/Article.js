@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
-import Notification from "../../components/Notification";
-import RecentArticles from "./parts/RecentArticles";
 import PrivateResources from "../../hooks/PrivateResources"
-import SearchForm from "../../forms/SearchForm";
-import Comments from "./parts/Comments";
+import Notification from "../../components/Notification";
+import Comments from "./parts/Comments"
+import SearchForm from "../../forms/SearchForm"
+import RecentArticles from "./parts/RecentArticles"
 
 export default function Article() {
 
