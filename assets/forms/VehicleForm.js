@@ -38,8 +38,7 @@ export default function VehicleForm({vehicle = null}) {
         },
     })
     const [credentialsImgs, setCredentialsImgs] = useState({
-        photo: "",
-        previews: []
+        photo: ""
     })
 
     const handleChange = (e, fieldName) => {

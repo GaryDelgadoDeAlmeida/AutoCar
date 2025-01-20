@@ -9,7 +9,7 @@ export default function CharacteristicField({index, fieldName = "characteristics
         value: "",
     })
     
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/characteristics`)
+    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/characteristics?request=all`)
 
     useEffect(() => {
         load()
@@ -39,7 +39,7 @@ export default function CharacteristicField({index, fieldName = "characteristics
                             <select onChange={(e) => handleChange(e, "characteristic")} value={credentials.characteristic} required>
                                 <option value={""}>Select a characteristic</option>
                                 {Object.values(items.results).map((item, index) => (
-                                    <option key={index} value={item.id}>{item.label}</option>
+                                    <option key={index} value={item.id}>{item.title}</option>
                                 ))}
                             </select>
                         </div>

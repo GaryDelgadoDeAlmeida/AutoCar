@@ -50,6 +50,7 @@ export default function NewsletterForm() {
                         maxLength={255}
                         value={credentials.value} 
                         placeholder={"Your email"}
+                        onChange={(e) => handleChange(e, "email")}
                         required
                     />
                 </div>

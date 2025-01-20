@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 #[Route('/api', name: 'api_')]
 class MakerController extends AbstractController
@@ -32,7 +33,13 @@ class MakerController extends AbstractController
     public function get_makers(Request $request): JsonResponse {
         $limit = 9;
         $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
-        $makers = $this->makerRepository->getMakers($offset, $limit);
+        $makers = [];
+
+        if($request->get("request", null) == "all") {
+            $makers = $this->makerRepository->getMakersForForms();
+        } else {
+            $makers = $this->makerRepository->getMakers($offset, $limit);
+        }
 
         return $this->json([
             "offset" => $offset,
@@ -51,13 +58,18 @@ class MakerController extends AbstractController
         }
 
         return $this->json(
-            $this->serializeManager->serializeContent($maker),
-            Response::HTTP_OK
+            [
+                "maker" => $maker,
+                "nbrVehicles" => $this->vehicleRepository->countMakerVehicles($maker->getId())
+            ],
+            Response::HTTP_OK,
+            [],
+            [ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles"]]
         );
     }
 
     #[Route("/maker/{makerID}/vehicles", name: "get_maker_vehicles", methods: ["GET"])]
-    public function get_maker_vehicles(int $makerID) : JsonResponse {
+    public function get_maker_vehicles(int $makerID, Request $request) : JsonResponse {
         $maker = $this->makerRepository->find($makerID);
         if(empty($maker)) {
             return $this->json([

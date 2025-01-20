@@ -12,14 +12,13 @@ class NewsletterManager {
      */
     public function checkFields(array $jsonContent) : array {
         $fields = [];
-        $allowedFields = [];
 
-        foreach($fields as $fieldName => $fieldValue) {
-            if(!in_array($fieldName, $allowedFields)) {
+        foreach($jsonContent as $fieldName => $fieldValue) {
+            if(!in_array($fieldName, ["email"])) {
                 continue;
             }
 
-            if($fieldName == "") {
+            if($fieldName == "email") {
                 // 
             }
 
@@ -40,7 +39,7 @@ class NewsletterManager {
 
         try {
             foreach($fields as $fieldName => $fieldValue) {
-                // 
+                if($fieldName == "email") $newsletter->setEmail($fieldValue);
             }
         } catch(\Exception $e) {
             return $e->getMessage();

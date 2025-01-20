@@ -29,9 +29,13 @@ export default function ProfileForm() {
 
             <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
                 <div className={"form-field-inline"}>
+                    <div className={"form-field -no-flex w-200px"}>
+                        <label htmlFor={"firstname"}>Firstname</label>
+                    </div>
                     <div className={"form-field"}>
                         <input
                             type={"text"}
+                            id={"firstname"}
                             maxLength={100}
                             value={credentials.firstname}
                             placeholder={"Your firstname"}
@@ -39,9 +43,15 @@ export default function ProfileForm() {
                             required
                         />
                     </div>
-                    
+                </div>
+
+                <div className={"form-field-inline"}>
+                    <div className={"form-field -no-flex w-200px"}>
+                        <label htmlFor={"lastname"}>Lastname</label>
+                    </div>
                     <div className={"form-field"}>
                         <input
+                            id={"lastname"}
                             type={"text"}
                             maxLength={255}
                             value={credentials.lastname}
@@ -52,15 +62,21 @@ export default function ProfileForm() {
                     </div>
                 </div>
                 
-                <div className={"form-field"}>
-                    <input
-                        type={"email"}
-                        maxLength={255}
-                        value={credentials.email}
-                        placeholder={"Your email"}
-                        onChange={(e) => handleChange(e, "email")}
-                        required
-                    />
+                <div className={"form-field-inline"}>
+                    <div className={"form-field -no-flex w-200px"}>
+                        <label htmlFor={"email_address"}>Email address</label>
+                    </div>
+                    <div className={"form-field"}>
+                        <input
+                            id={"email_address"}
+                            type={"email"}
+                            maxLength={255}
+                            value={credentials.email}
+                            placeholder={"Your email"}
+                            onChange={(e) => handleChange(e, "email")}
+                            required
+                        />
+                    </div>
                 </div>
                 
                 <div className={"form-actions"}>

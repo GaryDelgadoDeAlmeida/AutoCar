@@ -13,11 +13,14 @@ export default function ImageField({fieldName, fieldValue, updateCredentials}) {
     }
 
     return (
-        <input 
-            id={fieldName}
-            type={"file"}
-            max={1}
-            onChange={(e) => handleChange(e)}
-        />
+        <div className={"form-image"}>
+            <input 
+                id={fieldName}
+                type={"file"}
+                max={1}
+                accept={"image/*"}
+                onChange={(e) => handleChange(e)}
+            />
+        </div>
     )
 }

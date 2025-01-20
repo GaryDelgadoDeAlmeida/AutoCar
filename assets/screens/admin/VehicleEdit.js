@@ -1,17 +1,18 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import PrivateRessource from "../../hooks/PrivateResources";
 import HeaderAdmin from "../../components/HeaderAdmin";
+import VehicleForm from "../../forms/VehicleForm";
 import Notification from "../../components/Notification";
-import PrivateResources from "../../hooks/PrivateResources"
 
-export default function Vehicle() {
+export default function VehicleEdit() {
 
     const { vehicleID } = useParams()
     if(isNaN(vehicleID)) {
-        return <Navigate to={"/admin/cars"} />
+        return <Navigate to={"/admin/vehicles"} />
     }
 
-    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicle/${vehicleID}`)
+    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/vehicle/${vehicleID}`)
 
     useEffect(() => {
         load()
@@ -20,14 +21,18 @@ export default function Vehicle() {
     return (
         <HeaderAdmin>
             <Link className={"btn btn-secondary"} to={"/admin/vehicles"}>Return</Link>
-            
+
+            <section className={"page-hero-2nd"}>
+                <div className={"hero-wrapper"}>
+                    <h1 className={"-hero-title"}>Vehicle edit</h1>
+                </div>
+            </section>
+
             <section className={"page-section"}>
-                <h2 className={"page-title"}>Vehicle</h2>
-                
                 {loading && (
                     <Notification classname={"information"} message={"Loading ..."} />
                 )}
-
+                
                 {!loading && (
                     <>
                         {Object.keys(error).length > 0 && (
@@ -35,8 +40,12 @@ export default function Vehicle() {
                         )}
 
                         {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
-                            <div className={""}>
-                                <h2>{items.name}</h2>
+                            <div className={"card"}>
+                                <div className={"-content"}>
+                                    <VehicleForm 
+                                        vehicle={items} 
+                                    />
+                                </div>
                             </div>
                         )}
                     </>

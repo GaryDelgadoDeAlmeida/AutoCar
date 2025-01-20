@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 #[Route('/api', name: 'api_')]
 class VehicleTypeController extends AbstractController
@@ -23,9 +24,9 @@ class VehicleTypeController extends AbstractController
     #[Route('/vehicle-types', name: 'get_vehicle_types', methods: ["GET"])]
     public function get_vehicle_types(): JsonResponse {
         return $this->json([
-            "results" => $this->serializeManager->serializeContent(
-                $this->vehicleTypeRepository->findAll()
-            )
+            "results" => $this->vehicleTypeRepository->findAll()
+        ], Response::HTTP_OK, [], [
+            ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles"]
         ]);
     }
 

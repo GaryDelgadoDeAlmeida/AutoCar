@@ -20,11 +20,11 @@ export default function MakerNew() {
 
     return (
         <HeaderAdmin>
-            <Link className={"btn btn-blue"} to={"/admin/makers"}>Return</Link>
+            {!loading && (
+                <>
+                    <Link className={"btn btn-blue"} to={`/admin/maker/${items.id}`}>Return</Link>
 
-            <section className={"page-section"}>
-                {!loading && (
-                    <>
+                    <section className={"page-section"}>
                         {Object.keys(error).length > 0 && (
                             <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
                         )}
@@ -35,13 +35,13 @@ export default function MakerNew() {
                                     <label className={"-title"}>Update a car maker</label>
                                 </div>
                                 <div className={"-content"}>
-                                    <MakerForm maker={maker} />
+                                    <MakerForm maker={items} />
                                 </div>
                             </div>
                         )}
-                    </>
-                )}
-            </section>
+                    </section>
+                </>
+            )}
         </HeaderAdmin>
     )
 }

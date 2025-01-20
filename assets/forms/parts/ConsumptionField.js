@@ -9,7 +9,7 @@ export default function ConsumptionField({index, fieldName = "consumptions", con
         value: "",
     })
     
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/consumptions`)
+    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/backoffice/consumptions?request=all`)
 
     useEffect(() => {
         load()
@@ -37,7 +37,7 @@ export default function ConsumptionField({index, fieldName = "consumptions", con
                     <div className={"form-field-inline"}>
                         <div className={"form-field"}>
                             <select onChange={(e) => handleChange(e, "consumption")} value={credentials.consumption} required>
-                                <option value={""}>Select a Consumption</option>
+                                <option value={""}>Select a consumption</option>
                                 {Object.values(items.results).map((item, index) => (
                                     <option key={index} value={item.id}>{item.title}</option>
                                 ))}

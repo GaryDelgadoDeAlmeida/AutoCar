@@ -33,17 +33,19 @@ import AdminHome from "./screens/admin/Home";
 import AdminProfile from "./screens/admin/Profile";
 import AdminMakers from "./screens/admin/Makers";
 import AdminMakerNew from "./screens/admin/MakerNew";
+import AdminMakerEdit from "./screens/admin/MakerEdit";
 import AdminMakerSingle from "./screens/admin/MakerSingle";
 import AdminVehicles from "./screens/admin/Vehicles";
 import AdminVehicle from "./screens/admin/Vehicle";
 import AdminVehicleNew from "./screens/admin/VehicleNew";
+import AdminVehicleEdit from "./screens/admin/VehicleEdit";
 import AdminVehicleTypes from "./screens/admin/VehicleTypes";
 import AdminVehicleTypeNew from "./screens/admin/VehicleTypeNew";
 import AdminConsumptions from "./screens/admin/Consumptions";
 import AdminCharacteristics from "./screens/admin/Characteristics";
 import AdminFuels from "./screens/admin/Fuels";
 import AdminFuelNew from "./screens/admin/FuelNew";
-import AdminFuelSingle from "./screens/admin/FuelEdit";
+import AdminFuelSingle from "./screens/admin/FuelSingle";
 import AdminFuelsHistory from "./screens/admin/FuelsHistory";
 import AdminArticles from "./screens/admin/Articles";
 import AdminArticle from "./screens/admin/Article";
@@ -78,6 +80,7 @@ root.render(
                 <Route path={"/admin/vehicles"} element={<AdminVehicles />} />
                 <Route path={"/admin/vehicles/add"} element={<AdminVehicleNew />} />
                 <Route path={"/admin/vehicle/:vehicleID"} element={<AdminVehicle />} />
+                <Route path={"/admin/vehicle/:vehicleID/edit"} element={<AdminVehicleEdit />} />
                 <Route path={"/admin/vehicle-types"} element={<AdminVehicleTypes />} />
                 <Route path={"/admin/vehicle-types/add"} element={<AdminVehicleTypeNew />} />
                 <Route path={"/admin/consumptions"} element={<AdminConsumptions />} />
@@ -85,6 +88,7 @@ root.render(
                 <Route path={"/admin/makers"} element={<AdminMakers />} />
                 <Route path={"/admin/makers/add"} element={<AdminMakerNew />} />
                 <Route path={"/admin/maker/:makerID"} element={<AdminMakerSingle />} />
+                <Route path={"/admin/maker/:makerID/edit"} element={<AdminMakerEdit />} />
                 <Route path={"/admin/fuels"} element={<AdminFuels />} />
                 <Route path={"/admin/fuels/add"} element={<AdminFuelNew />} />
                 <Route path={"/admin/fuel/:fuelID"} element={<AdminFuelSingle />} />

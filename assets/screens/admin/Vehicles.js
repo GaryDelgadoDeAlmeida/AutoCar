@@ -38,7 +38,7 @@ export default function Vehicles() {
                                             <TableCard
                                                 key={index}
                                                 imgPath={item.photo}
-                                                title={item.name + " (" + (new Date(item.buildAt)).getFullYear() + ")"}
+                                                title={`${item.name} (${(new Date(item.buildAt)).getFullYear()})`}
                                                 description={item.maker_name}
                                                 link={`/admin/vehicle/${item.id}`}
                                             />

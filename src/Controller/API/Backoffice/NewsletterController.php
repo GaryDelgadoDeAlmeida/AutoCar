@@ -30,7 +30,7 @@ class NewsletterController extends AbstractController
         ], Response::HTTP_OK);
     }
 
-    #[Route('/newsletter/{newsletterID}', name: 'remove_newsletter', methods: ["DELETE"])]
+    #[Route('/newsletter/{newsletterID}/remove', name: 'remove_newsletter', methods: ["DELETE"])]
     public function remove_newsletter(int $newsletterID) : JsonResponse {
         $newsletter = $this->newsletterRepository->find($newsletterID);
         if(empty($newsletter)) {

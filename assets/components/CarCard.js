@@ -10,7 +10,7 @@ export default function CarCard({carItem}) {
             </div>
             <div className={"-content"}>
                 <label className={"-title"}>{carItem.name + " (" + (new Date(carItem.buildAt)).getFullYear() + ")"}</label>
-                <span className={"-sub-title"}>SUV</span>
+                <span className={"-sub-title"}></span>
                 <div className={"-caracteristics"}>
                     <label className={"-caracteristic"}>
                         <img src={`${window.location.origin}/content/svg/dollar-sign.svg`} alt={""} />

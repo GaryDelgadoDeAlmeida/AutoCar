@@ -28,7 +28,7 @@ export default function FuelField({fieldName = "fuel", fieldValue, updateCredent
                             <option 
                                 key={index} 
                                 value={item.id}
-                            >{item.label}</option>
+                            >{item.title}</option>
                         ))}
                     </select>
                 )}

@@ -10,6 +10,10 @@ form {
         line-height: 30px;
         flex-direction: column;
 
+        &.-no-flex {
+            flex: none;
+        }
+
         &:not(:last-child) {
             margin-bottom: 10px;
         }
@@ -37,6 +41,27 @@ form {
         input:not([type="file"]) {
             height: 35px;
             padding: 0 20px;
+        }
+
+        .form-image {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid var(--c-silver);
+
+            input[type=file]::file-selector-button {
+                border: none;
+                cursor: pointer;
+                transition: .3s;
+                margin-right: 8px;
+                padding: 8px 12px;
+                color: var(--c-white);
+                background: var(--c-black);
+    
+                &:hover {
+                    color: var(--c-secondary);
+                    background: var(--c-primary);
+                }
+            }
         }
 
         input:disabled {

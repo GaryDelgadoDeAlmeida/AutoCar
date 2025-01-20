@@ -6,8 +6,9 @@ import axios from "axios";
 
 export default function MakerForm({maker = null}) {
 
+    let storedUser = localStorage.getItem("token") ?? ""
     const [formResponse, setFormResponse] = useState({})
-    const [credentials, setCredentials] = useState({
+    const [credentials, setCredentials] = useState(maker ?? {
         name: "",
         description: "",
         founded_at: "",
@@ -32,11 +33,38 @@ export default function MakerForm({maker = null}) {
             .post(`${window.location.origin}/api/backoffice/maker`, credentials, {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + (localStorage.getItem("token") ?? "")
+                    "Accept": "application/json+ld",
+                    "Authorization": "Bearer " + storedUser
                 }
             })
             .then((response) => {
                 setFormResponse({classname: "success", message: "The car maker has been successfully added into the database"})
+
+                console.log(response)
+                if(credentialsPhoto.logo) {
+                    axios
+                        .post(`${window.location.origin}/api/backoffice/maker/${response.data.id}/photo/update`, credentialsPhoto, {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                                // "Accept": "application/json+ld",
+                                "Authorization": "Bearer " + storedUser
+                            }
+                        })
+                        .then((response) => {
+                            // 
+                        })
+                        .catch((error) => {
+                            let errorMessage = "An error has been encountered, the photo couldn't be saved. Please, retry more later"
+                            if(error.response.data.message) {
+                                errorMessage = error.response.data.message
+                            } else if(error.response.data.detail) {
+                                errorMessage = error.response.data.detail
+                            }
+
+                            setFormResponse({classname: "danger", message: errorMessage})
+                        })
+                    ;
+                }
             })
             .catch((error) => {
                 let errorMessage = "An error has been encountered. Please, retry more later"
@@ -48,6 +76,7 @@ export default function MakerForm({maker = null}) {
 
                 setFormResponse({classname: "danger", message: errorMessage})
             })
+        ;
     }
 
     return (

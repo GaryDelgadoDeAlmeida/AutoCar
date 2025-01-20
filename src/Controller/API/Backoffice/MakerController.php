@@ -190,6 +190,6 @@ class MakerController extends AbstractController
             ], isset(Response::$statusTexts[$code]) && $code !== 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
-        return $this->json([], Response::HTTP_OK);
+        return $this->json([], Response::HTTP_NO_CONTENT);
     }
 }

@@ -37,6 +37,10 @@
     justify-content: space-between;
 }
 
+.jf-evenly {
+    justify-content: space-evenly;
+}
+
 /* ------------------------------------------------------------ *\
     Font-size
 \* ------------------------------------------------------------ */
@@ -135,6 +139,10 @@
     padding: 0 50px;
 }
 
+.py-10 {
+    padding: 10px 0;
+}
+
 .py-25 {
     padding: 25px 0;
 }
@@ -157,6 +165,18 @@
 
 .m-0-force {
   margin: 0 !important;
+}
+
+.ml-5 {
+    margin-left: 5px;
+}
+
+.ml-10 {
+    margin-left: 10px;
+}
+
+.mt-15 {
+    margin-top: 15px;
 }
 
 .mt-25 {
@@ -183,12 +203,20 @@
     margin-bottom: 15px;
 }
 
+.mb-25 {
+    margin-bottom: 25px;
+}
+
 .my-auto {
   margin: 0 auto;
 }
 
 .mx-auto {
   margin: auto 0;
+}
+
+.mx-25 {
+    margin: 25px 0;
 }
 
 .m-auto {
@@ -201,6 +229,10 @@
 \* ------------------------------------------------------------ */
 .w-50px {
     width: 50px;
+}
+
+.w-200px {
+    width: 200px;
 }
 
 .w-50 {
