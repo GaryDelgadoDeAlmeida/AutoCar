@@ -21,4 +21,9 @@ class TestimonialController extends AbstractController
     public function post_testimonial(Request $request): JsonResponse {
         return $this->json([]);
     }
+    
+    #[Route('/testimonial/{testimonialID}/remove', name: 'remove_testimonial', methods: ["DELETE"])]
+    public function remove_testimonial(Request $request): JsonResponse {
+        return $this->json([]);
+    }
 }
