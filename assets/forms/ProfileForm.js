@@ -11,6 +11,8 @@ export default function ProfileForm() {
     })
 
     const handleChange = (e, fieldName) => {
+        setFormResponse({})
+        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value

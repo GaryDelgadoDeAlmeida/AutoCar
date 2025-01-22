@@ -84,6 +84,8 @@ export default function FuelSimulatorForm() {
     ]
 
     const handleChange = (e, fieldName) => {
+        setFormResponse({})
+        
         let fieldValue = e.currentTarget.value
         if(fieldName == "fuel_type") {
             let fuel = fuels.filter((item) => item.value == fieldValue)

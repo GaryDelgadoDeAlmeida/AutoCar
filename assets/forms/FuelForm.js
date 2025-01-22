@@ -13,6 +13,8 @@ export default function FuelForm({fuel = null}) {
     })
 
     const handleChange = (e, fieldName) => {
+        setFormResponse({})
+        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value

@@ -10,6 +10,8 @@ export default function NewsletterForm() {
     })
 
     const handleChange = (e, fieldName) => {
+        setFormResponse({})
+        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value

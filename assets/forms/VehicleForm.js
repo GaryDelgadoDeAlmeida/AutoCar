@@ -42,6 +42,8 @@ export default function VehicleForm({vehicle = null}) {
     })
 
     const handleChange = (e, fieldName) => {
+        setFormResponse({})
+        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value

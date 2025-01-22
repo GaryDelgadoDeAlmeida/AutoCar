@@ -102,7 +102,7 @@ export default function LinearChart() {
                 },
                 title: {
                     display: true,
-                    text: 'Chart.js Line Chart'
+                    text: ''
                 }
             }
         },

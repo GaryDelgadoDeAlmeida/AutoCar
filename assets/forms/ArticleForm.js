@@ -15,6 +15,7 @@ export default function ArticleForm({article = null}) {
 
     const handleChange = (e, fieldName) => {
         setFormResponse({})
+        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value

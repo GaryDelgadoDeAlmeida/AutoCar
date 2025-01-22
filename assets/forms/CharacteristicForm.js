@@ -10,7 +10,14 @@ export default function CharacteristicForm({vehicle_type = null}) {
         description: ""
     })
 
-    const handleChange = (e, fieldName) => {}
+    const handleChange = (e, fieldName) => {
+        setFormResponse({})
+
+        setCredentials({
+            ...credentials,
+            [fieldName]: e.currentTarget.value
+        })
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()

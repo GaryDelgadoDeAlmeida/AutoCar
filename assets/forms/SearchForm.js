@@ -9,6 +9,8 @@ export default function SearchForm() {
     })
 
     const handleChange = (e) => {
+        setFormResponse({})
+        
         setCredentials({
             ...credentials,
             value: e.currentTarget.value

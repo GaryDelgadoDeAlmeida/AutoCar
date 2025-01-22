@@ -20,6 +20,8 @@ export default function MakerForm({maker = null}) {
     })
 
     const handleChange = (e, fieldName) => {
+        setFormResponse({})
+        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value
