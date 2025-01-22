@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 #[Route('/api', name: 'api_')]
 class FuelController extends AbstractController
@@ -28,10 +29,19 @@ class FuelController extends AbstractController
     }
 
     #[Route('/fuel/{fuelID}', name: 'get_fuel', methods: ["GET"])]
-    public function get_fuel(int $fuelID): JsonResponse {
+    public function get_fuel(int $fuelID) : JsonResponse {
+        $fuel = $this->fuelRepository->find($fuelID);
+        if(empty($fuel)) {
+            return $this->json([
+                "message" => "The fuel couldn't be found"
+            ], Response::HTTP_NOT_FOUND);
+        }
+
         return $this->json(
-            $this->fuelRepository->getFuel($fuelID), 
-            Response::HTTP_OK
+            $fuel, 
+            Response::HTTP_OK,
+            [],
+            [ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles", "fuelPriceHistories"]]
         );
     }
 }

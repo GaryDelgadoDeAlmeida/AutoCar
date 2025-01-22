@@ -4,7 +4,7 @@ import WyziwigField from "./parts/WyziwigField"
 import axios from "axios";
 import ImageField from "./parts/ImageField";
 
-export default function ArticleForm() {
+export default function ArticleForm({article = null}) {
 
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({

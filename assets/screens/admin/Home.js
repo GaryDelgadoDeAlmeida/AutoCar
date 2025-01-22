@@ -54,6 +54,7 @@ export default function Home() {
                                 </div>
                             </div>
 
+                            {/* Lastest vehicles */}
                             <div className={"page-section"}>
                                 {Object.keys(items.latestVehicles).length > 0 ? (
                                     <>
@@ -75,6 +76,36 @@ export default function Home() {
                                 ) : (
                                     <Notification classname={"warning"} message={"There is no vehicles registered"} />
                                 )}
+                            </div>
+
+                            {/* Lastest testimonials */}
+                            <div className={"page-section"}>
+                                <div className={"d-grid -col-2 -g-25"}>
+                                    <div className={"item"}>
+                                        <div className={"card"}>
+                                            <div className={"-header"}>
+                                                <label className={"-title"}>The lastest inboxes</label>
+                                            </div>
+                                            <div className={"-content"}></div>
+                                        </div>
+                                        
+                                        <div className={"mt-25 txt-right"}>
+                                            <Link className={"btn btn-secondary btn-m fw-bold"} to={"/admin/inboxes"}>See all inboxes</Link>
+                                        </div>
+                                    </div>
+                                    <div className={"item"}>
+                                        <div className={"card"}>
+                                            <div className={"-header"}>
+                                                <label className={"-title"}>The lastest testimonials</label>
+                                            </div>
+                                            <div className={"-content"}></div>
+                                        </div>
+
+                                        <div className={"mt-25 txt-right"}>
+                                            <Link className={"btn btn-secondary btn-m fw-bold"} to={"/admin/testimonials"}>See all testimonials</Link>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </>
                     )}

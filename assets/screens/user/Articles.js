@@ -45,9 +45,12 @@ export default function Articles() {
                             {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                                 <>
                                     {Object.values(items.results ?? {}).length > 0 ? (
-                                        <div className={"d-grid -col-4"}>
+                                        <div className={"d-grid -col-4 -g-25"}>
                                             {Object.values(items.results ?? {}).map((item, index) => (
-                                                <ArticleCard key={index} article={item} />
+                                                <ArticleCard 
+                                                    key={index} 
+                                                    article={item} 
+                                                />
                                             ))}
                                         </div>
                                     ) : (
@@ -63,73 +66,6 @@ export default function Articles() {
                             )}
                         </>
                     )}
-
-                    {/* Temporary: Start */}
-                    <div className={"mt-25 d-grid -col-4 -g-25"}>
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "Why is BMW loved ?",
-                            content: "BMWs have a differebt kube with their designs and almost [...]",
-                            imgPath: "/content/img/cars/bmw-8-series-convertible-technical-data-sp-desktop.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "How solid is Audi ?",
-                            content: "According to Euro NCAP data with different test organizations, there [...]",
-                            imgPath: "/content/img/cars/bmw88.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "What brand is Skoda ?",
-                            content: "Skoda is one the leading automotive manufacturers on the [...]",
-                            imgPath: "/content/img/cars/volkswagen-passat-1280x720-1.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "Is the Auris diesel ?",
-                            content: "You will have a quieter vechile that burns less than [...]",
-                            imgPath: "/content/img/cars/yeni-ibiza-2.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "Why is BMW loved ?",
-                            content: "BMWs have a differebt kube with their designs and almost [...]",
-                            imgPath: "/content/img/cars/bmw-8-series-convertible-technical-data-sp-desktop.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "How solid is Audi ?",
-                            content: "According to Euro NCAP data with different test organizations, there [...]",
-                            imgPath: "/content/img/cars/bmw88.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "What brand is Skoda ?",
-                            content: "Skoda is one the leading automotive manufacturers on the [...]",
-                            imgPath: "/content/img/cars/volkswagen-passat-1280x720-1.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "Is the Auris diesel ?",
-                            content: "You will have a quieter vechile that burns less than [...]",
-                            imgPath: "/content/img/cars/yeni-ibiza-2.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                    </div>
-
-                    <Pagination
-                        offset={offset}
-                        setOffset={setOffset}
-                        maxOffset={10}
-                    />
-                    {/* Temporary: End */}
                 </div>
             </section>
         </Header>

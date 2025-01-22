@@ -50,8 +50,11 @@ import AdminFuelsHistory from "./screens/admin/FuelsHistory";
 import AdminArticles from "./screens/admin/Articles";
 import AdminArticle from "./screens/admin/Article";
 import AdminArticleNew from "./screens/admin/ArticleNew";
+import AdminArticleEdit from "./screens/admin/ArticleEdit";
 import AdminNewsletters from "./screens/admin/Newsletters";
 import AdminTestimonials from "./screens/admin/Testimonials";
+import AdminTestimonial from "./screens/admin/Testimonial";
+import AdminTestimonialNew from "./screens/admin/TestimonialNew";
 
 // Common
 import Page404 from "./screens/Page404"
@@ -96,10 +99,11 @@ root.render(
                 <Route path={"/admin/blog"} element={<AdminArticles />} />
                 <Route path={"/admin/blog/add"} element={<AdminArticleNew />} />
                 <Route path={"/admin/blog/:blogID"} element={<AdminArticle />} />
+                <Route path={"/admin/blog/:blogID/edit"} element={<AdminArticleEdit />} />
                 <Route path={"/admin/newsletters"} element={<AdminNewsletters />} />
                 <Route path={"/admin/testimonials"} element={<AdminTestimonials />} />
-                <Route path={"/admin/testimonial/add"} element={<AdminNewsletters />} />
-                <Route path={"/admin/testimonial/:testimonialID"} element={<AdminNewsletters />} />
+                <Route path={"/admin/testimonial/add"} element={<AdminTestimonialNew />} />
+                <Route path={"/admin/testimonial/:testimonialID"} element={<AdminTestimonial />} />
                 
                 {/* Common */}
                 <Route path={"/faq"} element={<Faq />} />

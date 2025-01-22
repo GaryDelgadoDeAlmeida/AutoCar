@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import HeaderAdmin from "../../components/HeaderAdmin";
 import { Link, Navigate, useParams } from "react-router-dom";
-import PrivateRessource from "../../hooks/PrivateResources";
+import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
+import TestimonialForm from "../../forms/TestimonialForm";
+import PrivateRessource from "../../hooks/PrivateResources";
 
 export default function Testimonial() {
 
@@ -18,7 +19,7 @@ export default function Testimonial() {
 
     return (
         <HeaderAdmin>
-            <Link className={"btn btn-secondary"} to={"/admin/testimonials"}>Return</Link>
+            <Link className={"btn btn-blue"} to={"/admin/testimonials"}>Return</Link>
 
             <section className={"page-section"}>
                 {loading && (
@@ -32,7 +33,13 @@ export default function Testimonial() {
                         )}
 
                         {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                            <Notification classname={"information"} message={"Ongoing ..."} />
+                            <div className={"card"}>
+                                <div className={"-content"}>
+                                    <TestimonialForm
+                                        testimonial={items}
+                                    />
+                                </div>
+                            </div>
                         )}
                     </>
                 )}

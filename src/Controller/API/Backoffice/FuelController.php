@@ -2,14 +2,14 @@
 
 namespace App\Controller\API\Backoffice;
 
+use App\Entity\FuelPriceHistory;
 use App\Enum\FuelEnum;
 use App\Manager\FuelManager;
-use App\Entity\FuelPriceHistory;
 use App\Manager\SerializeManager;
+use App\Repository\FuelPriceHistoryRepository;
 use App\Repository\FuelRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
-use App\Repository\FuelPriceHistoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;

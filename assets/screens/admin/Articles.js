@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import TableCard from "../../components/TableCard";
 import Pagination from "../../components/Pagination";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
 import PrivateResources from "../../hooks/PrivateResources";
-import { Link } from "react-router-dom";
 
 export default function Articles() {
 
@@ -34,7 +35,12 @@ export default function Articles() {
                                 <>
                                     <div className={"table-list"}>
                                         {Object.values(items.results).map((item, index) => (
-                                            <Link key={index} className={"table-card"} to={"/admin/blog/" + item.id}>{item.title}</Link>
+                                            <TableCard
+                                                key={index}
+                                                imgPath={item.photo}
+                                                title={item.title}
+                                                link={"/admin/blog/" + item.id}
+                                            />
                                         ))}
                                     </div>
                                     

@@ -62,8 +62,8 @@ export default function MakerSingle() {
             <Link className={"btn btn-blue"} to={"/admin/makers"}>Return</Link>
             {!loading && Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
                 <>
-                    <Link className={"btn btn-orange ml-5"} to={`/admin/maker/${items.id}/edit`}>Edit</Link>
-                    <button type={"button"} className={"btn btn-red ml-5"} onClick={(e) => handleRemove(e, items.id)}>Remove</button>
+                    <Link className={"btn btn-orange ml-5"} to={`/admin/maker/${items.maker.id}/edit`}>Edit</Link>
+                    <button type={"button"} className={"btn btn-red ml-5"} onClick={(e) => handleRemove(e, items.maker.id)}>Remove</button>
                 </>
             )}
 

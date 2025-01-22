@@ -6,10 +6,10 @@ export default function FuelForm({fuel = null}) {
 
     const storageUser = localStorage.getItem("token") ?? ""
     const [formResponse, setFormResponse] = useState({})
-    const [credentials, setCredentials] = useState(fuel ?? {
-        title: null,
-        price: null,
-        key: null
+    const [credentials, setCredentials] = useState({
+        title: fuel != null ? fuel.title : null,
+        key: fuel != null ? fuel.fuelKey : null,
+        price: fuel != null ? fuel.price : null,
     })
 
     const handleChange = (e, fieldName) => {
