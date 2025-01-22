@@ -99,3 +99,19 @@ export function stripHTML(htmlValue) {
     tmp.innerHTML = htmlValue;
     return tmp.textContent || tmp.innerText || "";
 }
+
+/**
+ * 
+ * @returns 
+ */
+export const generateYearMonths = () => {
+    let date = new Date()
+    let months = []
+
+    for(let $i = 0; $i < 12; $i++) {
+        date.setMonth($i)
+        months.push((date.getMonth() + 1))
+    }
+
+    return months
+}

@@ -39,4 +39,12 @@ class BlogRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function countArticles() {
+        return $this->createQueryBuilder("article")
+            ->select("COUNT(article.id) as nbrArticles")
+            ->getQuery()
+            ->getSingleResult()["nbrArticles"]
+        ;
+    }
 }
