@@ -116,4 +116,17 @@ class VehicleRepository extends ServiceEntityRepository
             ->getSingleResult()["nbrVehicles"]
         ;
     }
+
+    /**
+     * @return int
+     */
+    public function countMakerVehicles(int $makerID) : int {
+        return $this->createQueryBuilder("vehicle")
+            ->select("COUNT(vehicle.id) as nbrVehicles")
+            ->where("vehicle.maker = :makerID")
+            ->setParameter(":makerID", $makerID)
+            ->getQuery()
+            ->getSingleResult()["nbrVehicles"]
+        ;
+    }
 }
