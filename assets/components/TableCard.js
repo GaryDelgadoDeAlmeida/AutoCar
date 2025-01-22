@@ -42,7 +42,7 @@ export default function TableCard({imgPath, title, description, link, removalLin
                     <span className={"-description"}>{description}</span>
                 </div>
             </div>
-            <div className={"-footer"}>
+            <div className={"-footer d-flex -g-5 -m-column"}>
                 {removalLink != null && (
                     <button 
                         type={"button"} 

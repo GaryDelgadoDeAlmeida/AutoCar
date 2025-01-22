@@ -18,6 +18,10 @@
     background-color: var(--c-primary);
     box-shadow: 15px 0 15px rgba(0, 0, 0, 0.17);
 
+    @include tiny_mobile {
+        flex-direction: column;
+    }
+
     .-content {
         flex: 1;
         gap: 15px;

@@ -62,6 +62,15 @@ class MakerRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getMakersForForms() : array {
+        return $this->createQueryBuilder("maker")
+            ->select("maker.id, maker.name")
+            ->orderBy("maker.name", "ASC")
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * @return int Return the number of makers stored in the dabase
      */
