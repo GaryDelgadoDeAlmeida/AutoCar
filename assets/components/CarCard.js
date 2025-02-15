@@ -3,10 +3,15 @@ import { Link } from "react-router-dom";
 
 export default function CarCard({carItem}) {
 
+    let vehicleThumbnail = "/content/img/vehicle-thumbnail.jpg"
+    if(carItem.photo) {
+        vehicleThumbnail = carItem.photo
+    }
+
     return (
         <Link to={"/vehicle/" + carItem.id} className={"vehicule-card"}>
             <div className={"-header"}>
-                <img src={`${window.location.origin}/${carItem.imgPath}`} alt={""} />
+                <img src={`${window.location.origin}/${vehicleThumbnail}`} alt={""} />
             </div>
             <div className={"-content"}>
                 <label className={"-title"}>{carItem.name + " (" + (new Date(carItem.buildAt)).getFullYear() + ")"}</label>
@@ -14,7 +19,7 @@ export default function CarCard({carItem}) {
                 <div className={"-caracteristics"}>
                     <label className={"-caracteristic"}>
                         <img src={`${window.location.origin}/content/svg/dollar-sign.svg`} alt={""} />
-                        <span>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(carItem.price)}</span>
+                        <span>{carItem.price > 0 ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(carItem.price) : "N/A"}</span>
                     </label>
                     <label className={"-caracteristic"}>
                         <img src={`${window.location.origin}/content/svg/car.svg`} alt={""} />

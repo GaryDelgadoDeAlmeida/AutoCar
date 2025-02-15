@@ -9,13 +9,14 @@ abstract class VehicleEnum {
     public const VEHICLE_BASEMODEL = "basemodel";
     public const VEHICLE_NAME = "name";
     public const VEHICLE_FUEL = "fuel";
-    public const VEHICLE_FUEL_TANK = "fuel_tank";
-    public const VEHICLE_WEIGHT = "vehicle_weight";
-    public const VEHICLE_MAX_SPEED = "max_speed";
-    public const VEHICLE_AVERAGE_FUELD_CONSUMPTION = "average_fuel_consumption";
+    public const VEHICLE_FUEL_TANK = "fuelTank";
+    public const VEHICLE_WEIGHT = "vehiculeWeight";
+    public const VEHICLE_MAX_SPEED = "maxSpeed";
+    public const VEHICLE_AVERAGE_FUELD_CONSUMPTION = "averageFuelConsumption";
     public const VEHICLE_PRICE = "price";
-    public const VEHICLE_BUILD_AT = "build_at";
-    public const VEHICLE_PREVIEWS = "previews";
+    public const VEHICLE_BUILD_AT = "buildAt";
+    public const VEHICLE_CONSUMPTIONS = "consumptions";
+    public const VEHICLE_CHARACTERISTICS = "characteristics";
 
     private array $typeName = [
         self::VEHICLE_MAKER => "Maker",
@@ -29,14 +30,21 @@ abstract class VehicleEnum {
         self::VEHICLE_AVERAGE_FUELD_CONSUMPTION => "Average fuel consumption",
         self::VEHICLE_PRICE => "Price",
         self::VEHICLE_BUILD_AT => "Build at",
-        self::VEHICLE_PREVIEWS => "Previews"
+        self::VEHICLE_CONSUMPTIONS => "Consumptions",
+        self::VEHICLE_CHARACTERISTICS => "Characteristics"
     ];
 
-    public function getRequiredFields() : array {
-        return [];
+    public static function getRequiredFields() : array {
+        return [
+            self::VEHICLE_MAKER,
+            self::VEHICLE_BASEMODEL,
+            self::VEHICLE_NAME,
+            self::VEHICLE_FUEL,
+            self::VEHICLE_BUILD_AT
+        ];
     }
 
-    public static function getAvalaibleChoices() : array {
+    public static function getAvailableChoices() : array {
         return [
             self::VEHICLE_MAKER,
             self::VEHICLE_PHOTO,
@@ -49,14 +57,15 @@ abstract class VehicleEnum {
             self::VEHICLE_MAX_SPEED,
             self::VEHICLE_AVERAGE_FUELD_CONSUMPTION,
             self::VEHICLE_BUILD_AT,
-            self::VEHICLE_PREVIEWS,
+            self::VEHICLE_CONSUMPTIONS,
+            self::VEHICLE_CHARACTERISTICS
         ];
     }
 
     public static function getChoices() : array {
         $choices = [];
 
-        foreach(self::getAvalaibleChoices() as $choice) {
+        foreach(self::getAvailableChoices() as $choice) {
             $choices[self::$typeName[$choice]] = $choice;
         }
 

@@ -22,7 +22,7 @@ abstract class ArticleEnum {
         ];
     }
 
-    private static function getAvalaibleChoices() : array {
+    private static function getAvailableChoices() : array {
         return [
             self::ARTICLE_PHOTO,
             self::ARTICLE_TITLE,
@@ -33,7 +33,7 @@ abstract class ArticleEnum {
     public static function getChoices() : array {
         $choices = [];
 
-        foreach(self::getAvalaibleChoices() as $choice) {
+        foreach(self::getAvailableChoices() as $choice) {
             $choices[self::$typeName[$choice]] = $choice;
         }
 

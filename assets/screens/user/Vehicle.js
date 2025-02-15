@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
+import Notification from "../../components/Notification";
 import PrivateRessource from "../../hooks/PrivateResources";
 
 export default function Vehicle() {
@@ -16,8 +17,8 @@ export default function Vehicle() {
         load()
     }, [vehicleID])
 
-    const [currentOnglet, setCurrentOnglet] = useState("general")
-    const handleClick = (onglet = "general") => {
+    const [currentOnglet, setCurrentOnglet] = useState("consumptions")
+    const handleClick = (onglet = "consumptions") => {
         setCurrentOnglet(onglet)
     }
 
@@ -40,155 +41,144 @@ export default function Vehicle() {
             <section className={"page-section"}>
                 <div className={"page-wrapper"}>
                     <Link className={"btn btn-secondary"} to={"/vehicles"}>Return</Link>
-                    <div className={"page-vehicle"}>
-                        <div className={"vehicle-presentation"}>
-                            <div className={"-header"}>
-                                <img src={`${window.location.origin}/content/img/cars/toyota-corolla-side-view.jpg`} alt={""} />
-                            </div>
-                            <div className={"-content"}>
-                                <label className={"d-flex jf-between"}>
-                                    <span>Vehicle name</span>
-                                    <span>Price €</span>
-                                </label>
-                                <p>Maker name</p>
-                            </div>
-                        </div>
+                    
+                    {loading && (
+                        <Notification classname={"information"} message={"Loading ..."} />
+                    )}
 
-                        {/* Start - To remove ??? */}
-                        <div className={"vehicle-block"}>
-                            <div className={"-header"}>
-                                <label>Car Overview</label>
-                            </div>
-                            <div className={"-content"}>
-                                {/*  */}
-                            </div>
-                        </div>
-                        {/* End - To remove ??? */}
+                    {!loading && (
+                        <>
+                            {Object.keys(error).length > 0 && (
+                                <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                            )}
 
-                        <div className={"vehicle-block"}>
-                            <div className={"-header"}>
-                                <label>Car Description</label>
-                            </div>
-                            <div className={"-content"}>
-                                <div className={"-markup"}>
-                                    <p>Lorem ipsum dolor sit amet. Aut dignissimos molestias ut totam reiciendis est vero accusantium! In repellat incidunt At reprehenderit provident id commodi quasi? </p><p>Et nisi recusandae et ipsa beatae aut galisum quaerat. Qui nihil delectus et nesciunt aliquam sed mollitia galisum est iure voluptas. Quo harum consequatur ea saepe aperiam non veniam quia sed quia laudantium id natus numquam et quis voluptatem. </p><p>Sed numquam iste nam perspiciatis odio sit maiores aperiam et suscipit quia est sint nemo est minus quis. Qui consequatur dolor eos ipsam nemo cum consequatur quod. </p><p>Qui dolorum possimus est nihil officiis in numquam iure non atque fuga et nobis aliquam hic incidunt voluptate. Id minima earum aut laudantium maxime est expedita labore ut rerum voluptas nam veritatis quia. Ut rerum impedit aut maiores temporibus qui praesentium expedita qui praesentium mollitia est rerum corrupti. Qui repellat dolorem qui esse molestias sit dolore labore aut ipsam quis non nostrum atque ut quas excepturi ut accusantium repudiandae? </p><p>Vel maxime molestiae et Quis galisum quo labore dicta aut dolores molestias et enim libero. Non cupiditate corrupti ut omnis quia est quia facilis est quae quaerat non quod dolor sed quidem illum. Qui deserunt sunt qui quia eaque id ipsa consectetur. Ex minus dicta sed perspiciatis dolor quo debitis quia. </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={"vehicle-block"}>
-                            <div className={"-header"}>
-                                <label>Car Features</label>
-                            </div>
-                            <div className={"-content"}>
-                                <div className={"d-flex -g-25 mt-50"}>
-                                    <div className={"w-200px"}>
-                                        <div className={"card"}>
-                                            <div className={"-content d-col -g-5"}>
-                                                <button className={"btn"} onClick={() => handleClick()}>General details</button>
-                                                <button className={"btn"} onClick={() => handleClick("consumptions")}>Consumptions</button>
-                                                <button className={"btn"} onClick={() => handleClick("characteristics")}>Characteristics</button>
+                            {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
+                                <div className={"page-vehicle"}>
+                                    <div className={"vehicle-presentation"}>
+                                        <div className={"-header"}>
+                                            <img src={`${window.location.origin}${items.photo ?? "/content/img/vehicle-thumbnail.jpg"}`} alt={""} />
+                                        </div>
+                                        <div className={"-content"}>
+                                            <label className={"d-flex jf-between"}>
+                                                <span>{items.name}</span>
+                                                <span>{items.price > 0 ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(items.price) : "N/A"}</span>
+                                            </label>
+                                            <p>{items.maker.name}</p>
+                                        </div>
+                                    </div>
+            
+                                    <div className={"vehicle-block"}>
+                                        <div className={"-header"}>
+                                            <label>Description</label>
+                                        </div>
+                                        <div className={"-content"}>
+                                            <div className={"-markup"}>
+                                                <p>Lorem ipsum dolor sit amet. Aut dignissimos molestias ut totam reiciendis est vero accusantium! In repellat incidunt At reprehenderit provident id commodi quasi? </p><p>Et nisi recusandae et ipsa beatae aut galisum quaerat. Qui nihil delectus et nesciunt aliquam sed mollitia galisum est iure voluptas. Quo harum consequatur ea saepe aperiam non veniam quia sed quia laudantium id natus numquam et quis voluptatem. </p><p>Sed numquam iste nam perspiciatis odio sit maiores aperiam et suscipit quia est sint nemo est minus quis. Qui consequatur dolor eos ipsam nemo cum consequatur quod. </p><p>Qui dolorum possimus est nihil officiis in numquam iure non atque fuga et nobis aliquam hic incidunt voluptate. Id minima earum aut laudantium maxime est expedita labore ut rerum voluptas nam veritatis quia. Ut rerum impedit aut maiores temporibus qui praesentium expedita qui praesentium mollitia est rerum corrupti. Qui repellat dolorem qui esse molestias sit dolore labore aut ipsam quis non nostrum atque ut quas excepturi ut accusantium repudiandae? </p><p>Vel maxime molestiae et Quis galisum quo labore dicta aut dolores molestias et enim libero. Non cupiditate corrupti ut omnis quia est quia facilis est quae quaerat non quod dolor sed quidem illum. Qui deserunt sunt qui quia eaque id ipsa consectetur. Ex minus dicta sed perspiciatis dolor quo debitis quia. </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className={"w-100"}>
-                                        <div className={"card"}>
-                                            <div className={"-content"}>
-                                                {currentOnglet == "general" && (
-                                                    <>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Maker</span></div>
-                                                            <div className={"w-100 py-10"}><span>Toyota</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Builded year</span></div>
-                                                            <div className={"w-100 py-10"}><span>2024</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Base model</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Model</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Vehicle Weight (t)</span></div>
-                                                            <div className={"w-100 py-10"}><span>5t</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Max speed</span></div>
-                                                            <div className={"w-100 py-10"}><span>130 km/h</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Fuel</span></div>
-                                                            <div className={"w-100 py-10"}><span>Diesel</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Fuel tank capacity</span></div>
-                                                            <div className={"w-100 py-10"}><span>50 L</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Average fuel consumption (100km/L)</span></div>
-                                                            <div className={"w-100 py-10"}><span>5.7 L</span></div>
-                                                        </li>
-                                                    </>
-                                                )}
 
-                                                {currentOnglet == "consumptions" && (
-                                                    <div className={""}>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
+                                    <div className={"vehicle-block"}>
+                                        <div className={"-header"}>
+                                            <label>Overview</label>
+                                        </div>
+                                        <div className={"-content"}>
+                                            <div className={"mt-25"}>
+                                                <li className={"d-flex jf-evenly"}>
+                                                    <div className={"w-100 py-10"}><span className={"fw-bold"}>Maker</span></div>
+                                                    <div className={"w-100 py-10"}><span>{items.maker.name}</span></div>
+                                                </li>
+                                                <li className={"d-flex jf-evenly"}>
+                                                    <div className={"w-100 py-10"}><span className={"fw-bold"}>Builded year</span></div>
+                                                    <div className={"w-100 py-10"}><span>{(new Date(items.buildAt)).getFullYear()}</span></div>
+                                                </li>
+                                                <li className={"d-flex jf-evenly"}>
+                                                    <div className={"w-100 py-10"}><span className={"fw-bold"}>Base model</span></div>
+                                                    <div className={"w-100 py-10"}><span>{items.basemodel}</span></div>
+                                                </li>
+                                                <li className={"d-flex jf-evenly"}>
+                                                    <div className={"w-100 py-10"}><span className={"fw-bold"}>Model</span></div>
+                                                    <div className={"w-100 py-10"}><span>{items.name}</span></div>
+                                                </li>
+                                                <li className={"d-flex jf-evenly"}>
+                                                    <div className={"w-100 py-10"}><span className={"fw-bold"}>Vehicle Weight (kg)</span></div>
+                                                    <div className={"w-100 py-10"}><span>{items.vehiculeWeight ?? "N/A"}</span></div>
+                                                </li>
+                                                <li className={"d-flex jf-evenly"}>
+                                                    <div className={"w-100 py-10"}><span className={"fw-bold"}>Max speed (km/h)</span></div>
+                                                    <div className={"w-100 py-10"}><span>{items.maxSpeed ?? "N/A"}</span></div>
+                                                </li>
+                                                <li className={"d-flex jf-evenly"}>
+                                                    <div className={"w-100 py-10"}><span className={"fw-bold"}>Fuel</span></div>
+                                                    <div className={"w-100 py-10"}><span>{items.fuels[0].title}</span></div>
+                                                </li>
+                                                <li className={"d-flex jf-evenly"}>
+                                                    <div className={"w-100 py-10"}><span className={"fw-bold"}>Fuel tank capacity (L)</span></div>
+                                                    <div className={"w-100 py-10"}><span>{items.fuelTank ?? "N/A"}</span></div>
+                                                </li>
+                                                <li className={"d-flex jf-evenly"}>
+                                                    <div className={"w-100 py-10"}><span className={"fw-bold"}>Average fuel consumption (100km/L)</span></div>
+                                                    <div className={"w-100 py-10"}><span>{items.averageFuelConsumption ?? "N/A"}</span></div>
+                                                </li>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className={"vehicle-block"}>
+                                        <div className={"-header"}>
+                                            <label>Features</label>
+                                        </div>
+                                        <div className={"-content"}>
+                                            <div className={"d-col -g-25 mt-50"}>
+                                                <div className={"d-flex -g-5 jf-start"}>
+                                                    <button className={`btn ${currentOnglet == "consumptions" ? "" : "btn-secondary"}`} onClick={() => handleClick()}>Consumptions</button>
+                                                    <button className={`btn ${currentOnglet == "characteristics" ? "" : "btn-secondary"}`} onClick={() => handleClick("characteristics")}>Characteristics</button>
+                                                </div>
+
+                                                <div className={"card"}>
+                                                    <div className={"-content"}>
+                                                        {currentOnglet == "consumptions" && (
+                                                            <div className={""}>
+                                                                {items.consumptions.map((item, index) => (
+                                                                    <li key={index} className={"d-flex jf-evenly"}>
+                                                                        <div className={"w-100 py-10"}><span className={"fw-bold"}>{item.consumption_description}</span></div>
+                                                                        <div className={"w-100 py-10"}><span>{item.value ?? "N/A"}</span></div>
+                                                                    </li>
+                                                                ))}
+                                                            </div>
+                                                        )}
+
+                                                        {currentOnglet == "characteristics" && (
+                                                            <div className={""}>
+                                                                {items.characteristics.map((item, index) => (
+                                                                    <li key={index} className={"d-flex jf-evenly"}>
+                                                                        <div className={"w-100 py-10"}><span className={"fw-bold"}>{item.characteristic_description}</span></div>
+                                                                        <div className={"w-100 py-10"}><span>{item.value ?? "N/A"}</span></div>
+                                                                    </li>
+                                                                ))}
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                )}
-                                                {currentOnglet == "characteristics" && (
-                                                    <div className={""}>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                        <li className={"d-flex jf-evenly"}>
-                                                            <div className={"w-100 py-10"}><span className={"fw-bold"}>Title</span></div>
-                                                            <div className={"w-100 py-10"}><span>Description</span></div>
-                                                        </li>
-                                                    </div>
-                                                )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Client Review / Comments */}
+                                    <div className={"vehicle-block"}>
+                                        <div className={"-header"}>
+                                            <label>Client reviews</label>
+                                        </div>
+                                        <div className={"-content"}>
+                                            <div className={"mt-25"}>
+                                                <Notification classname={"information"} message={"There is no reviews for this car"} />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            )}
+                        </>
+                    )}
                 </div>
             </section>
         </Header>

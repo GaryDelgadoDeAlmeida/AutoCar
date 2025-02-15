@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Notification from "../../components/Notification";
 import Pagination from "../../components/Pagination";
 import TableCard from "../../components/TableCard";
+import { stripHTML } from "../../hooks/DomControl";
 
 export default function Testimonials() {
 
@@ -39,7 +40,7 @@ export default function Testimonials() {
                                                 key={index}
                                                 imgPath={item.imgPath}
                                                 title={item.firstname + " " + item.lastname}
-                                                description={item.comment}
+                                                description={stripHTML(item.comment)}
                                                 link={"/admin/testimonial/" + item.id}
                                                 removalLink={`${window.location.origin}/api/backoffice/testimonial/${item.id}/remove`}
                                             />

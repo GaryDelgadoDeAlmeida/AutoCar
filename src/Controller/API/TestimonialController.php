@@ -26,6 +26,6 @@ class TestimonialController extends AbstractController
             "offset" => $offset,
             "maxOffset" => ceil($this->testimonialRepository->countTestimonials() / $limit),
             "results" => $this->testimonialRepository->findBy([], ["createdAt" => "DESC"], $limit, ($offset - 1) * $limit)
-        ]);
+        ], Response::HTTP_OK);
     }
 }

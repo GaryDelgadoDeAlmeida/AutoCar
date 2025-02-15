@@ -17,6 +17,30 @@ class TestimonialRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param Testimonial entity
+     * @param bool flush into database
+     */
+    public function save(Testimonial $entity, bool $flush = false) {
+        $this->getEntityManager()->persist($entity);
+
+        if($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * @param Testimonial entity
+     * @param bool flush remove into database
+     */
+    public function remove(Testimonial $entity, bool $flush = false) {
+        $this->getEntityManager()->remove($entity);
+
+        if($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
      * @return int
      */
     public function countTestimonials() : int {

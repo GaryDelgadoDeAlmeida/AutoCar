@@ -39,7 +39,7 @@ export default function CharacteristicField({index, fieldName = "characteristics
                             <select onChange={(e) => handleChange(e, "characteristic")} value={credentials.characteristic} required>
                                 <option value={""}>Select a characteristic</option>
                                 {Object.values(items.results).map((item, index) => (
-                                    <option key={index} value={item.id}>{item.title}</option>
+                                    <option key={index} value={item.id}>{item.description}</option>
                                 ))}
                             </select>
                         </div>
@@ -50,7 +50,7 @@ export default function CharacteristicField({index, fieldName = "characteristics
                                 maxLength={255}
                                 placeholder={"Characteristic value"}
                                 onChange={(e) => handleChange(e, "value")}
-                                required
+                                // required
                             />
                         </div>
                     </div>

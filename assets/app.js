@@ -55,6 +55,8 @@ import AdminNewsletters from "./screens/admin/Newsletters";
 import AdminTestimonials from "./screens/admin/Testimonials";
 import AdminTestimonial from "./screens/admin/Testimonial";
 import AdminTestimonialNew from "./screens/admin/TestimonialNew";
+import AdminInboxes from "./screens/admin/Inboxes";
+import AdminInbox from "./screens/admin/Inbox";
 
 // Common
 import Page404 from "./screens/Page404"
@@ -104,6 +106,8 @@ root.render(
                 <Route path={"/admin/testimonials"} element={<AdminTestimonials />} />
                 <Route path={"/admin/testimonial/add"} element={<AdminTestimonialNew />} />
                 <Route path={"/admin/testimonial/:testimonialID"} element={<AdminTestimonial />} />
+                <Route path={"/admin/inboxes"} element={<AdminInboxes />} />
+                <Route path={"/admin/inbox/:inboxID"} element={<AdminInbox />} />
                 
                 {/* Common */}
                 <Route path={"/faq"} element={<Faq />} />

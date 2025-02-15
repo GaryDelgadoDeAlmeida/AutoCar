@@ -3,16 +3,16 @@ import ImageField from "./parts/ImageField"
 import WyziwigField from "./parts/WyziwigField"
 import Notification from "../components/Notification"
 import axios from "axios";
+import { formatDate } from "../hooks/DomControl";
 
 export default function MakerForm({maker = null}) {
-
     let storedUser = localStorage.getItem("token") ?? ""
     const [formResponse, setFormResponse] = useState({})
-    const [credentials, setCredentials] = useState(maker ?? {
-        name: "",
-        description: "",
-        founded_at: "",
-        location: ""
+    const [credentials, setCredentials] = useState({
+        name: maker ? maker.name : "",
+        description: maker ? maker.description : "",
+        founded_at: maker ? formatDate(maker.foundedAt, "en") : "",
+        location: maker ? maker.location : ""
     })
 
     const [credentialsPhoto, setCredentialsPhoto] = useState({
@@ -31,54 +31,99 @@ export default function MakerForm({maker = null}) {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        axios
-            .post(`${window.location.origin}/api/backoffice/maker`, credentials, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json+ld",
-                    "Authorization": "Bearer " + storedUser
-                }
-            })
-            .then((response) => {
-                setFormResponse({classname: "success", message: "The car maker has been successfully added into the database"})
+        if(maker == null) {
+            axios
+                .post(`${window.location.origin}/api/backoffice/maker`, credentials, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json+ld",
+                        "Authorization": "Bearer " + storedUser
+                    }
+                })
+                .then((response) => {
+                    setFormResponse({classname: "success", message: "The car maker has been successfully added into the database"})
 
-                console.log(response)
-                if(credentialsPhoto.logo) {
-                    axios
-                        .post(`${window.location.origin}/api/backoffice/maker/${response.data.id}/photo/update`, credentialsPhoto, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                                // "Accept": "application/json+ld",
-                                "Authorization": "Bearer " + storedUser
-                            }
-                        })
-                        .then((response) => {
-                            // 
-                        })
-                        .catch((error) => {
-                            let errorMessage = "An error has been encountered, the photo couldn't be saved. Please, retry more later"
-                            if(error.response.data.message) {
-                                errorMessage = error.response.data.message
-                            } else if(error.response.data.detail) {
-                                errorMessage = error.response.data.detail
-                            }
+                    console.log(response)
+                    if(credentialsPhoto.logo) {
+                        axios
+                            .post(`${window.location.origin}/api/backoffice/maker/${response.data.id}/photo/update`, credentialsPhoto, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                    // "Accept": "application/json+ld",
+                                    "Authorization": "Bearer " + storedUser
+                                }
+                            })
+                            .catch((error) => {
+                                let errorMessage = "An error has been encountered, the photo couldn't be saved. Please, retry more later"
+                                if(error.response.data.message) {
+                                    errorMessage = error.response.data.message
+                                } else if(error.response.data.detail) {
+                                    errorMessage = error.response.data.detail
+                                }
 
-                            setFormResponse({classname: "danger", message: errorMessage})
-                        })
-                    ;
-                }
-            })
-            .catch((error) => {
-                let errorMessage = "An error has been encountered. Please, retry more later"
-                if(error.response.data.message) {
-                    errorMessage = error.response.data.message
-                } else if(error.response.data.detail) {
-                    errorMessage = error.response.data.detail
-                }
+                                setFormResponse({classname: "danger", message: errorMessage})
+                            })
+                        ;
+                    }
+                })
+                .catch((error) => {
+                    let errorMessage = "An error has been encountered. Please, retry more later"
+                    if(error.response.data.message) {
+                        errorMessage = error.response.data.message
+                    } else if(error.response.data.detail) {
+                        errorMessage = error.response.data.detail
+                    }
 
-                setFormResponse({classname: "danger", message: errorMessage})
-            })
-        ;
+                    setFormResponse({classname: "danger", message: errorMessage})
+                })
+            ;
+        } else {
+            axios
+                .put(`${window.location.origin}/api/backoffice/maker/${maker.id}/update`, credentials, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json+ld",
+                        "Authorization": "Bearer " + storedUser
+                    }
+                })
+                .then((response) => {
+                    setFormResponse({classname: "success", message: "The car maker has been successfully added into the database"})
+
+                    console.log(response)
+                    if(credentialsPhoto.logo) {
+                        axios
+                            .post(`${window.location.origin}/api/backoffice/maker/${response.data.id}/photo/update`, credentialsPhoto, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                    // "Accept": "application/json+ld",
+                                    "Authorization": "Bearer " + storedUser
+                                }
+                            })
+                            .catch((error) => {
+                                let errorMessage = "An error has been encountered, the photo couldn't be saved. Please, retry more later"
+                                if(error.response.data.message) {
+                                    errorMessage = error.response.data.message
+                                } else if(error.response.data.detail) {
+                                    errorMessage = error.response.data.detail
+                                }
+
+                                setFormResponse({classname: "danger", message: errorMessage})
+                            })
+                        ;
+                    }
+                })
+                .catch((error) => {
+                    let errorMessage = "An error has been encountered. Please, retry more later"
+                    if(error.response.data.message) {
+                        errorMessage = error.response.data.message
+                    } else if(error.response.data.detail) {
+                        errorMessage = error.response.data.detail
+                    }
+
+                    setFormResponse({classname: "danger", message: errorMessage})
+                })
+            ;
+        }
     }
 
     return (

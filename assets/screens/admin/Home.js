@@ -4,6 +4,7 @@ import TableCard from "../../components/TableCard";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
 import PrivateResources from "../../hooks/PrivateResources";
+import { stripHTML } from "../../hooks/DomControl";
 
 export default function Home() {
 
@@ -62,7 +63,7 @@ export default function Home() {
                                             {Object.values(items.latestVehicles).map((item, index) => (
                                                 <TableCard
                                                     key={index}
-                                                    imgPath={item.photo}
+                                                    imgPath={item.photo ?? "/content/img/vehicle-thumbnail.jpg"}
                                                     title={`${item.name} (${(new Date(item.buildAt)).getFullYear()})`}
                                                     description={item.maker_name}
                                                     link={"/admin/vehicle/" + item.id}
@@ -86,9 +87,25 @@ export default function Home() {
                                             <div className={"-header"}>
                                                 <label className={"-title"}>The lastest inboxes</label>
                                             </div>
-                                            <div className={"-content"}></div>
+                                            <div className={"-content"}>
+                                                {Object.keys(items.latestInboxes).length > 0 ? (
+                                                    <>
+                                                        <div className={""}>
+                                                            {Object.values(items.latestInboxes).map((item, index) => (
+                                                                <TableCard
+                                                                    key={index}
+                                                                    title={item.subject}
+                                                                    description={item.email}
+                                                                    link={`/admin/inbox/${item.id}`}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <Notification classname={"warning"} message={"There is no message received"} />
+                                                )}
+                                            </div>
                                         </div>
-                                        
                                         <div className={"mt-25 txt-right"}>
                                             <Link className={"btn btn-secondary btn-m fw-bold"} to={"/admin/inboxes"}>See all inboxes</Link>
                                         </div>
@@ -98,7 +115,24 @@ export default function Home() {
                                             <div className={"-header"}>
                                                 <label className={"-title"}>The lastest testimonials</label>
                                             </div>
-                                            <div className={"-content"}></div>
+                                            <div className={"-content"}>
+                                                {Object.keys(items.latestTestimonials).length > 0 ? (
+                                                    <>
+                                                        <div className={""}>
+                                                            {Object.values(items.latestTestimonials).map((item, index) => (
+                                                                <TableCard
+                                                                    key={index}
+                                                                    title={`${item.firstname} ${item.lastname}`}
+                                                                    description={stripHTML(item.comment).slice(0, 150)}
+                                                                    link={`/admin/testimonial/${item.id}`}
+                                                                />
+                                                            ))}
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <Notification classname={"warning"} message={"There is no testimonial registered"} />
+                                                )}
+                                            </div>
                                         </div>
 
                                         <div className={"mt-25 txt-right"}>

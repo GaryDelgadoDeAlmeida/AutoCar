@@ -5,6 +5,7 @@ import MakerField from "./parts/MakerField";
 import ImageField from "./parts/ImageField";
 import ConsumptionField from "./parts/ConsumptionField";
 import CharacteristicField from "./parts/CharacteristicField";
+import { formatDate } from "../hooks/DomControl"
 import axios from "axios";
 
 export default function VehicleForm({vehicle = null}) {
@@ -14,25 +15,37 @@ export default function VehicleForm({vehicle = null}) {
     let storedUser = localStorage.getItem("token") ?? ""
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
-        maker: null,
-        model: "",
-        basemodel: "",
-        fuel: null,
-        fuelTank: null,
-        vehiculeWeight: null,
-        maxSpeed: null,
-        averageFuelConsumption: null,
-        price: null,
-        buildAt: null,
-        consumptions: {
+        maker: vehicle && vehicle.maker ? vehicle.maker.id : "",
+        model: vehicle ? vehicle.name : "",
+        basemodel: vehicle ? vehicle.basemodel : "",
+        fuel: vehicle ? vehicle.fuels[0].id : "",
+        fuelTank: vehicle ? vehicle.fuelTank : "",
+        vehiculeWeight: vehicle ? vehicle.vehiculeWeight : "",
+        maxSpeed: vehicle ? vehicle.maxSpeed : "",
+        averageFuelConsumption: vehicle ? vehicle.averageFuelConsumption : "",
+        price: vehicle ? vehicle.price : "",
+        buildAt: vehicle ? formatDate(vehicle.buildAt) : "",
+        consumptions: vehicle ? vehicle.consumptions.map((item) => {
+            return {
+                id: item.id,
+                consumption: item.consumption_id,
+                value: item.value
+            }
+        }) : {
             0: {
-                consumption: null,
+                consumption: "",
                 value: "",
             }
         },
-        characteristics: {
+        characteristics: vehicle ? vehicle.characteristics.map((item) => {
+            return {
+                id: item.id,
+                characteristic: item.characteristic_id,
+                value: item.value
+            }
+        }) : {
             0: {
-                characteristic: null,
+                characteristic: "",
                 value: "",
             }
         },
@@ -75,52 +88,101 @@ export default function VehicleForm({vehicle = null}) {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        axios
-            .post(`${window.location.origin}/api/backoffice/vehicle`, credentials, {
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                    "Authorization": "Bearer " + storedUser
-                }
-            })
-            .then((response) => {
-                setFormResponse({classname: "success", message: ""})
+        if(vehicle == null) {
+            axios
+                .post(`${window.location.origin}/api/backoffice/vehicle`, credentials, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": "Bearer " + storedUser
+                    }
+                })
+                .then((response) => {
+                    setFormResponse({classname: "success", message: ""})
+                    
+                    if(response.status == 201) {
+                        axios
+                            .post(`${window.location.origin}/api/backoffice/vehicle/${response.data.id}/photo`, credentialsImgs, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                    "Authorization": "Bearer " + storedUser
+                                }
+                            })
+                            .then((response) => {
+                                setFormResponse({classname: "success", message: "The vehicle image has been successfully saved into the database"})
+                            })
+                            .catch((error) => {
+                                let errorMessage = "An error has been encountered. Unfortunatly, images couldn't be saved."
+                                if(error.response.data.message) {
+                                    errorMessage = error.response.data.message
+                                } else if(error.response.data.detail) {
+                                    errorMessage = error.response.data.detail
+                                }
                 
-                if(response.status == 201) {
-                    axios
-                        .post(`${window.location.origin}/api/backoffice/vehicle/${response.data.id}/photo`, credentialsImgs, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                                "Authorization": "Bearer " + storedUser
-                            }
-                        })
-                        .then((response) => {
-                            setFormResponse({classname: "success", message: "The vehicle image has been successfully saved into the database"})
-                        })
-                        .catch((error) => {
-                            let errorMessage = "An error has been encountered. Unfortunatly, images couldn't be saved."
-                            if(error.response.data.message) {
-                                errorMessage = error.response.data.message
-                            } else if(error.response.data.detail) {
-                                errorMessage = error.response.data.detail
-                            }
-            
-                            setFormResponse({classname: "danger", message: errorMessage})
-                        })
-                    ;
-                }
-            })
-            .catch((error) => {
-                let errorMessage = "An error has been encountered. Please retry more later"
-                if(error.response.data.message) {
-                    errorMessage = error.response.data.message
-                } else if(error.response.data.detail) {
-                    errorMessage = error.response.data.detail
-                }
+                                setFormResponse({classname: "danger", message: errorMessage})
+                            })
+                        ;
+                    }
+                })
+                .catch((error) => {
+                    let errorMessage = "An error has been encountered. Please retry more later"
+                    if(error.response.data.message) {
+                        errorMessage = error.response.data.message
+                    } else if(error.response.data.detail) {
+                        errorMessage = error.response.data.detail
+                    }
 
-                setFormResponse({classname: "danger", message: errorMessage})
-            })
-        ;
+                    setFormResponse({classname: "danger", message: errorMessage})
+                })
+            ;
+        } else {
+            axios
+                .put(`${window.location.origin}/api/backoffice/vehicle/${vehicle.id}`, credentials, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": "Bearer " + storedUser
+                    }
+                })
+                .then((response) => {
+                    setFormResponse({classname: "success", message: "The vehicle has been successfully updated"})
+                    
+                    if((response.status == 201 || response.status == 202) && (credentialsImgs.photo !== "" && credentialsImgs.photo !== null)) {
+                        axios
+                            .post(`${window.location.origin}/api/backoffice/vehicle/${response.data.id}/photo`, credentialsImgs, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                    "Authorization": "Bearer " + storedUser
+                                }
+                            })
+                            .then((response) => {
+                                setFormResponse({classname: "success", message: "The vehicle image has been successfully saved into the database"})
+                            })
+                            .catch((error) => {
+                                let errorMessage = "An error has been encountered. Unfortunatly, images couldn't be saved."
+                                if(error.response.data.message) {
+                                    errorMessage = error.response.data.message
+                                } else if(error.response.data.detail) {
+                                    errorMessage = error.response.data.detail
+                                }
+                
+                                setFormResponse({classname: "danger", message: errorMessage})
+                            })
+                        ;
+                    }
+                })
+                .catch((error) => {
+                    let errorMessage = "An error has been encountered. Please retry more later"
+                    if(error.response.data.message) {
+                        errorMessage = error.response.data.message
+                    } else if(error.response.data.detail) {
+                        errorMessage = error.response.data.detail
+                    }
+
+                    setFormResponse({classname: "danger", message: errorMessage})
+                })
+            ;
+        }
     }
 
     return (
@@ -192,6 +254,7 @@ export default function VehicleForm({vehicle = null}) {
                             type={"number"}
                             min={0}
                             value={credentials.fuelTank}
+                            step={"any"}
                             placeholder={"Fuel tank capacity (L)"}
                             onChange={(e) => handleChange(e, "fuelTank")}
                         />
@@ -202,8 +265,9 @@ export default function VehicleForm({vehicle = null}) {
                     <input 
                         type={"number"}
                         min={0}
+                        step={"any"}
                         value={credentials.vehiculeWeight}
-                        placeholder={"Vehicule weight (t)"}
+                        placeholder={"Vehicule weight (kg)"}
                         onChange={(e) => handleChange(e, "vehiculeWeight")}
                     />
                 </div>
@@ -222,6 +286,7 @@ export default function VehicleForm({vehicle = null}) {
                     <input 
                         type={"number"}
                         min={0}
+                        step={"any"}
                         value={credentials.averageFuelConsumption}
                         placeholder={"Vehicule average fuel consumption (per 100km/h)"}
                         onChange={(e) => handleChange(e, "averageFuelConsumption")}
@@ -232,8 +297,9 @@ export default function VehicleForm({vehicle = null}) {
                     <input 
                         type={"number"}
                         min={0}
-                        value={credentials.price}
+                        step={"any"}
                         placeholder={"Price"}
+                        value={credentials.price}
                         onChange={(e) => handleChange(e, "price")}
                     />
                 </div>
@@ -255,6 +321,7 @@ export default function VehicleForm({vehicle = null}) {
                             <div className={"mt-15"}>
                                 {Object.values(credentials.consumptions).map((item, index) => (
                                     <ConsumptionField
+                                        key={index}
                                         fieldName={"consumptions"}
                                         index={index}
                                         consumption={item}
@@ -282,6 +349,7 @@ export default function VehicleForm({vehicle = null}) {
                             <div className={"mt-15"}>
                                 {Object.values(credentials.characteristics).map((item, index) => (
                                     <CharacteristicField
+                                        key={index}
                                         fieldName={"characteristics"}
                                         index={index}
                                         characteristic={item}

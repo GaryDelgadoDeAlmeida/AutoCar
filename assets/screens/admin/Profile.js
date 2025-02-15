@@ -1,6 +1,7 @@
 import React from "react";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import ProfileForm from "../../forms/ProfileForm"
+import ProfilePasswordForm from "../../forms/ProfilePasswordForm";
 
 export default function Profile() {
 
@@ -17,6 +18,11 @@ export default function Profile() {
                 <div className={"card"}>
                     <div className={"-content"}>
                         <ProfileForm />
+                    </div>
+                </div>
+                <div className={"card mt-25"}>
+                    <div className={"-content"}>
+                        <ProfilePasswordForm />
                     </div>
                 </div>
             </section>

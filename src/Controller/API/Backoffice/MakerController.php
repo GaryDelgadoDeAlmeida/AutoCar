@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 #[Route('/api/backoffice', name: 'api_backoffice_')]
 class MakerController extends AbstractController
@@ -68,7 +69,7 @@ class MakerController extends AbstractController
         );
     }
 
-    #[Route("/maker/{makerID}", name: "update_maker", methods: ["UPDATE", "PUT"])]
+    #[Route("/maker/{makerID}/update", name: "update_maker", methods: ["UPDATE", "PUT"])]
     public function update_maker(Request $request, int $makerID) : JsonResponse {
         $maker = $this->makerRepository->find($makerID);
         if(empty($maker)) {
@@ -106,7 +107,9 @@ class MakerController extends AbstractController
 
         return $this->json(
             $maker, 
-            Response::HTTP_ACCEPTED
+            Response::HTTP_ACCEPTED,
+            [],
+            [ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles"]]
         );
     }
 
@@ -156,7 +159,9 @@ class MakerController extends AbstractController
 
         return $this->json(
             $maker, 
-            Response::HTTP_OK
+            Response::HTTP_OK,
+            [],
+            [ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles"]]
         );
     }
 

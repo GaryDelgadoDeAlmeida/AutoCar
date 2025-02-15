@@ -13,7 +13,7 @@ class ConsumptionManager {
      */
     public function checkFields(array $jsonContent) : array {
         $fields = [];
-        $allowedFields = ConsumptionEnum::getAvalaibleChoices();
+        $allowedFields = ConsumptionEnum::getAvailableChoices();
 
         foreach($jsonContent as $fieldName => $fieldValue) {
             if(!in_array($fieldName, $allowedFields)) {

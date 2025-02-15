@@ -41,4 +41,27 @@ class VehicleConsumptionRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * Get a vehicle all characteristics
+     * 
+     * @param int $vehicleID
+     * @return void
+     */
+    public function getVehicleConsumptions(int $vehicleID) : array {
+        return $this->createQueryBuilder("vehicle_consumption")
+            ->select("
+                vehicle_consumption.id,
+                consumption.id as consumption_id,
+                consumption.title as consumption_title,
+                consumption.description as consumption_description,
+                vehicle_consumption.value
+            ")
+            ->leftJoin("vehicle_consumption.consumption", "consumption")
+            ->where("vehicle_consumption.vehicle = :vehicleID")
+            ->setParameter("vehicleID", $vehicleID)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

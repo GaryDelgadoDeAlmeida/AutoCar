@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import FuelField from "./parts/FuelField"
 import Notification from "../components/Notification";
+import VehicleField from "./parts/VehicleField";
 
 export default function FuelSimulatorForm() {
 
     const [calculResponse, setCalculResponse] = useState(0)
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
-        fuel_type: "",
+        fuel_type: null,
         km: 0,
         vehicul_median_fuel_conso: 0,
         round_trip: false,
@@ -84,8 +86,6 @@ export default function FuelSimulatorForm() {
     ]
 
     const handleChange = (e, fieldName) => {
-        setFormResponse({})
-        
         let fieldValue = e.currentTarget.value
         if(fieldName == "fuel_type") {
             let fuel = fuels.filter((item) => item.value == fieldValue)
@@ -148,12 +148,29 @@ export default function FuelSimulatorForm() {
             <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
                 <div className={"form-field"}>
                     <label>Type de carburant</label>
-                    <select onChange={(e) => handleChange(e, "fuel_type")}>
-                        <option value={""}>Select a fuel</option>
-                        {fuels.map((fuel, index) => (
-                            <option key={index} value={fuel.value}>{fuel.text}</option>
-                        ))}
-                    </select>
+                    <FuelField
+                        fieldName={"fuel_type"}
+                        fieldValue={credentials.fuel_type}
+                        updateCredentials={(fieldName, fieldValue) => {
+                            setCredentials({
+                                ...credentials,
+                                [fieldName]: fieldValue
+                            })
+                        }}
+                    />
+                </div>
+
+                <div className={"form-field"}>
+                    <label>Voiture</label>
+                    <VehicleField
+                        fieldValue={credentials.vehicle}
+                        updateCredentials={(fieldName, fieldValue) => {
+                            setCredentials({
+                                ...credentials,
+                                [fieldName]: fieldValue
+                            })
+                        }}
+                    />
                 </div>
 
                 <div className={"form-field"}>

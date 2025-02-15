@@ -20,10 +20,14 @@ class CharacteristicManager {
                 continue;
             }
 
+            if(empty($fieldValue)) {
+                throw new \Exception("The field '{$fieldName}' value must be filled with some data");
+            }
+
             if($fieldName == CharacteristicEnum::CHARACTERISTIC_TITLE) {
-                // 
-            } elseif($fieldName == CharacteristicEnum::CHARACTERISTIC_DESCRIPTION) {
-                // 
+                if(strlen($fieldValue) > 255) {
+                    throw new \Exception("The field '{$fieldName}' can't exceed 255 characters length");
+                }
             }
 
             $fields[$fieldName] = $fieldValue;

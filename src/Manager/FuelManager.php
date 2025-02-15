@@ -12,7 +12,7 @@ class FuelManager {
      */
     public function checkFields(array $jsonContent) {
         $fields = [];
-        $allowedFields = FuelEnum::getAvalaibleChoices();
+        $allowedFields = FuelEnum::getAvailableChoices();
 
         foreach($jsonContent as $fieldName => $fieldValue) {
             if(!in_array($fieldName, $allowedFields)) {

@@ -39,7 +39,7 @@ export default function ConsumptionField({index, fieldName = "consumptions", con
                             <select onChange={(e) => handleChange(e, "consumption")} value={credentials.consumption} required>
                                 <option value={""}>Select a consumption</option>
                                 {Object.values(items.results).map((item, index) => (
-                                    <option key={index} value={item.id}>{item.title}</option>
+                                    <option key={index} value={item.id}>{item.description}</option>
                                 ))}
                             </select>
                         </div>
@@ -50,7 +50,7 @@ export default function ConsumptionField({index, fieldName = "consumptions", con
                                 maxLength={255}
                                 placeholder={"Consumption value"}
                                 onChange={(e) => handleChange(e, "value")}
-                                required
+                                // required
                             />
                         </div>
                     </div>

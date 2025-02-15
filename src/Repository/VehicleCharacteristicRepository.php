@@ -42,4 +42,27 @@ class VehicleCharacteristicRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * Get a vehicle all characteristics
+     * 
+     * @param int $vehicleID
+     * @return void
+     */
+    public function getVehicleCharacteristics(int $vehicleID) : array {
+        return $this->createQueryBuilder("vehicle_characteristics")
+            ->select("
+                vehicle_characteristics.id,
+                characteristic.id as characteristic_id,
+                characteristic.title as characteristic_title,
+                characteristic.description as characteristic_description,
+                vehicle_characteristics.value
+            ")
+            ->leftJoin("vehicle_characteristics.characteristic", "characteristic")
+            ->where("vehicle_characteristics.vehicle = :vehicleID")
+            ->setParameter("vehicleID", $vehicleID)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

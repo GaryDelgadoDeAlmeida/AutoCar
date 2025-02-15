@@ -41,9 +41,38 @@ class VehicleRepository extends ServiceEntityRepository
     }
 
     /**
+     * Summary of getVehicle
+     * 
+     * @param int $vehicleID
+     * @return array
+     */
+    public function getVehicle(int $vehicleID) : array {
+        return $this->createQueryBuilder("vehicle")
+            ->select("
+                vehicle.id,
+                vehicle.photo,
+                vehicle.basemodel,
+                vehicle.name,
+                vehicle.fuelTank,
+                vehicle.vehiculeWeight,
+                vehicle.maxSpeed,
+                vehicle.averageFuelConsumption,
+                vehicle.price,
+                vehicle.buildAt,
+                vehicle.updatedAt,
+                vehicle.createdAt
+            ")
+            ->where("vehicle.id = :vehicleID")
+            ->setParameter("vehicleID", $vehicleID)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
+
+    /**
      * @param int offset
      * @param int limit
-     * @return Vehicle[] Return an array of vehicle object or an empty array if found nothing
+     * @return array Return an array of vehicle object or an empty array if found nothing
      */
     public function getVehicles(int $offset, int $limit) : array {
         return $this->createQueryBuilder("vehicle")
@@ -67,8 +96,22 @@ class VehicleRepository extends ServiceEntityRepository
     }
 
     /**
+     * Summary of getVehiclesForForm
+     * 
+     * @return array
+     */
+    public function getVehiclesForForm() : array {
+        return $this->createQueryBuilder("vehicle")
+            ->select("vehicle.id, vehicle.name, vehicle.buildAt")
+            ->orderBy("vehicle.buildAt", "DESC")
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @param int limit
-     * @return Vehicle[]
+     * @return array
      */
     public function getLatestVehicles(int $limit = 5) : array {
         return $this->createQueryBuilder("vehicle")
@@ -118,13 +161,16 @@ class VehicleRepository extends ServiceEntityRepository
     }
 
     /**
+     * Count all vehicles associated to a maker
+     * 
+     * @param int $makerID
      * @return int
      */
     public function countMakerVehicles(int $makerID) : int {
         return $this->createQueryBuilder("vehicle")
             ->select("COUNT(vehicle.id) as nbrVehicles")
             ->where("vehicle.maker = :makerID")
-            ->setParameter(":makerID", $makerID)
+            ->setParameter("makerID", $makerID)
             ->getQuery()
             ->getSingleResult()["nbrVehicles"]
         ;

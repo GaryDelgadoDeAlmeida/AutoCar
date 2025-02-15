@@ -14,7 +14,7 @@ abstract class ConsumptionEnum {
         self::CONSUMPTION_CATEGORY => "Category",
     ];
 
-    public static function getAvalaibleChoices() : array {
+    public static function getAvailableChoices() : array {
         return [
             self::CONSUMPTION_TITLE,
             self::CONSUMPTION_DESCRIPTION,
@@ -25,7 +25,7 @@ abstract class ConsumptionEnum {
     public static function getChoices() : array {
         $choices = [];
 
-        foreach(self::getAvalaibleChoices() as $choice) {
+        foreach(self::getAvailableChoices() as $choice) {
             $choices[self::$typeName[$choice]] = $choice;
         }
 

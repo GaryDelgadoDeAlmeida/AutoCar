@@ -1,25 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import NewsletterForm from "../forms/NewsletterForm";
 
 export default function Header(props) {
 
-    const [scrollPosition, setScrollPosition] = useState(0);
-    const [headerClasses, setHeaderClasses] = useState("page-header")
-
-    const handleScroll = (e) => {
-        if(window.scrollY > 100) {
-            setHeaderClasses("page-header -fixed")
-        } else {
-            setHeaderClasses("page-header")
-        }
-    }
-
-    document.addEventListener("scroll", handleScroll)
-
     return (
         <div className={"page"}>
-            <div className={`${headerClasses}`}>
+            <div className={"page-header"}>
                 <div className={"header-wrapper"}>
                     <div className={"header-desktop"}>
                         <Link className={"-left"} to={"/"}>
@@ -32,10 +19,9 @@ export default function Header(props) {
                                 <Link to={"/makers"}>Makers</Link>
                                 <Link to={"/vehicles"}>Vehicles</Link>
                                 <Link to={"/fuels"}>Fuels</Link>
+                                <Link to={"/fuel-simulator"}>Fuel Simulator</Link>
                                 <Link to={"/blog"}>Blog</Link>
                                 <Link to={"/contact"}>Contact</Link>
-                                <Link to={"/fuel-simulator"}>Fuel Simulator</Link>
-                                <Link to={"/login"}>Login</Link>
                             </div>
                         </div>
                     </div>
@@ -64,7 +50,6 @@ export default function Header(props) {
                                         <li className={"-item"}><Link to={"/fuel-simulator"}>Fuel Simulator</Link></li>
                                         <li className={"-item"}><Link to={"/blog"}>Blog</Link></li>
                                         <li className={"-item"}><Link to={"/contact"}>Contact</Link></li>
-                                        <li className={"-item"}><Link to={"/login"}>Login</Link></li>
                                     </div>
                                 </div>
                             </div>
@@ -109,8 +94,8 @@ export default function Header(props) {
                                     <li><Link to={"/about"}>About us</Link></li>
                                     <li><Link to={"/makers"}>Makers</Link></li>
                                     <li><Link to={"/fuels"}>Fuels</Link></li>
-                                    <li><Link to={"/vehicles"}>Vehicles</Link></li>
                                     <li><Link to={"/fuel-simulator"}>Fuel Simulator</Link></li>
+                                    <li><Link to={"/vehicles"}>Vehicles</Link></li>
                                     <li><Link to={"/contact"}>Contact us</Link></li>
                                 </div>
                             </div>

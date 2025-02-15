@@ -14,7 +14,7 @@ abstract class FuelEnum {
         self::FUEL_KEY => "Key",
     ];
 
-    public static function getAvalaibleChoices() : array {
+    public static function getAvailableChoices() : array {
         return [
             self::FUEL_TITLE,
             self::FUEL_PRICE,
@@ -25,7 +25,7 @@ abstract class FuelEnum {
     public static function getChoices() : array {
         $choices = [];
 
-        foreach(self::getAvalaibleChoices() as $choice) {
+        foreach(self::getAvailableChoices() as $choice) {
             $choices[self::$typeName[$choice]] = $choice;
         }
 

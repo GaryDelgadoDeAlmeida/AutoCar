@@ -6,7 +6,7 @@ import axios from "axios";
 export default function TableCard({imgPath, title, description, link, removalLink = null}) {
 
     const handleRemove = (e) => {
-        if(!confirm("Are you sure you want to delete this fuel ? This action is irreversible")) {
+        if(!confirm("Are you sure you want to delete it ? This action is irreversible")) {
             return
         }
 
@@ -33,7 +33,7 @@ export default function TableCard({imgPath, title, description, link, removalLin
     return (
         <div className={"table-card"}>
             <div className={"-content"}>
-                {imgPath != null && (
+                {imgPath && (
                     <img src={`${window.location.origin}${imgPath}`} alt={""} />
                 )}
 
@@ -42,7 +42,7 @@ export default function TableCard({imgPath, title, description, link, removalLin
                     <span className={"-description"}>{description}</span>
                 </div>
             </div>
-            <div className={"-footer d-flex -g-5 -m-column"}>
+            <div className={"-footer"}>
                 {removalLink != null && (
                     <button 
                         type={"button"} 

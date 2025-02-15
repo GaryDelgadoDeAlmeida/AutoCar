@@ -14,8 +14,6 @@ export default function Characteristics() {
         load()
     }, [offset])
 
-    console.log(items)
-
     return (
         <HeaderAdmin>
             <section className={"page-hero-2nd"}>

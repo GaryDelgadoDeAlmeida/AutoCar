@@ -7,7 +7,7 @@ export default function MakerCard({item}) {
         <Link className={"maker-card"} to={`/maker/${item.id}`}>
             <div className={"-header"}>
                 {item.logo && (
-                    <img src={`${window.location.origin}/content/img/makers/${item.id}`} alt={item.name} />
+                    <img src={`${window.location.origin}${item.logo}`} alt={item.name} />
                 )}
             </div>
             <div className={"-content"}>
