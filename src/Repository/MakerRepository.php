@@ -41,6 +41,29 @@ class MakerRepository extends ServiceEntityRepository
     }
 
     /**
+     * Get the maker of a vehicle
+     * 
+     * @param int $vehicleID
+     * @return array
+     */
+    public function getVehicleMaker(int $vehicleID) : array {
+        return $this->createQueryBuilder("maker")
+            ->select("
+                maker.id, 
+                maker.logo, 
+                maker.name, 
+                maker.description
+            ")
+            ->innerJoin("maker.vehicles", "vehicle")
+            ->where("vehicle.id = :vehicleID")
+            ->orderBy("maker.name", "ASC")
+            ->setParameter("vehicleID", $vehicleID)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
+
+    /**
      * @param int offset
      * @param int limit
      * @return Maker[]|array
@@ -62,9 +85,17 @@ class MakerRepository extends ServiceEntityRepository
         ;
     }
 
-    public function getMakersForForms() : array {
+    /**
+     * Summary of getMakersForForms
+     * 
+     * @return mixed
+     */
+    public function getMakersForForms() {
         return $this->createQueryBuilder("maker")
-            ->select("maker.id, maker.name")
+            ->select("
+                maker.id, 
+                maker.name
+            ")
             ->orderBy("maker.name", "ASC")
             ->getQuery()
             ->getResult()
