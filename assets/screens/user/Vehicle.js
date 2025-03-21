@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import Notification from "../../components/Notification";
 import PrivateRessource from "../../hooks/PrivateResources";
+import FuelSimulatorForm from "../../forms/FuelSimulatorForm";
 
 export default function Vehicle() {
 
@@ -172,6 +173,27 @@ export default function Vehicle() {
                                         <div className={"-content"}>
                                             <div className={"mt-25"}>
                                                 <Notification classname={"information"} message={"There is no reviews for this car"} />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Simulator */}
+                                    <div className={"vehicle-block"}>
+                                        <div className={"-header"}>
+                                            <label>Fuel simulator</label>
+                                        </div>
+                                        <div className={"-content"}>
+                                            <div className={"card mt-25"}>
+                                                <Notification classname={"information"} message={"Any information displayed in this simulation is an estimation. Cost on fuels can be a little bit different."} />
+                                            </div>
+                        
+                                            <div className={"card mt-25"}>
+                                                <div className={"-header"}>
+                                                    <label className={"-title"}>Calculate your potential costs on fuels</label>
+                                                </div>
+                                                <div className={"-content"}>
+                                                    <FuelSimulatorForm vehicleID={items.id} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
