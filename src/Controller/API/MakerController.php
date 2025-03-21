@@ -60,7 +60,8 @@ class MakerController extends AbstractController
         return $this->json(
             [
                 "maker" => $maker,
-                "nbrVehicles" => $this->vehicleRepository->countMakerVehicles($maker->getId())
+                "nbrVehicles" => $this->vehicleRepository->countMakerVehicles($maker->getId()),
+                "latestVehicles" => $this->vehicleRepository->getMakerVehicles($makerID, 1, 4)
             ],
             Response::HTTP_OK,
             [],

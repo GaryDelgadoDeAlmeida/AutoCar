@@ -63,11 +63,52 @@ class TestimonialController extends AbstractController
 
     #[Route('/testimonial/{testimonialID}', name: 'get_testimonial', methods: ["GET"])]
     public function get_testimonial(int $testimonialID) : JsonResponse {
-        return $this->json([], Response::HTTP_OK);
+        $testimonial = $this->testimonialRepository->find($testimonialID);
+        if(empty($testimonial)) {
+            return $this->json([
+                "mesage" => "The testimonial couldn't be found"
+            ], Response::HTTP_NOT_FOUND);
+        }
+        
+        return $this->json($testimonial, Response::HTTP_OK);
     }
     
-    #[Route('/testimonial/{:testimonialID}/update', name: 'update_testimonial', methods: ["UPDATE", "PUT"])]
+    #[Route('/testimonial/{testimonialID}/update', name: 'update_testimonial', methods: ["UPDATE", "PUT"])]
     public function update_testimonial(int $testimonialID, Request $request): JsonResponse {
+        $testimonial = $this->testimonialRepository->find($testimonialID);
+        if(empty($testimonial)) {
+            return $this->json([
+                "mesage" => "The testimonial couldn't be found"
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $jsonContent = json_decode($request->getContent(), true);
+        if(empty($jsonContent)) {
+            return $this->json([
+                "message" => "An error has been encountered with the sended body"
+            ], Response::HTTP_PRECONDITION_FAILED);
+        }
+
+        try {
+            $fields = $this->testimonialManager->checkFields($jsonContent);
+            if(empty($fields)) {
+                throw new \Exception("An error has been encountered with the sended body", Response::HTTP_PRECONDITION_FAILED);
+            }
+
+            $testimonial = $this->testimonialManager->fillTestimonial($fields, $testimonial);
+            if(is_string($testimonial)) {
+                throw new \Exception($testimonial);
+            }
+
+            $this->testimonialRepository->save($testimonial, true);
+        } catch(\Exception $e) {
+            $code = $e->getCode();
+
+            return $this->json([
+                "message" => $e->getMessage()
+            ], isset(Response::$statusTexts[$code]) && $code !== 200 ? $code : Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
         return $this->json([], Response::HTTP_ACCEPTED);
     }
     
@@ -96,7 +137,7 @@ class TestimonialController extends AbstractController
             }
 
             // Save files in testimonial repository
-            $fields[TestimonialEnum::TESTIMONIAL_PHOTO] = "/content/img/testimonials/" . $this->fileManager->uploadFile($fields[TestimonialEnum::TESTIMONIAL_PHOTO], $this->getParameter("testimonials_img_directory"), "{$testimonial->getId()} - {$testimonial->getFistname()} {{$testimonial->getLastname()}}");
+            $fields[TestimonialEnum::TESTIMONIAL_PHOTO] = "/content/img/testimonials/" . $this->fileManager->uploadFile($fields[TestimonialEnum::TESTIMONIAL_PHOTO], $this->getParameter("testimonials_img_directory"), "{$testimonial->getId()} - {$testimonial->getFirstname()} {$testimonial->getLastname()}");
 
             // Update testimonial object
             $testimonial = $this->testimonialManager->fillTestimonial($fields, $testimonial);

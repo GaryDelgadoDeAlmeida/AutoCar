@@ -104,7 +104,7 @@ export function stripHTML(htmlValue) {
  * 
  * @returns 
  */
-export const generateYearMonths = () => {
+export function generateYearMonths() {
     let date = new Date()
     let months = []
 
@@ -113,5 +113,22 @@ export const generateYearMonths = () => {
         months.push((date.getMonth() + 1))
     }
 
+    // return Object.assign({}, months)
     return months
+}
+
+/**
+ * 
+ * @param {*} vehicleOptions 
+ * @returns 
+ */
+export function generateVehicleOptions(vehicleOptions) {
+    let options = Object.values(vehicleOptions).map((item) => {
+        return {
+            label: `${item.name} (${(new Date(item.buildAt)).getFullYear()})`,
+            value: item.id
+        }
+    })
+
+    return options
 }

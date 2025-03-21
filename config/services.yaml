@@ -7,6 +7,7 @@ parameters:
     makers_img_directory: "%kernel.project_dir%/public/content/img/makers"
     vehicles_img_directory: "%kernel.project_dir%/public/content/img/vehicles"
     articles_img_directory: "%kernel.project_dir%/public/content/img/blogs"
+    testimonials_img_directory: "%kernel.project_dir%/public/content/img/testimonials"
 
 services:
     # default configuration for services in *this* file

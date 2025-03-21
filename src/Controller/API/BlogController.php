@@ -47,7 +47,10 @@ class BlogController extends AbstractController
         }
         
         return $this->json(
-            $blog, 
+            [
+                "article" => $blog,
+                "recent_articles" => $this->blogRepository->getRecentArticles($blogID)
+            ], 
             Response::HTTP_OK
         );
     }

@@ -37,10 +37,11 @@ export default function Vehicles() {
                                         {Object.values(items.results).map((item, index) => (
                                             <TableCard
                                                 key={index}
-                                                imgPath={item.photo}
+                                                imgPath={item.photo ?? "/content/img/vehicle-thumbnail.jpg"}
                                                 title={`${item.name} (${(new Date(item.buildAt)).getFullYear()})`}
                                                 description={item.maker_name}
                                                 link={`/admin/vehicle/${item.id}`}
+                                                editLink={`/admin/vehicle/${item.id}/edit`}
                                             />
                                         ))}
                                     </div>

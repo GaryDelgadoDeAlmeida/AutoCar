@@ -23,7 +23,7 @@ export default function FuelField({fieldName = "fuel", fieldValue, updateCredent
 
                 {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                     <select onChange={(e) => handleChange(e)} value={fieldValue}>
-                        <option value={""}>Select a vehicle fuel</option>
+                        <option value={""}>Select a fuel</option>
                         {Object.values(items.results ?? {}).map((item, index) => (
                             <option 
                                 key={index} 

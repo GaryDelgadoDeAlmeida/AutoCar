@@ -58,6 +58,7 @@
         }
 
         .page-menu {
+            gap: 15px;
             margin: 0;
             height: 70px;
             display: flex;
@@ -65,10 +66,6 @@
             justify-content: end;
             background-color: var(--c-black);
             box-shadow: 15px 0 15px rgba(0, 0, 0, 0.17);
-
-            // @include desktop {
-            //     display: none;
-            // }
 
             .link-avatar {
                 gap: 15px;
@@ -112,11 +109,12 @@
 
             .icon-menu {
                 display: none;
+                margin: auto 0;
                 cursor: pointer;
-                margin: auto 15px auto auto;
 
                 @include tablet {
-                    display: inline-block;
+                    display: flex;
+                    justify-content: center;
                 }
 
                 img {
@@ -161,6 +159,7 @@
                         font-weight: 500;
                         padding: 15px 25px;
                         color: var(--c-black);
+                        text-decoration: auto;
                         text-transform: capitalize;
 
                         &:hover {
@@ -172,6 +171,7 @@
                 .icon-menu {
                     right: 0;
                     top: 17px;
+                    margin-right: 15px;
                     position: absolute;
                 }
             }

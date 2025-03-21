@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { findParent } from "../hooks/DomControl"
 import axios from "axios";
 
-export default function TableCard({imgPath, title, description, link, removalLink = null}) {
+export default function TableCard({imgPath, title, description, link, editLink = null, removalLink = null}) {
 
     const handleRemove = (e) => {
         if(!confirm("Are you sure you want to delete it ? This action is irreversible")) {
@@ -49,6 +49,10 @@ export default function TableCard({imgPath, title, description, link, removalLin
                         className={"btn btn-red"} 
                         onClick={(e) => handleRemove(e)}
                     >Remove</button>
+                )}
+
+                {editLink != null && (
+                    <Link className={"btn btn-orange"} to={editLink}>Edit</Link>
                 )}
                 
                 {link != null && (

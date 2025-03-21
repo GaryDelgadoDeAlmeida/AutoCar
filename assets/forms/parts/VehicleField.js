@@ -1,8 +1,10 @@
 import React, { useEffect } from "react"
+import Select from "react-select"
 import Notification from "../../components/Notification"
 import PrivateResources from "../../hooks/PrivateResources"
+import { generateVehicleOptions } from "../../hooks/DomControl"
 
-export default function VehicleField({fieldName = "vehicle", fieldValue = null, updateCredentials}) {
+export default function VehicleField({fieldName = "vehicle", updateCredentials}) {
 
     const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicles?request=all`)
 
@@ -11,7 +13,7 @@ export default function VehicleField({fieldName = "vehicle", fieldValue = null, 
     }, [])
 
     const handleChange = (e) => {
-        updateCredentials(fieldName, e.currentTarget.value)
+        updateCredentials(fieldName, e.value)
     }
 
     return (
@@ -23,12 +25,11 @@ export default function VehicleField({fieldName = "vehicle", fieldValue = null, 
                     )}
 
                     {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
-                        <select onChange={(e) => handleChange(e)} value={fieldValue}>
-                            <option value={""}>Select a vehicle</option>
-                            {Object.values(items.results).map((item, index) => (
-                                <option value={item.id}>{`${item.name} (${(new Date(item.buildAt)).getFullYear()})`}</option>
-                            ))}
-                        </select>
+                        <Select 
+                            placeholder={"Select a vehicle"}
+                            onChange={(e) => handleChange(e)}
+                            options={generateVehicleOptions(Object.values(items.results ?? {}))}
+                        />
                     )}
                 </>
             )}

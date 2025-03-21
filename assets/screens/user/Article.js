@@ -50,16 +50,18 @@ export default function Article() {
 
                             {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                                 <div className={"page-article"}>
+
+                                    {/* Left col */}
                                     <div className={"-left d-col -g-25"}>
 
                                         {/* Article content */}
                                         <div className={"card"}>
                                             <div className={"-content"}>
-                                                {items.photo && (
-                                                    <img src={`${window.location.origin}${items.photo}`} alt={items.title} />
+                                                {items.article.photo && (
+                                                    <img src={`${window.location.origin}${items.article.photo}`} alt={items.article.title} />
                                                 )}
-                                                <h2 className={"fs-26 txt-left mb-25"}>{items.title}</h2>
-                                                <div className={"markup"} dangerouslySetInnerHTML={{__html: items.content}}></div>
+                                                <h2 className={"fs-26 txt-left mb-25"}>{items.article.title}</h2>
+                                                <div className={"markup"} dangerouslySetInnerHTML={{__html: items.article.content}}></div>
                                             </div>
                                         </div>
 
@@ -69,10 +71,15 @@ export default function Article() {
                                                 <label className={"-title"}>Comments</label>
                                             </div>
                                             <div className={"-content"}>
-                                                <Comments />
+                                                <Comments
+                                                    articleID={items.article.id}
+                                                    allowArticleComments={false}
+                                                />
                                             </div>
                                         </div>
                                     </div>
+
+                                    {/* Right col */}
                                     <div className={"-right d-col -g-25"}>
                                         {/* Search Form */}
                                         <div className={"card"}>
@@ -90,7 +97,9 @@ export default function Article() {
                                                 <label className={"-title"}>Recent posts</label>
                                             </div>
                                             <div className={"-content"}>
-                                                <RecentArticles />
+                                                <RecentArticles
+                                                    articles={items.recent_articles}
+                                                />
                                             </div>
                                         </div>
                                     </div>

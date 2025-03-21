@@ -24,7 +24,7 @@ export default function FuelSimulator() {
             <section className={"page-section"}>
                 <div className={"page-wrapper"}>
                     <div className={"card"}>
-                        <Notification classname={"information"} message={"Any information displayed in this simulation is an estimation. Cost on fuels can be a little bit higher."} />
+                        <Notification classname={"information"} message={"Any information displayed in this simulation is an estimation. Cost on fuels can be a little bit different."} />
                     </div>
 
                     <div className={"card"}>

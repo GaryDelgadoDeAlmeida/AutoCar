@@ -40,11 +40,39 @@ class BlogRepository extends ServiceEntityRepository
         }
     }
 
-    public function countArticles() {
-        return $this->createQueryBuilder("article")
-            ->select("COUNT(article.id) as nbrArticles")
+    /**
+     * Summary of getRecentArticles
+     * 
+     * @param mixed $blogID
+     * @return void
+     */
+    public function getRecentArticles(?int $blogID = null) {
+        $query = $this->createQueryBuilder("article");
+
+        if(!empty($blogID)) {
+            $query
+                ->where("article.id != :blogID")
+                ->setParameter("blogID", $blogID)
+            ;
+        }
+
+        return $query
+            ->orderBy("article.id", "DESC")
+            ->setMaxResults(3)
             ->getQuery()
-            ->getSingleResult()["nbrArticles"]
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Summary of countArticles
+     * @return int
+     */
+    public function countArticles() : int {
+        return $this->createQueryBuilder("article")
+            ->select("COUNT(article.id) as nbrArticlde")
+            ->getQuery()
+            ->getSingleResult()["nbrArticlde"]
         ;
     }
 }

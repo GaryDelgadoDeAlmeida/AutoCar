@@ -46,7 +46,7 @@ class VehicleController extends AbstractController
                 "results" => $this->vehicleRepository->getVehiclesForForm()
             ];
         } else {
-            $limit = 12;
+            $limit = is_numeric($request->get("limit")) && intval($request->get("limit")) == $request->get("limit") && $request->get("limit") > 1 ? intval($request->get("limit")) : 12;
             $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
             $vehicles = $this->vehicleRepository->getVehicles($offset, $limit);
             foreach($vehicles as $index => $vehicle) {

@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import CarCard from "../../components/CarCard";
-import ArticleCard from "../../components/ArticleCard";
-import TestimonialCard from "../../components/TestimonialCard";
 import FuelSimulatorForm from "../../forms/FuelSimulatorForm";
 import VehiculeTypeCard from "../../components/VehicleTypeCard";
 import Notification from "../../components/Notification";
+import HomeRecentArticles from "./parts/HomeRecentArticles";
+import RecentTestimonials from "./parts/RecentTestimonials";
+import RecentVehicles from "./parts/RecentVehicles";
 
 export default function Home() {
 
@@ -63,51 +63,10 @@ export default function Home() {
                         </div>
                     </div>
 
-                    <div className={"d-grid -col-4 mt-50"}>
-                        <CarCard carItem={{
-                            id: 1,
-                            imgPath: "/content/img/cars/2019-vw-t-cross.jpg",
-                            title: "VW T Cross"
-                        }} />
-                        <CarCard carItem={{
-                            id: 2,
-                            imgPath: "/content/img/cars/bmw88.jpg",
-                            title: "BMW"
-                        }} />
-                        <CarCard carItem={{
-                            id: 3,
-                            imgPath: "/content/img/cars/bmw-8-series-convertible-technical-data-sp-desktop.jpg",
-                            title: "BMW S8"
-                        }} />
-                        <CarCard carItem={{
-                            id: 4,
-                            imgPath: "/content/img/cars/makyajli-2022-seat-arona-1.jpg",
-                            title: "Makyajli"
-                        }} />
-                        <CarCard carItem={{
-                            id: 1,
-                            imgPath: "/content/img/cars/2019-vw-t-cross.jpg",
-                            title: "VW T Cross"
-                        }} />
-                        <CarCard carItem={{
-                            id: 2,
-                            imgPath: "/content/img/cars/bmw88.jpg",
-                            title: "BMW"
-                        }} />
-                        <CarCard carItem={{
-                            id: 3,
-                            imgPath: "/content/img/cars/bmw-8-series-convertible-technical-data-sp-desktop.jpg",
-                            title: "BMW S8"
-                        }} />
-                        <CarCard carItem={{
-                            id: 4,
-                            imgPath: "/content/img/cars/makyajli-2022-seat-arona-1.jpg",
-                            title: "Makyajli"
-                        }} />
-                    </div>
+                    <RecentVehicles />
 
                     <div className={"txt-center mt-50"}>
-                        <Link className={"btn btn-secondary fw-bold btn-m"} to={"/cars"}>
+                        <Link className={"btn btn-secondary fw-bold btn-m"} to={"/vehicles"}>
                             <span>Show All Cars</span>
                         </Link>
                     </div>
@@ -161,86 +120,9 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className={"page-section"}>
-                <div className={"page-background"}>
-                    <img src={`${window.location.origin}/content/img/background-testimonials.jpg`} alt={""} />
-                </div>
-                <div className={"page-wrapper"}>
-                    <h2 className={"page-title"}>What are our customers saying ?</h2>
-                    <p className={"page-description"}>Opinions from happy customers</p>
+            <RecentTestimonials />
 
-                    <div className={"d-flex -g-25"}>
-                        <TestimonialCard testimonial={{
-                            comment: "We are a gallery dealer. Before we met this site, our sales where sluggish.",
-                            photo: "/content/img/testimonials/man1.png",
-                            firstname: "Adam",
-                            lastname: ""
-                        }} />
-                        <TestimonialCard testimonial={{
-                            comment: "One of the quality websites I apply to rent a car.",
-                            photo: "/content/img/testimonials/testimonial2-1.png",
-                            firstname: "Cristian",
-                            lastname: ""
-                        }} />
-                        <TestimonialCard testimonial={{
-                            comment: "I was trying to sell my car. And I put it here and sold it for more that it was worth.",
-                            photo: "/content/img/testimonials/man2.png",
-                            firstname: "Robet",
-                            lastname: ""
-                        }} />
-                        <TestimonialCard testimonial={{
-                            comment: "A fast and reliable selling site. Rare qualite website with hundreds of model vehicles.",
-                            photo: "/content/img/testimonials/testimonial4-1.png",
-                            firstname: "Marie",
-                            lastname: ""
-                        }} />
-                    </div>
-                </div>
-            </section>
-
-            <section className={"page-section"}>
-                <div className={"page-wrapper"}>
-                    <h2 className={"page-title"}>Recent articles</h2>
-                    <p className={"page-description"}>Usefull information about cars</p>
-
-                    <div className={"mt-25 d-grid -col-4 -g-25"}>
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "Why is BMW loved ?",
-                            content: "BMWs have a differebt kube with their designs and almost [...]",
-                            imgPath: "/content/img/cars/bmw-8-series-convertible-technical-data-sp-desktop.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "How solid is Audi ?",
-                            content: "According to Euro NCAP data with different test organizations, there [...]",
-                            imgPath: "/content/img/cars/bmw88.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "What brand is Skoda ?",
-                            content: "Skoda is one the leading automotive manufacturers on the [...]",
-                            imgPath: "/content/img/cars/volkswagen-passat-1280x720-1.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                        <ArticleCard article={{
-                            id: 0,
-                            title: "Is the Auris diesel ?",
-                            content: "You will have a quieter vechile that burns less than [...]",
-                            imgPath: "/content/img/cars/yeni-ibiza-2.jpg",
-                            created_at: "2024-07-06"
-                        }} />
-                    </div>
-                    
-                    <div className={"txt-center mt-50"}>
-                        <Link className={"btn btn-secondary fw-bold btn-m"} to={"/blog"}>
-                            <span>Show More</span>
-                        </Link>
-                    </div>
-                </div>
-            </section>
+            <HomeRecentArticles />
 
             <section className={"page-section"}>
                 <div className={"page-wrapper"}>

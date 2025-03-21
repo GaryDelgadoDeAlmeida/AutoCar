@@ -123,6 +123,32 @@
     color: var(--c-white);
 }
 
+.c-green {
+    color: var(--c-green);
+}
+
+.c-red {
+    color: var(--c-red);
+}
+
+/* ------------------------------------------------------------ *\
+    Background-Color
+\* ------------------------------------------------------------ */
+.bg-transparent {
+    background-color: transparent;
+}
+
+.bg-site-body {
+    background-color: var(--site-background-color);
+}
+
+.bg-black {
+    background-color: var(--c-black);
+}
+
+.bg-white {
+    background-color: var(--c-white);
+}
 
 /* ------------------------------------------------------------ *\
     Padding
@@ -249,10 +275,6 @@
 
 .mw-100 {
     max-width: 100%;
-}
-
-.mw-200 {
-    max-width: 200px;
 }
 
 .mw-400 {

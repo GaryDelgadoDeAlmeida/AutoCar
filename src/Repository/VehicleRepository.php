@@ -140,7 +140,19 @@ class VehicleRepository extends ServiceEntityRepository
      */
     public function getMakerVehicles(int $makerID, int $offset, int $limit) : array {
         return $this->createQueryBuilder("vehicle")
+            ->select("
+                vehicle.id,
+                vehicle.photo,
+                maker.name as maker_name,
+                vehicle.basemodel,
+                vehicle.name,
+                vehicle.price,
+                vehicle.buildAt,
+                vehicle.createdAt
+            ")
+            ->innerJoin("vehicle.maker", "maker")
             ->where("vehicle.maker = :maker_id")
+            ->orderBy("vehicle.buildAt", "DESC")
             ->setParameter("maker_id", $makerID)
             ->setFirstResult(($offset - 1) * $limit)
             ->setMaxResults($limit)

@@ -1,38 +1,23 @@
-import React, { useEffect } from "react";
-import PrivateRessource from "../../../hooks/PrivateResources";
+import React from "react";
+import { Link } from "react-router-dom";
 import Notification from "../../../components/Notification";
 
-export default function RecentArticles() {
-
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/blogs?limit=3`)
-
-    useEffect(() => {
-        load()
-    }, [])
+export default function RecentArticles({recent_articles = []}) {
 
     return (
-        <>
-            {loading && (
-                <Notification classname={"information"} message={"Loading ..."} />
-            )}
-
-            {!loading && (
-                <>
-                    {Object.keys(error).length > 0 && (
-                        <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
-                    )}
-
-                    {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
-                        Object.keys(items.results).length > 0 ? (
-                            Object.values(items.results).map((items, index) => (
-                                <li></li>
-                            ))
-                        ) : (
-                            <Notification classname={"warning"} message={"There is no recent posts"} />
-                        )
-                    )}
-                </>
-            )}
-        </>
+        Object.keys(recent_articles).length > 0 ? (
+            Object.values(recent_articles).map((item, index) => (
+                <Link key={index} className={"d-flex -g-10"} to={"/blog/" + item.id}>
+                    <div className={"w-50px"}>
+                        <img className={"h-100 w-50px"} src={`${window.location.origin}${item.photo}`} alt={item.title} />
+                    </div>
+                    <div className={"mx-auto"}>
+                        <span>{item.title}</span>
+                    </div>
+                </Link>
+            ))
+        ) : (
+            <Notification classname={"warning"} message={"There is no recent posts"} />
+        )
     )
 }

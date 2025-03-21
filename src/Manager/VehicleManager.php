@@ -102,8 +102,8 @@ class VehicleManager {
                 $fieldValue = floatval($fieldValue);
             } elseif($fieldName == VehicleEnum::VEHICLE_BUILD_AT) {
                 $buildedAt = new \DateTimeImmutable($fieldValue);
-                if($buildedAt->format(\DateTime::ATOM) != $fieldValue) {
-                    throw new \Exception("The builded date of the vehicle don't match required format. The format but be 'Y-m-d'");
+                if($buildedAt->format("Y-m-d") != $fieldValue) {
+                    throw new \Exception("The builded date of the vehicle don't match required format. The format must be 'Y-m-d'");
                 }
 
                 $fieldValue = $buildedAt;

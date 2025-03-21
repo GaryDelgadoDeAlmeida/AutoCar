@@ -1,89 +1,20 @@
 import React, { useState } from "react";
-import FuelField from "./parts/FuelField"
 import Notification from "../components/Notification";
 import VehicleField from "./parts/VehicleField";
+import axios from "axios";
 
-export default function FuelSimulatorForm() {
+export default function FuelSimulatorForm({vehicleID = null}) {
 
     const [calculResponse, setCalculResponse] = useState(0)
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
-        fuel_type: null,
+        vehicle: vehicleID,
         km: 0,
-        vehicul_median_fuel_conso: 0,
         round_trip: false,
         calcul_week: false,
         calcul_month: false,
         calcul_year: false
     })
-
-    const fuels = [
-        {
-            value: "diesel",
-            text: "Diesel (B7)",
-            price: 1.741
-        },
-        {
-            value: "e5",
-            text: "E5 Essence sans plomb 98 (SP98)",
-            price: 1.934
-        },
-        {
-            value: "e5",
-            text: "E5 Essence sans plomb 95 (SP95)",
-            price: 1.855
-        },
-        {
-            value: "e10-s98",
-            text: "Essence sans plomb E10 (SP98-E-10)",
-            price: 1.897
-        },
-        {
-            value: "e10-s95",
-            text: "Essence sans plomb E10 (SP95-E-10)",
-            price: 1.833
-        },
-        {
-            value: "essence-e85",
-            text: "BioEthanol (E85)",
-            price: 0.857
-        },
-        // {
-        //     value: "gazole",
-        //     text: "Gazole (B7)",
-        //     price: 1.741
-        // },
-        {
-            value: "electritity",
-            text: "Electricité"
-        },
-        {
-            value: "gpl-c",
-            text: "GPL-c",
-            price: 0.995
-        },
-        {
-            value: "gaz",
-            text: "Gaz naturel véhicule (GNV)",
-            price: 1.078
-        }
-        // {
-        //     value: "gazole-b30",
-        //     text: "Gazole B30"
-        // },
-        // {
-        //     value: "gazole-b100",
-        //     text: "Gazole B100"
-        // },
-        // {
-        //     value: "ed95",
-        //     text: "ED95"
-        // },
-        // {
-        //     value: "hydrogene",
-        //     text: "Hydrogène"
-        // }
-    ]
 
     const handleChange = (e, fieldName) => {
         let fieldValue = e.currentTarget.value
@@ -121,22 +52,33 @@ export default function FuelSimulatorForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        setFormResponse({})
 
-        let fuel = fuels.filter((item) => item.value == credentials.fuel_type)
-        if(fuel.length == 0) {
-            setFormResponse({
-                classname: "danger",
-                message: "A fuel must be select in order to processed to the simulation"
-            })
+        if(!credentials.vehicle) {
+            setFormResponse({classname: "danger", message: "The vehicle must be select in order to processed to the simulation"})
             return
         }
 
-        fuel = fuel[0]
+        axios
+            .post(`${window.location.origin}/api/fuel-simulator`, credentials, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then((response) => {
+                setCalculResponse(response.data.calcOneshotTrip)
+            })
+            .catch((error) => {
+                let errorMessage = "An error has been encountered. Please retry later"
+                if(error.response.data.message) {
+                    errorMessage = error.response.data.message
+                } else if(error.response.data.detail) {
+                    errorMessage = error.response.data.detail
+                }
 
-        // Formule
-        // Price to €/L
-        // nombre de km x prix carburant au litre x la consommation du véhicule au km
-        setCalculResponse(parseFloat(fuel.price) * (parseFloat(credentials.vehicul_median_fuel_conso) * parseFloat(credentials.km)))
+                setFormResponse({classname: "danger", message: errorMessage})
+            })
+        ;
     }
 
     return (
@@ -146,52 +88,28 @@ export default function FuelSimulatorForm() {
             )}
 
             <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
-                <div className={"form-field"}>
-                    <label>Type de carburant</label>
-                    <FuelField
-                        fieldName={"fuel_type"}
-                        fieldValue={credentials.fuel_type}
-                        updateCredentials={(fieldName, fieldValue) => {
-                            setCredentials({
-                                ...credentials,
-                                [fieldName]: fieldValue
-                            })
-                        }}
-                    />
-                </div>
-
-                <div className={"form-field"}>
-                    <label>Voiture</label>
-                    <VehicleField
-                        fieldValue={credentials.vehicle}
-                        updateCredentials={(fieldName, fieldValue) => {
-                            setCredentials({
-                                ...credentials,
-                                [fieldName]: fieldValue
-                            })
-                        }}
-                    />
-                </div>
+                {!vehicleID && (
+                    <div className={"form-field"}>
+                        <label>Voiture</label>
+                        <VehicleField
+                            updateCredentials={(fieldName, fieldValue) => {
+                                setCredentials({
+                                    ...credentials,
+                                    [fieldName]: fieldValue
+                                })
+                            }}
+                        />
+                    </div>
+                )}
 
                 <div className={"form-field"}>
                     <label>Kilomètre à parcourir</label>
                     <input 
                         type={"number"} 
                         min={0}
-                        step={".01"}
+                        step={".001"}
                         value={credentials.km}
                         onChange={(e) => handleChange(e, "km")} 
-                    />
-                </div>
-
-                <div className={"form-field"}>
-                    <label>Consommation moyen de carburant sur 1 kilomètre</label>
-                    <input 
-                        type={"number"}
-                        min={0}
-                        step={".001"}
-                        value={credentials.vehicul_median_fuel_conso}
-                        onChange={(e) => handleChange(e, "vehicul_median_fuel_conso")}
                     />
                 </div>
 
@@ -231,11 +149,11 @@ export default function FuelSimulatorForm() {
                         )}
 
                         {credentials.calcul_month && (
-                            <span>Pour le trajet sur 1 mois (aller-retour), il faudra déboursé : <b>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(((calculResponse * 2) * 5) * 4)} / mois</b></span>
+                            <span>Pour le trajet sur 1 mois (aller-retour), il faudra déboursé : <b>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format((calculResponse * 2) * (5 * 4))} / mois</b></span>
                         )}
 
                         {credentials.calcul_year && (
-                            <span>Pour le trajet sur 1 an (aller-retour), il faudra déboursé : <b>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format((((calculResponse * 2) * 5) * 4) * 12)} / mois</b></span>
+                            <span>Pour le trajet sur 1 an (aller-retour), il faudra déboursé : <b>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(((calculResponse * 2) * ((5 * 4) * 12)))} / année</b></span>
                         )}
                     </div>
                 )}

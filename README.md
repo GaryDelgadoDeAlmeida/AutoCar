@@ -26,6 +26,11 @@ Une fois les fichiers de migration générer, il faut les executer. Pour faire c
 symfony console doctrine:migration:migrate
 ```
 
+Importer une base de données lourdes
+```bash
+mysql -u username -p database_name < file.sql
+```
+
 ## Authentification
 
 Symfony bundle:
@@ -89,6 +94,16 @@ composer remove symfony/asset-mapper
 Pour installer le package webpack-encore:
 ```bash
 composer require symfony/webpack-encore-bundle
+```
+
+J'ai rencontré des erreurs au niveau de mes requêtes SQL (notamment, avec l'historique des tarifs des carburant) qui incluait un GROUP BY et qui devait prendre la dernière valeur. J'étais l'imité dûe à une configuration interne de SQL. Pour débloquer la situation, il fallait exécuter cette requête suivante pour modifier la configuration global :
+```sql
+SET GLOBAL sql_mode = 'NO_ENGINE_SUBSTITUTION';
+```
+
+Voici la configuration d'origine :
+```sql
+SET GLOBAL sql_mode = 'ONLY_FULL_GROUP_BY';
 ```
 
 ## API Vehicule

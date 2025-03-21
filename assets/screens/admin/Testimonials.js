@@ -38,7 +38,7 @@ export default function Testimonials() {
                                         {Object.values(items.results).map((item, index) => (
                                             <TableCard
                                                 key={index}
-                                                imgPath={item.imgPath}
+                                                imgPath={item.photo ?? null}
                                                 title={item.firstname + " " + item.lastname}
                                                 description={stripHTML(item.comment)}
                                                 link={"/admin/testimonial/" + item.id}

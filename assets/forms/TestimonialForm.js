@@ -9,9 +9,9 @@ export default function TestimonialForm({testimonial = null}) {
     const storageUser = localStorage.getItem("token") ?? ""
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
-        firstname: "",
-        lastname: "",
-        comment: ""
+        firstname: testimonial ? testimonial.firstname : "",
+        lastname: testimonial ? testimonial.lastname : "",
+        comment: testimonial ? testimonial.comment : ""
     })
     const [credentialPhotos, setCredentialPhotos] = useState({
         photo: null
@@ -43,7 +43,7 @@ export default function TestimonialForm({testimonial = null}) {
 
                     if(response.status == 204 && credentialPhotos.photo !== null) {
                         axios
-                            .post(`${window.location.origin}/api/backoffice/testimonial/${response.data.id}/photo/update`, {
+                            .post(`${window.location.origin}/api/backoffice/testimonial/${response.data.id}/photo/update`, credentialPhotos, {
                                 headers: {
                                     "Content-Type": "multipart/form-data",
                                     "Authorization": `Bearer ${storageUser}`
@@ -89,7 +89,7 @@ export default function TestimonialForm({testimonial = null}) {
 
                     if(response.status == 202 && credentialPhotos.photo !== null) {
                         axios
-                            .post(`${window.location.origin}/api/backoffice/testimonial/${response.data.id}/photo/update`, {
+                            .post(`${window.location.origin}/api/backoffice/testimonial/${testimonial.id}/photo/update`, credentialPhotos, {
                                 headers: {
                                     "Content-Type": "multipart/form-data",
                                     "Authorization": `Bearer ${storageUser}`

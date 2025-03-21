@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import PrivateRessource from "../../hooks/PrivateResources";
+import { formatDate } from "../../hooks/DomControl";
 import Header from "../../components/Header";
+import CarCard from "../../components/CarCard";
+import Notification from "../../components/Notification";
+import PrivateRessource from "../../hooks/PrivateResources";
 
 export default function Brand() {
 
@@ -33,13 +36,77 @@ export default function Brand() {
 
             <section className={"page-section"}>
                 <div className={"page-wrapper"}>
-                    <h2 className={"page-title"}>Maker personnal datas</h2>
+                    {loading && (
+                        <Notification classname={"information"} message={"Loading ..."} />
+                    )}
+
+                    {!loading && (
+                        <>
+                            {Object.keys(error).length > 0 && (
+                                <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                            )}
+
+                            {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
+                                <>
+                                    <div className={"d-grid -col-4 -g-15"}>
+                                        <div className={"card"}>
+                                            <div className={"-content d-col -g-5"}>
+                                                <label className={"fw-bold"}>Location</label>
+                                                <span>{items.maker.location}</span>
+                                            </div>
+                                        </div>
+                                        <div className={"card"}>
+                                            <div className={"-content d-col -g-5"}>
+                                                <label className={"fw-bold"}>Number of vehicles</label>
+                                                <span>{items.nbrVehicles}</span>
+                                            </div>
+                                        </div>
+                                        <div className={"card"}>
+                                            <div className={"-content d-col -g-5"}>
+                                                <label className={"fw-bold"}>Founded at</label>
+                                                <span>{formatDate(items.maker.foundedAt)}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={"mt-50"}>
+                                        <h2 className={"page-title"}>{items.maker.name}</h2>
+                                        <p>{items.maker.description}</p>
+                                    </div>
+                                </>
+                            )}
+                        </>
+                    )}
                 </div>
             </section>
 
             <section className={"page-section"}>
                 <div className={"page-wrapper"}>
                     <h2 className={"page-title"}>Maker products model</h2>
+
+                    <div className={"mt-50"}>
+                        {loading && (
+                            <Notification classname={"information"} message={"Loading ..."} />
+                        )}
+
+                        {!loading && (
+                            <>
+                                {Object.keys(error).length > 0 && (
+                                    <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                                )}
+
+                                {Object.keys(items.latestVehicles ?? {}).length > 0 && Object.keys(error).length == 0 && (
+                                    <div className={"d-grid -col-4"}>
+                                        {Object.values(items.latestVehicles).map((item, index) => (
+                                            <CarCard
+                                                key={index}
+                                                carItem={item}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
                 </div>
             </section>
         </Header>
