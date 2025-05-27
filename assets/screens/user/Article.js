@@ -14,6 +14,7 @@ export default function Article() {
         return <Navigate to={"/blog"} />
     }
 
+    const isConnected = localStorage.getItem("token")
     const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/blog/${blogID}`)
 
     useEffect(() => {
@@ -38,18 +39,20 @@ export default function Article() {
 
             <section className={"page-section"}>
                 <div className={"page-wrapper"}>
+                    <Link className={"btn btn-secondary"} to={"/blog"}>Return</Link>
+
                     {loading && (
-                        <Notification classname={"information"} message={"Loading ..."} />
+                        <Notification classname={"information mt-25"} message={"Loading ..."} />
                     )}
 
                     {!loading && (
                         <>
                             {Object.keys(error).length > 0 && (
-                                <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                                <Notification classname={"danger mt-25"} message={error.response.data.message ?? error.response.data.detail} />
                             )}
 
                             {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
-                                <div className={"page-article"}>
+                                <div className={"page-article mt-25"}>
 
                                     {/* Left col */}
                                     <div className={"-left d-col -g-25"}>

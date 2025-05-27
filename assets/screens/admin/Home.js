@@ -79,11 +79,13 @@ export default function Home() {
                                 )}
                             </div>
 
-                            {/* Lastest testimonials */}
+                            {/* Lastest activities */}
                             <div className={"page-section"}>
                                 <div className={"d-grid -col-2 -g-25"}>
+
+                                    {/* Lastest received messages */}
                                     <div className={"item"}>
-                                        <div className={"card"}>
+                                        <div className={"card -no-background"}>
                                             <div className={"-header"}>
                                                 <label className={"-title"}>The lastest inboxes</label>
                                             </div>
@@ -110,8 +112,10 @@ export default function Home() {
                                             <Link className={"btn btn-secondary btn-m fw-bold"} to={"/admin/inboxes"}>See all inboxes</Link>
                                         </div>
                                     </div>
+
+                                    {/* Lastest testimonials */}
                                     <div className={"item"}>
-                                        <div className={"card"}>
+                                        <div className={"card -no-background"}>
                                             <div className={"-header"}>
                                                 <label className={"-title"}>The lastest testimonials</label>
                                             </div>

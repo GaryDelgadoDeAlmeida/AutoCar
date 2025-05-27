@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
+import { validateCaptcha } from "react-simple-captcha";
+import CaptchaField from "./parts/CaptchaField";
 import Notification from "../components/Notification"
 import axios from "axios";
-import { Navigate } from "react-router-dom";
 
 export default function LoginForm() {
 
@@ -9,11 +11,11 @@ export default function LoginForm() {
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
         email: "",
-        password: ""
+        password: "",
+        captcha: "",
     })
 
     const handleChange = (e, fieldName) => {
-        setFormResponse({})
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value
@@ -22,6 +24,16 @@ export default function LoginForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        if(credentials.captcha.length == 0) {
+            setFormResponse({classname: "danger", message: "Veuillez renseigner le captcha"})
+            return
+        }
+
+        if (validateCaptcha(credentials.captcha) !== true) {
+            setFormResponse({classname: "danger", message: "Le captcha est incorrect"})
+            return
+        }
 
         axios
             .post(`${window.location.origin}/api/login_check`, credentials, {
@@ -72,6 +84,16 @@ export default function LoginForm() {
                         placeholder={"Your password ..."}
                         onChange={(e) => handleChange(e, "password")}
                         required
+                    />
+                </div>
+                <div className={"form-field"}>
+                    <CaptchaField 
+                        updateCredentials={(fieldName, fieldValue) => {
+                            setCredentials({
+                                ...credentials,
+                                [fieldName]: fieldValue
+                            })
+                        }}
                     />
                 </div>
                 <div className={"form-actions"}>

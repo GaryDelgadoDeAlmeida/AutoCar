@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import VehicleTypeForm from "../../forms/VehicleTypeForm";
-import { Link } from "react-router-dom";
 
 export default function VehicleTypeNew() {
 

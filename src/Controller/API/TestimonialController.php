@@ -19,7 +19,7 @@ class TestimonialController extends AbstractController
     
     #[Route('/testimonials', name: 'get_testimonials', methods: ["GET"])]
     public function get_testimonials(Request $request): JsonResponse {
-        $limit = is_numeric($request->get("offset")) && intval($request->get("limit")) == $request->get("limit") && $request->get("limit") > 1 ? intval($request->get("limit")) : 4;
+        $limit = is_numeric($request->get("limit")) && intval($request->get("limit")) == $request->get("limit") && $request->get("limit") > 1 ? intval($request->get("limit")) : 4;
         $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
 
         return $this->json([

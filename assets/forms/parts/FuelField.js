@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import PrivateResources from "../../hooks/PrivateResources"
+import Select from "react-select";
 import Notification from "../../components/Notification";
+import PrivateResources from "../../hooks/PrivateResources"
 
 export default function FuelField({fieldName = "fuel", fieldValue, updateCredentials}) {
 
@@ -10,8 +11,19 @@ export default function FuelField({fieldName = "fuel", fieldValue, updateCredent
         load()
     }, [])
 
+    const generateOptions = (makerOptions) => {
+        let options = Object.values(makerOptions).map((item) => {
+            return {
+                label: item.title,
+                value: item.id
+            }
+        })
+    
+        return options
+    }
+
     const handleChange = (e) => {
-        updateCredentials(fieldName, e.currentTarget.value)
+        updateCredentials(fieldName, e.value)
     }
 
     return (
@@ -22,15 +34,12 @@ export default function FuelField({fieldName = "fuel", fieldValue, updateCredent
                 )}
 
                 {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
-                    <select onChange={(e) => handleChange(e)} value={fieldValue}>
-                        <option value={""}>Select a fuel</option>
-                        {Object.values(items.results ?? {}).map((item, index) => (
-                            <option 
-                                key={index} 
-                                value={item.id}
-                            >{item.title}</option>
-                        ))}
-                    </select>
+                    <Select 
+                        value={generateOptions(Object.values(items.results ?? {})).filter((option) => option.value == fieldValue)}
+                        placeholder={"Select a fuel"}
+                        onChange={(e) => handleChange(e)}
+                        options={generateOptions(Object.values(items.results ?? {}))}
+                    />
                 )}
             </>
         )

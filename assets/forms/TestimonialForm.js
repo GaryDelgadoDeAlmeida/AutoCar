@@ -53,7 +53,7 @@ export default function TestimonialForm({testimonial = null}) {
                                 setFormResponse({classname: "success", message: "The testimonial photo has been updated"})
                             })
                             .catch((error) => {
-                                let errorMessage = "An error has been encountered during the testimonial registration process. Please, retry laterP"
+                                let errorMessage = "An error has been encountered during the testimonial registration process. Please, retry later"
                                 if(error.response.data.message) {
                                     errorMessage = error.response.data.message
                                 } else if(error.response.data.detail) {
@@ -66,7 +66,7 @@ export default function TestimonialForm({testimonial = null}) {
                     }
                 })
                 .catch((error) => {
-                    let errorMessage = "An error has been encountered during the testimonial registration process. Please, retry laterP"
+                    let errorMessage = "An error has been encountered during the testimonial registration process. Please, retry later"
                     if(error.response.data.message) {
                         errorMessage = error.response.data.message
                     } else if(error.response.data.detail) {

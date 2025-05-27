@@ -44,13 +44,13 @@ export default function Vehicle() {
                     <Link className={"btn btn-secondary"} to={"/vehicles"}>Return</Link>
                     
                     {loading && (
-                        <Notification classname={"information"} message={"Loading ..."} />
+                        <Notification classname={"information mt-25"} message={"Loading ..."} />
                     )}
 
                     {!loading && (
                         <>
                             {Object.keys(error).length > 0 && (
-                                <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                                <Notification classname={"danger mt-25"} message={error.response.data.message ?? error.response.data.detail} />
                             )}
 
                             {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
@@ -67,17 +67,19 @@ export default function Vehicle() {
                                             <p>{items.maker.name}</p>
                                         </div>
                                     </div>
-            
-                                    <div className={"vehicle-block"}>
-                                        <div className={"-header"}>
-                                            <label>Description</label>
-                                        </div>
-                                        <div className={"-content"}>
-                                            <div className={"-markup"}>
-                                                <p>Lorem ipsum dolor sit amet. Aut dignissimos molestias ut totam reiciendis est vero accusantium! In repellat incidunt At reprehenderit provident id commodi quasi? </p><p>Et nisi recusandae et ipsa beatae aut galisum quaerat. Qui nihil delectus et nesciunt aliquam sed mollitia galisum est iure voluptas. Quo harum consequatur ea saepe aperiam non veniam quia sed quia laudantium id natus numquam et quis voluptatem. </p><p>Sed numquam iste nam perspiciatis odio sit maiores aperiam et suscipit quia est sint nemo est minus quis. Qui consequatur dolor eos ipsam nemo cum consequatur quod. </p><p>Qui dolorum possimus est nihil officiis in numquam iure non atque fuga et nobis aliquam hic incidunt voluptate. Id minima earum aut laudantium maxime est expedita labore ut rerum voluptas nam veritatis quia. Ut rerum impedit aut maiores temporibus qui praesentium expedita qui praesentium mollitia est rerum corrupti. Qui repellat dolorem qui esse molestias sit dolore labore aut ipsam quis non nostrum atque ut quas excepturi ut accusantium repudiandae? </p><p>Vel maxime molestiae et Quis galisum quo labore dicta aut dolores molestias et enim libero. Non cupiditate corrupti ut omnis quia est quia facilis est quae quaerat non quod dolor sed quidem illum. Qui deserunt sunt qui quia eaque id ipsa consectetur. Ex minus dicta sed perspiciatis dolor quo debitis quia. </p>
+                                    
+                                    {items.description && (
+                                        <div className={"vehicle-block"}>
+                                            <div className={"-header"}>
+                                                <label>Description</label>
+                                            </div>
+                                            <div className={"-content"}>
+                                                <div className={"markup"}>
+                                                    <p>Lorem ipsum dolor sit amet. Aut dignissimos molestias ut totam reiciendis est vero accusantium! In repellat incidunt At reprehenderit provident id commodi quasi? </p><p>Et nisi recusandae et ipsa beatae aut galisum quaerat. Qui nihil delectus et nesciunt aliquam sed mollitia galisum est iure voluptas. Quo harum consequatur ea saepe aperiam non veniam quia sed quia laudantium id natus numquam et quis voluptatem. </p><p>Sed numquam iste nam perspiciatis odio sit maiores aperiam et suscipit quia est sint nemo est minus quis. Qui consequatur dolor eos ipsam nemo cum consequatur quod. </p><p>Qui dolorum possimus est nihil officiis in numquam iure non atque fuga et nobis aliquam hic incidunt voluptate. Id minima earum aut laudantium maxime est expedita labore ut rerum voluptas nam veritatis quia. Ut rerum impedit aut maiores temporibus qui praesentium expedita qui praesentium mollitia est rerum corrupti. Qui repellat dolorem qui esse molestias sit dolore labore aut ipsam quis non nostrum atque ut quas excepturi ut accusantium repudiandae? </p><p>Vel maxime molestiae et Quis galisum quo labore dicta aut dolores molestias et enim libero. Non cupiditate corrupti ut omnis quia est quia facilis est quae quaerat non quod dolor sed quidem illum. Qui deserunt sunt qui quia eaque id ipsa consectetur. Ex minus dicta sed perspiciatis dolor quo debitis quia. </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    )}
 
                                     <div className={"vehicle-block"}>
                                         <div className={"-header"}>
@@ -166,7 +168,7 @@ export default function Vehicle() {
                                     </div>
 
                                     {/* Client Review / Comments */}
-                                    <div className={"vehicle-block"}>
+                                    {/* <div className={"vehicle-block"}>
                                         <div className={"-header"}>
                                             <label>Client reviews</label>
                                         </div>
@@ -175,7 +177,7 @@ export default function Vehicle() {
                                                 <Notification classname={"information"} message={"There is no reviews for this car"} />
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     
                                     {/* Simulator */}
                                     <div className={"vehicle-block"}>

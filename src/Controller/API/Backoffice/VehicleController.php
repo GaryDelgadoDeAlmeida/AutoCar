@@ -2,6 +2,8 @@
 
 namespace App\Controller\API\Backoffice;
 
+use App\Entity\VehicleCharacteristic;
+use App\Entity\VehicleConsumption;
 use App\Enum\VehicleCharacteristicsEnum;
 use App\Enum\VehicleConsumptionsEnum;
 use App\Enum\VehicleEnum;
@@ -86,6 +88,8 @@ class VehicleController extends AbstractController
                     throw new \Exception($vehicleCharacteristic);
                 }
 
+                $vehicleCharacteristic->setVehicle($vehicle);
+
                 $this->vehicleCharacteristicRepository->save($vehicleCharacteristic, true);
             }
 
@@ -95,6 +99,8 @@ class VehicleController extends AbstractController
                 if(is_string($vehicleConsumption)) {
                     throw new \Exception($vehicleConsumption);
                 }
+
+                $vehicleConsumption->setVehicle($vehicle);
 
                 $this->vehicleConsumptionRepository->save($vehicleConsumption, true);
             }
@@ -179,9 +185,13 @@ class VehicleController extends AbstractController
                     }
                 }
 
-                $vehicleCharacteristic = $this->vehicleCharacteristicManager->fillVehicleCharacteristic($characteristic, $vehicleCharacteristic);
+                $vehicleCharacteristic = $this->vehicleCharacteristicManager->fillVehicleCharacteristic($characteristic, $vehicleCharacteristic ?? new VehicleCharacteristic());
                 if(is_string($vehicleCharacteristic)) {
                     throw new \Exception($vehicleCharacteristic);
+                }
+
+                if(empty($vehicleCharacteristic->getVehicle())) {
+                    $vehicleCharacteristic->setVehicle($vehicle);
                 }
 
                 $this->vehicleCharacteristicRepository->save($vehicleCharacteristic, true);
@@ -217,9 +227,13 @@ class VehicleController extends AbstractController
                     }
                 }
 
-                $vehicleConsumption = $this->vehicleConsumptionManager->fillVehicleConsumption($consumption, $vehicleConsumption);
+                $vehicleConsumption = $this->vehicleConsumptionManager->fillVehicleConsumption($consumption, $vehicleConsumption ?? new VehicleConsumption());
                 if(is_string($vehicleConsumption)) {
                     throw new \Exception($vehicleConsumption);
+                }
+
+                if(empty($vehicleConsumption->getVehicle())) {
+                    $vehicleConsumption->setVehicle($vehicle);
                 }
 
                 $this->vehicleConsumptionRepository->save($vehicleConsumption, true);
@@ -307,18 +321,30 @@ class VehicleController extends AbstractController
 
         try {
             // Remove all consumptions datas
+            foreach($vehicle->getVehicleConsumptions() as $consumption) {
+                $this->vehicleConsumptionRepository->remove($consumption, true);
+            }
 
             // Remove all characteristics datas
+            foreach($vehicle->getVehicleCharacteristics() as $characteristic) {
+                $this->vehicleCharacteristicRepository->remove($characteristic, true);
+            }
 
             // Remove association with the maker
+            $vehicle->setMaker(null);
 
             // Remove association with the fuels
+            foreach($vehicle->getFuels() as $fuel) {
+                $vehicle->removeFuel($fuel);
+            }
 
             // Remove photos & previews
-            // $this->fileManager->removeFile($vehicle->getPhoto());
+            if(!empty($vehicle->getPhoto())) {
+                $this->fileManager->removeFile($vehicle->getPhoto());
+            }
 
             // At the end, remove the object and apply all changes into database
-            // $this->vehicleRepository->remove($vehicle, true);
+            $this->vehicleRepository->remove($vehicle, true);
         } catch(\Exception $e) {
             $code = $e->getCode();
 

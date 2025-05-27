@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Comments from "./parts/Comments";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
 import PrivateRessource from "../../hooks/PrivateResources";
+import axios from "axios";
 
 export default function Article() {
 
@@ -12,15 +13,53 @@ export default function Article() {
         return <Navigate to={"/admin/blogs"} />
     }
 
+    const [forceRedirect, setForRedirect] = useState(false)
     const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/blog/${blogID}`)
 
     useEffect(() => {
         load()
     }, [blogID])
 
+    const handleRemove = (e) => {
+        e.preventDefault()
+
+        if(!confirm("Are you sure ? This action is irreversible.")) {
+            return
+        }
+
+        axios
+            .delete(`${window.location.origin}/api/backoffice/blog/${blogID}/remove`, {
+                headers: {
+                    "Authorization" : "Bearer " + (localStorage.getItem("token") ?? "")
+                }
+            })
+            .then((response) => {
+                setForRedirect(true)
+            })
+            .catch((error) => {
+                let errorMessage = "An error has been encountered. Please retry more later"
+                if(error.response.data.message) {
+                    errorMessage = error.response.data.message
+                } else if(error.response.data.detail) {
+                    errorMessage = error.response.data.detail
+                }
+
+                alert(errorMessage)
+            })
+        ;
+    }
+
     return (
         <HeaderAdmin>
-            <Link className={"btn btn-blue"} to={"/admin/blog"}>Return</Link>
+            {forceRedirect && (
+                <Navigate to={"/admin/blog"} />
+            )}
+            
+            <div className={"d-flex -g-5"}>
+                <Link className={"btn btn-blue"} to={"/admin/blog"}>Return</Link>
+                <Link className={"btn btn-orange"} to={"/admin/blog/" + blogID + "/edit"}>Edit</Link>
+                <button className={"btn btn-red"} onClick={(e) => handleRemove(e)}>Remove</button>
+            </div>
             
             <div className={"page-section"}>
                 {loading && (
@@ -38,11 +77,11 @@ export default function Article() {
                                 {/* Article content */}
                                 <div className={"card"}>
                                     <div className={"-content"}>
-                                        {items.photo && (
-                                            <img src={`${window.location.origin}${items.photo}`} alt={items.title} />
+                                        {items.article.photo && (
+                                            <img src={`${window.location.origin}${items.article.photo}`} alt={items.article.title} />
                                         )}
-                                        <h2 className={"fs-26 txt-left mb-25"}>{items.title}</h2>
-                                        <div className={"markup"} dangerouslySetInnerHTML={{__html: items.content}}></div>
+                                        <h2 className={"fs-26 txt-left mb-25"}>{items.article.title}</h2>
+                                        <div className={"markup"} dangerouslySetInnerHTML={{__html: items.article.content}}></div>
                                     </div>
                                 </div>
 
@@ -53,7 +92,7 @@ export default function Article() {
                                     </div>
                                     <div className={"-content"}>
                                         <Comments 
-                                            articleID={items.id}
+                                            articleID={items.article.id}
                                             allowArticleComments={false} 
                                         />
                                     </div>

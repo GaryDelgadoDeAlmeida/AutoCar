@@ -3,6 +3,7 @@ import Notification from "../components/Notification";
 import FuelField from "./parts/FuelField";
 import MakerField from "./parts/MakerField";
 import ImageField from "./parts/ImageField";
+import WyziwigField from "./parts/WyziwigField";
 import ConsumptionField from "./parts/ConsumptionField";
 import CharacteristicField from "./parts/CharacteristicField";
 import { formatDate } from "../hooks/DomControl"
@@ -25,6 +26,7 @@ export default function VehicleForm({vehicle = null}) {
         averageFuelConsumption: vehicle ? vehicle.averageFuelConsumption : "",
         price: vehicle ? vehicle.price : "",
         buildAt: vehicle ? formatDate(vehicle.buildAt) : "",
+        description: "",
         consumptions: vehicle ? vehicle.consumptions.map((item) => {
             return {
                 id: item.id,
@@ -55,8 +57,6 @@ export default function VehicleForm({vehicle = null}) {
     })
 
     const handleChange = (e, fieldName) => {
-        setFormResponse({})
-        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value
@@ -251,6 +251,7 @@ export default function VehicleForm({vehicle = null}) {
 
                     <div className={"form-field"}>
                         <input 
+                            className={"field"}
                             type={"number"}
                             min={0}
                             value={credentials.fuelTank}
@@ -310,6 +311,20 @@ export default function VehicleForm({vehicle = null}) {
                         value={credentials.buildAt}
                         placeholder={"Vehicle builded at"}
                         onChange={(e) => handleChange(e, "buildAt")}
+                    />
+                </div>
+
+                <div className={"form-field"}>
+                    <WyziwigField
+                        fieldName={"description"}
+                        fieldValue={credentials.description}
+                        placeholder={"Description of the vehicle"}
+                        updateCredentials={(fieldName, fieldValue) => {
+                            setCredentials({
+                                ...credentials,
+                                [fieldName]: fieldValue
+                            })
+                        }}
                     />
                 </div>
 

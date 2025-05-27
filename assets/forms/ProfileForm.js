@@ -11,8 +11,6 @@ export default function ProfileForm() {
     })
 
     const handleChange = (e, fieldName) => {
-        setFormResponse({})
-        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value
@@ -31,10 +29,10 @@ export default function ProfileForm() {
 
             <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
                 <div className={"form-field-inline"}>
-                    <div className={"form-field -no-flex w-200px"}>
-                        <label htmlFor={"firstname"}>Firstname</label>
+                    <div className={"form-field --full -no-flex w-200px"}>
+                        <label className={"mx-auto"} htmlFor={"firstname"}>Firstname</label>
                     </div>
-                    <div className={"form-field"}>
+                    <div className={"form-field --full"}>
                         <input
                             type={"text"}
                             id={"firstname"}
@@ -48,10 +46,10 @@ export default function ProfileForm() {
                 </div>
 
                 <div className={"form-field-inline"}>
-                    <div className={"form-field -no-flex w-200px"}>
-                        <label htmlFor={"lastname"}>Lastname</label>
+                    <div className={"form-field --full -no-flex w-200px"}>
+                        <label className={"mx-auto"} htmlFor={"lastname"}>Lastname</label>
                     </div>
-                    <div className={"form-field"}>
+                    <div className={"form-field --full"}>
                         <input
                             id={"lastname"}
                             type={"text"}
@@ -65,10 +63,10 @@ export default function ProfileForm() {
                 </div>
                 
                 <div className={"form-field-inline"}>
-                    <div className={"form-field -no-flex w-200px"}>
-                        <label htmlFor={"email_address"}>Email address</label>
+                    <div className={"form-field --full -no-flex w-200px"}>
+                        <label className={"mx-auto"} htmlFor={"email_address"}>Email address</label>
                     </div>
-                    <div className={"form-field"}>
+                    <div className={"form-field --full"}>
                         <input
                             id={"email_address"}
                             type={"email"}

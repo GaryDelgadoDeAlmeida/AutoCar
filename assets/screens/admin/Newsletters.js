@@ -4,6 +4,7 @@ import Pagination from "../../components/Pagination"
 import HeaderAdmin from "../../components/HeaderAdmin"
 import Notification from "../../components/Notification"
 import PrivateResources from "../../hooks/PrivateResources"
+import axios from "axios";
 
 export default function Newsletters() {
 
@@ -13,6 +14,34 @@ export default function Newsletters() {
     useEffect(() => {
         load()
     }, [offset])
+
+    const handleRemoveAll = (e) => {
+        e.preventDefault()
+
+        if(!confirm("Are you sure ? This action is irreversible !")) {
+            return
+        }
+
+        axios
+            .delete(`${window.location.origin}/api/backoffice/newsletters/remove-all`, {
+                headers: {
+                    "Authorization": "Bearer " + (localStorage.getItem("totoken") ?? "")
+                }
+            })
+            .then((response) => {
+                if(response.status == 204) {}
+            })
+            .catch((error) => {
+                let errorMessage = "An error has been encountered when processing the image. Please retry more later"
+                if(error.response.data.message) {
+                    errorMessage = error.response.data.message
+                } else if(error.response.data.detail) {
+                    errorMessage = error.response.data.detail
+                }
+
+                setFormResponse({classname: "danger", message: errorMessage})
+            })
+    }
 
     return (
         <HeaderAdmin>
@@ -36,7 +65,9 @@ export default function Newsletters() {
                         {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
                             Object.keys(items.results ?? {}).length > 0 ? (
                                 <>
-                                    <div className={"table-list"}>
+                                    <button className={"btn btn-red"} onClick={(e) => handleRemoveAll(e)}>Remove All</button>
+
+                                    <div className={"table-list mt-25"}>
                                         {Object.values(items.results).map((item, index) => (
                                             <TableCard
                                                 key={index}

@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 #[Route('/api/backoffice', name: 'api_backoffice_')]
 class FuelController extends AbstractController
@@ -77,8 +78,10 @@ class FuelController extends AbstractController
         }
 
         return $this->json(
-            $this->serializeManager->serializeContent($fuel), 
-            Response::HTTP_CREATED
+            $fuel, 
+            Response::HTTP_CREATED,
+            [],
+            [ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles", "fuelPriceHistories", "lastFuelPriceHistories"]]
         );
     }
 

@@ -26,43 +26,46 @@ export default function ProfilePasswordForm() {
         <>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <div className={"form-field-inline"}>
-                    <div className={"form-field -no-flex w-200px"}>
-                        <label htmlFor={"current_password"}>Current password</label>
+                    <div className={"form-field --full -no-flex w-200px"}>
+                        <label className={"mx-auto"} htmlFor={"current_password"}>Current password</label>
                     </div>
-                    <div className={"form-field"}>
+                    <div className={"form-field --full"}>
                         <input
                             id={"current_password"}
                             type={"password"}
-                            onChange={(e) => handleChange(e, "current_password")}
                             value={credentials.current_password}
+                            onChange={(e) => handleChange(e, "current_password")}
+                            placeholder={"Your current password"}
                             required
                         />
                     </div>
                 </div>
                 <div className={"form-field-inline"}>
-                    <div className={"form-field -no-flex w-200px"}>
-                        <label htmlFor={"new_password"}>New password</label>
+                    <div className={"form-field --full -no-flex w-200px"}>
+                        <label className={"mx-auto"} htmlFor={"new_password"}>New password</label>
                     </div>
-                    <div className={"form-field"}>
+                    <div className={"form-field --full"}>
                         <input
                             id={"new_password"}
                             type={"password"}
-                            onChange={(e) => handleChange(e, "new_password")}
                             value={credentials.new_password}
+                            onChange={(e) => handleChange(e, "new_password")}
+                            placeholder={"Your new password"}
                             required
                         />
                     </div>
                 </div>
                 <div className={"form-field-inline"}>
-                    <div className={"form-field -no-flex w-200px"}>
-                        <label htmlFor={"confirm_new_password"}>Confirm your new password</label>
+                    <div className={"form-field --full -no-flex w-200px"}>
+                        <label className={"mx-auto"} htmlFor={"confirm_new_password"}>Confirm your new password</label>
                     </div>
-                    <div className={"form-field"}>
+                    <div className={"form-field --full"}>
                         <input
                             id={"confirm_new_password"}
                             type={"password"}
-                            onChange={(e) => handleChange(e, "confirm_new_password")}
                             value={credentials.confirm_new_password}
+                            onChange={(e) => handleChange(e, "confirm_new_password")}
+                            placeholder={"Confirmation of your new password"}
                             required
                         />
                     </div>

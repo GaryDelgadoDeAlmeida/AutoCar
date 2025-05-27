@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Vehicle;
 use App\Entity\VehicleCharacteristic;
 use App\Entity\VehicleConsumption;
+use App\Manager\ConvertManager;
 use App\Repository\CharacteristicRepository;
 use App\Repository\ConsumptionRepository;
 use App\Repository\FuelRepository;
@@ -39,6 +40,9 @@ class ImportVehiclesCsvCommand extends Command
     private VehicleConsumptionRepository $vehicleConsumptionRepository;
     private VehicleCharacteristicRepository $vehicleCharacteristicRepository;
 
+    // Manager
+    private ConvertManager $convertManager;
+
     public function __construct(
         ParameterBagInterface $param,
         FuelRepository $fuelRepository,
@@ -48,10 +52,18 @@ class ImportVehiclesCsvCommand extends Command
         ConsumptionRepository $consumptionRepository,
         CharacteristicRepository $characteristicRepository,
         VehicleConsumptionRepository $vehicleConsumptionRepository,
-        VehicleCharacteristicRepository $vehicleCharacteristicRepository
+        VehicleCharacteristicRepository $vehicleCharacteristicRepository,
+        ConvertManager $convertManager
     ) {
         parent::__construct();
+
+        // General
         $this->param = $param;
+
+        // Manager
+        $this->convertManager = $convertManager;
+
+        // Repository
         $this->fuelRepository = $fuelRepository;
         $this->makerRepository = $makerRepository;
         $this->vehicleRepository = $vehicleRepository;
@@ -77,26 +89,25 @@ class ImportVehiclesCsvCommand extends Command
 
         // Check if the CSV file exist in the designated repository
         $projectDir = $this->param->get("kernel.project_dir") . "/public/documents";
-        if(!file_exists("{$projectDir}/toyota-corrolla.csv")) {
+        if(!file_exists("{$projectDir}/lexus-ct200h_07_04_2025.csv")) {
             $io->error("The file couldn't be found");
             return Command::FAILURE;
         }
 
         // Check if the file can be open
-        $handle = fopen("{$projectDir}/toyota-corrolla.csv", "r");
+        $handle = fopen("{$projectDir}/lexus-ct200h_07_04_2025.csv", "r");
         if($handle === false) {
             $io->error("The file couldn't be opened");
             return Command::FAILURE;
         }
 
-        $maker = $this->makerRepository->findOneBy(["name" => "Toyota"]);
+        $maker = $this->makerRepository->findOneBy(["name" => "Lexus"]);
         if(empty($maker)) {
             dd("The maker 'Toyota' don't exist'");
         }
 
         // Start the process to get all the datas in order to save then in the database
-        $counter = 0;
-        $datas = $dataColumns = $columnsName = [];
+        $dataColumns = $columnsName = [];
         $currentTime = new \DateTimeImmutable();
         while(($element = fgetcsv($handle)) !== false) {
             $row = str_getcsv(str_replace("\u{FEFF}", "", $element[0]), ";");
@@ -126,21 +137,16 @@ class ImportVehiclesCsvCommand extends Command
             //     $vehicleType = $this->vehicleTypeRepository->findOneBy(["type" => $row[$dataColumns["Vehicle Size Class"]]]);
             // }
             
-            if(!is_numeric($row[$dataColumns["Year"]])) {
-                dd(
-                    $row,
-                    $dataColumns,
-                    $row[$dataColumns["Year"]],
-                    $row[$dataColumns["Year"]] . "-01-01"
-                );
-            }
-            
             $vehicle = (new Vehicle())
                 ->setMaker($maker)
                 ->setBasemodel($row[$dataColumns["baseModel"]])
                 ->setName($row[$dataColumns["Model"]])
                 ->setBuildAt(new \DateTimeImmutable($row[$dataColumns["Year"]] . "-01-01"))
-                ->setAverageFuelConsumption($row[$dataColumns["Annual Petroleum Consumption For Fuel Type1"]])
+                ->setAverageFuelConsumption(
+                    $this->convertManager->convertGallonPerMillesToKilometrePerLiters(
+                        floatval($row[$dataColumns["Annual Petroleum Consumption For Fuel Type1"]])
+                    )
+                )
                 ->addFuel($fuel)
                 ->setPrice(0)
                 ->setCreatedAt($currentTime)
@@ -175,10 +181,17 @@ class ImportVehiclesCsvCommand extends Command
                 }
 
                 if(!empty($characteristic)) {
+                    $value = $fieldValue;
+                    if(in_array($characteristic->getTitle(), ["hlv", "hpv", "lv2", "lv4", "pv2", "pv4"]) && (is_numeric($fieldValue) && floatval($fieldValue) == $fieldValue && floatval($fieldValue) > 0)) {
+                        $value = $this->convertManager->convertCubeMeterToKg(
+                            $this->convertManager->convertCubitFeetToCubeMeter(floatval($fieldValue))
+                        );
+                    }
+
                     $vehicleCharacteristic = (new VehicleCharacteristic())
                         ->setVehicle($vehicle)
                         ->setCharacteristic($characteristic)
-                        ->setValue($fieldValue)
+                        ->setValue($value)
                         ->setCreatedAt($currentTime);
                     ;
                     $this->vehicleCharacteristicRepository->save($vehicleCharacteristic, true);

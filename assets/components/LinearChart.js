@@ -14,6 +14,7 @@ export default function LinearChart() {
         month.setMonth(index)
         return month.toLocaleDateString("en-EN", {month: 'long'})
     });
+    
     const data = {
         labels: labels,
         datasets: [
@@ -25,64 +26,56 @@ export default function LinearChart() {
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
             },
-            {
-                label: 'Super 98 (E10)',
-                data: months.map(item => {
-                    return Math.random()
-                }),
-                borderColor: 'rgb(255, 159, 64)',
-                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            },
-            {
-                label: 'Sans Plomb 95 (E5)',
-                data: months.map(item => {
-                    return Math.random()
-                }),
-                borderColor: 'rgb(255, 205, 86)',
-                backgroundColor: 'rgba(255, 205, 86, 0.2)',
-            },
-            {
-                label: 'Sans Plomb 95 (E10)',
-                data: months.map(item => {
-                    return Math.random()
-                }),
-                borderColor: 'rgb(75, 192, 192)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            },
-            {
-                label: 'BioEthanol E85',
-                data: months.map(item => {
-                    return Math.random()
-                }),
-                borderColor: 'rgb(54, 162, 235)',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            },
-            {
-                label: 'Gazole / Diesel (B7)',
-                data: months.map(item => {
-                    return Math.random()
-                }),
-                borderColor: 'rgb(153, 102, 255)',
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-            },
-            {
-                label: 'GPL',
-                data: months.map(item => {
-                    return Math.random()
-                }),
-                borderColor: 'rgb(255, 159, 64)',
-                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            },
-            {
-                label: 'GNV',
-                data: months.map(item => {
-                    return Math.random()
-                }),
-                borderColor: 'rgb(255, 159, 64)',
-                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            }
             // {
-            //     label: 'Dataset 9',
+            //     label: 'Super 98 (E10)',
+            //     data: months.map(item => {
+            //         return Math.random()
+            //     }),
+            //     borderColor: 'rgb(255, 159, 64)',
+            //     backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            // },
+            // {
+            //     label: 'Sans Plomb 95 (E5)',
+            //     data: months.map(item => {
+            //         return Math.random()
+            //     }),
+            //     borderColor: 'rgb(255, 205, 86)',
+            //     backgroundColor: 'rgba(255, 205, 86, 0.2)',
+            // },
+            // {
+            //     label: 'Sans Plomb 95 (E10)',
+            //     data: months.map(item => {
+            //         return Math.random()
+            //     }),
+            //     borderColor: 'rgb(75, 192, 192)',
+            //     backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            // },
+            // {
+            //     label: 'BioEthanol E85',
+            //     data: months.map(item => {
+            //         return Math.random()
+            //     }),
+            //     borderColor: 'rgb(54, 162, 235)',
+            //     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            // },
+            // {
+            //     label: 'Gazole / Diesel (B7)',
+            //     data: months.map(item => {
+            //         return Math.random()
+            //     }),
+            //     borderColor: 'rgb(153, 102, 255)',
+            //     backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            // },
+            // {
+            //     label: 'GPL',
+            //     data: months.map(item => {
+            //         return Math.random()
+            //     }),
+            //     borderColor: 'rgb(255, 159, 64)',
+            //     backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            // },
+            // {
+            //     label: 'GNV',
             //     data: months.map(item => {
             //         return Math.random()
             //     }),
@@ -91,6 +84,7 @@ export default function LinearChart() {
             // }
         ]
     };
+    
     const config = {
         type: 'line',
         data: data,
@@ -102,7 +96,7 @@ export default function LinearChart() {
                 },
                 title: {
                     display: true,
-                    text: ''
+                    text: 'Chart.js Line Chart'
                 }
             }
         },

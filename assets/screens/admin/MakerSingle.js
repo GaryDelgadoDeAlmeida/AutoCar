@@ -111,13 +111,13 @@ export default function MakerSingle() {
                                     {items.maker.logo && (
                                         <img className={"w-200px"} src={`${window.location.origin}${items.maker.logo}`} alt={items.maker.name} />
                                     )}
-
                                     <h1>{items.maker.name}</h1>
-                                    <div className={"card mb-25"}>
-                                        <div className={"-content"}>
-                                            <p>{items.maker.description}</p>
+
+                                    {items.maker.description.length > 0 && (
+                                        <div className={"card mt-25"}>
+                                            <div className={"-content"} dangerouslySetInnerHTML={{__html: items.maker.description}}></div>
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
                             </>
                         )}

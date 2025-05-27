@@ -5,15 +5,21 @@ import CarCard from "../../components/CarCard"
 import Pagination from "../../components/Pagination"
 import Notification from "../../components/Notification"
 import PrivateRessource from "../../hooks/PrivateResources"
+import SearchVehicleForm from "../../forms/SearchVehicleForm"
 
 export default function Vehicles() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/vehicles?offset=${offset}`)
+    const [credentials, setCredentials] = useState({})
+    const { loading, items, load, error } = PrivateRessource(
+        Object.keys(credentials).length == 0 
+        ? `${window.location.origin}/api/vehicles?offset=${offset}` 
+        : `${window.location.origin}/api/vehicles?` + new URLSearchParams(credentials).toString() + "&offset=" + offset
+    )
 
     useEffect(() => {
         load()
-    }, [offset])
+    }, [offset, credentials])
 
     return (
         <Header>
@@ -44,6 +50,17 @@ export default function Vehicles() {
 
                             {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                                 <>
+                                    <SearchVehicleForm 
+                                        searchCredentials={credentials}
+                                        updateCredentials={(fieldValue) => {
+                                            setCredentials({
+                                                ...credentials,
+                                                ...fieldValue,
+                                                request: "search"
+                                            })
+                                        }}
+                                    />
+
                                     {Object.keys(items.results ?? {}).length > 0 ? (
                                         <div className={"d-grid -col-4 mt-50"}>
                                             {Object.values(items.results).map((item, index) => (
@@ -54,11 +71,13 @@ export default function Vehicles() {
                                             ))}
                                         </div>
                                     ) : (
-                                        <Notification classname={"warning"} message={"No vehicle has been found"} />
+                                        <div className={"mt-25"}>
+                                            <Notification classname={"warning"} message={"No vehicle has been found"} />
+                                        </div>
                                     )}
 
                                     <Pagination
-                                        offset={offset}
+                                        offset={items.offset}
                                         setOffset={setOffset}
                                         maxOffset={items.maxOffset}
                                     />

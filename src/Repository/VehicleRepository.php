@@ -162,6 +162,86 @@ class VehicleRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return array
+     */
+    public function getVehicleModels() : array {
+        return $this->createQueryBuilder("vehicle")
+            ->select("DISTINCT vehicle.basemodel")
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Search vehicles from different parameters
+     * 
+     * @param array $parameters
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
+    public function searchVehicles(array $parameters, int $offset, int $limit) : array {
+        $qr = $this->createQueryBuilder("vehicle")
+            ->select("
+                vehicle.id,
+                vehicle.photo,
+                maker.name as maker_name,
+                vehicle.basemodel,
+                vehicle.name,
+                vehicle.price,
+                vehicle.buildAt,
+                vehicle.createdAt
+            ")
+            ->innerJoin("vehicle.maker", "maker")
+        ;
+
+        if(!empty($parameters["search"])) {
+            $qr
+                ->andWhere("vehicle.name LIKE :search")
+                ->setParameter("search", "%{$parameters["search"]}%")
+            ;
+        }
+        
+        if(!empty($parameters["price"])) {
+            $qr
+                ->andWhere("vehicle.price <= :maxBudget")
+                ->setParameter("maxBudget", floatval($parameters["price"]))
+            ;
+        }
+        
+        if(!empty($parameters["maker"])) {
+            $qr
+                ->andWhere("maker.id LIKE :makerID")
+                ->setParameter("makerID", $parameters["maker"])
+            ;
+        }
+        
+        if(!empty($parameters["fuel"])) {
+            $qr
+                ->innerJoin("vehicle.fuels", "fuel")
+                ->andWhere("fuel.id LIKE :fuelID")
+                ->setParameter("fuelID", $parameters["fuel"])
+            ;
+        }
+        
+        if(!empty($parameters["model"])) {
+            $qr
+                ->andWhere("vehicle.basemodel LIKE :model")
+                // ->setParameter("search", "%{$parameters["model"]}%")
+                ->setParameter("model", $parameters["model"])
+            ;
+        }
+
+        return $qr
+            ->orderBy("vehicle.buildAt", "DESC")
+            ->setFirstResult(($offset - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
      * @return int
      */
     public function countVehicles() : int {
@@ -183,6 +263,61 @@ class VehicleRepository extends ServiceEntityRepository
             ->select("COUNT(vehicle.id) as nbrVehicles")
             ->where("vehicle.maker = :makerID")
             ->setParameter("makerID", $makerID)
+            ->getQuery()
+            ->getSingleResult()["nbrVehicles"]
+        ;
+    }
+
+    /**
+     * Count vehicles who correspond to search parameters
+     * 
+     * @param array $parameters
+     * @return int
+     */
+    public function countSearchedVehicles(array $parameters) : int {
+        $qr = $this->createQueryBuilder("vehicle")
+            ->select("COUNT(vehicle.id) as nbrVehicles")
+            ->innerJoin("vehicle.maker", "maker")
+        ;
+
+        if(!empty($parameters["search"])) {
+            $qr
+                ->andWhere("vehicle.name LIKE :search")
+                ->setParameter("search", "%{$parameters["search"]}%")
+            ;
+        }
+        
+        if(!empty($parameters["price"])) {
+            $qr
+                ->andWhere("vehicle.price <= :maxBudget")
+                ->setParameter("maxBudget", $parameters["price"])
+            ;
+        }
+        
+        if(!empty($parameters["maker"])) {
+            $qr
+                ->andWhere("maker.id LIKE :makerID")
+                ->setParameter("makerID", $parameters["maker"])
+            ;
+        }
+        
+        if(!empty($parameters["fuel"])) {
+            $qr
+                ->innerJoin("vehicle.fuels", "fuel")
+                ->andWhere("fuel.id LIKE :fuelID")
+                ->setParameter("fuelID", $parameters["fuel"])
+            ;
+        }
+        
+        if(!empty($parameters["model"])) {
+            $qr
+                ->andWhere("vehicle.basemodel LIKE :model")
+                // ->setParameter("search", "%{$parameters["model"]}%")
+                ->setParameter("model", $parameters["model"])
+            ;
+        }
+
+        return $qr
             ->getQuery()
             ->getSingleResult()["nbrVehicles"]
         ;

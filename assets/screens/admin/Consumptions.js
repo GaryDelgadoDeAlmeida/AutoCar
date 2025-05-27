@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import TableCard from "../../components/TableCard"
 import Pagination from "../../components/Pagination"
 import HeaderAdmin from "../../components/HeaderAdmin"
@@ -36,13 +37,17 @@ export default function Consumptions() {
                         {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                             Object.keys(items.results ?? {}).length > 0 ? (
                                 <>
-                                    <div className={"table-list"}>
+                                    <Link className={"btn btn-blue"} to={"/admin/consumptions/add"}>Add a consumption</Link>
+
+                                    <div className={"table-list mt-25"}>
                                         {Object.values(items.results).map((item, index) => (
                                             <TableCard 
                                                 key={index} 
                                                 title={item.title}
                                                 description={item.description}
                                                 link={"/admin/consumption/" + item.id}
+                                                editLink={"/admin/consumption/" + item.id + "/edit"}
+                                                removalLink={`${window.location.origin}/api/backoffice/consumption/${item.id}/remove`}
                                             />
                                         ))}
                                     </div>

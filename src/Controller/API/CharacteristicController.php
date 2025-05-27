@@ -9,45 +9,39 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 #[Route('/api', name: 'api_')]
 class CharacteristicController extends AbstractController
 {
-    private SerializeManager $serializeManager;
     private CharacteristicRepository $characteristicRepository;
 
-    function __construct(
-        SerializeManager $serializeManager, 
-        CharacteristicRepository $characteristicRepository
-    ) {
-        $this->serializeManager = $serializeManager;
+    function __construct(CharacteristicRepository $characteristicRepository) {
         $this->characteristicRepository = $characteristicRepository;
     }
 
     #[Route('/characteristics', name: 'get_characteristics', methods: ["GET"])]
     public function get_characteristics(Request $request): JsonResponse {
-        $limit = 20;
-        $offset = !empty($request->get("offset")) && is_numeric($request->get("offset")) && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
+        $response = $context = [];
+        $resultsRequest = $request->get("request", null);
+        if($resultsRequest == "all") {
+            $response = [
+                "results" => $this->characteristicRepository->findAll()
+            ];
+            $context = [
+                ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicleCharacteristics"]
+            ];
+        } else {
+            $limit = 20;
+            $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
 
-        return $this->json([
-            "offset" => $offset,
-            "maxOffset" => ceil($this->characteristicRepository->countCharacteristics() / $limit),
-            "results" => $this->characteristicRepository->getCharacteristics($offset, $limit)
-        ], Response::HTTP_OK);
-    }
-
-    #[Route('/characteristic/{characteristicID}', name: 'get_characteristic', methods: ["GET"])]
-    public function get_characteristic(int $characteristicID) : JsonResponse {
-        $characteristic = $this->characteristicRepository->getCharacteristic($characteristicID);
-        if(empty($characteristic)) {
-            return $this->json([
-                "message" => "Characteristic couldn't be found"
-            ], Response::HTTP_NOT_FOUND);
+            $response = [
+                "offset" => $offset,
+                "maxOffset" => ceil($this->characteristicRepository->countCharacteristics() / $limit),
+                "results" => $this->characteristicRepository->getCharacteristics($offset, $limit)
+            ];
         }
 
-        return $this->json(
-            $characteristic,
-            Response::HTTP_OK
-        );
+        return $this->json($response, Response::HTTP_OK, [], $context);
     }
 }

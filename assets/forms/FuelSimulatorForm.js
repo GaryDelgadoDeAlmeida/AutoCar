@@ -92,6 +92,7 @@ export default function FuelSimulatorForm({vehicleID = null}) {
                     <div className={"form-field"}>
                         <label>Voiture</label>
                         <VehicleField
+                            fieldValue={credentials.vehicle}
                             updateCredentials={(fieldName, fieldValue) => {
                                 setCredentials({
                                     ...credentials,

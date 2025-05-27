@@ -63,7 +63,7 @@ class BlogController extends AbstractController
         }
 
         return $this->json(
-            $this->serializeManager->serializeContent($article), 
+            $article, 
             Response::HTTP_CREATED
         );
     }
@@ -105,12 +105,12 @@ class BlogController extends AbstractController
         }
 
         return $this->json(
-            $this->serializeManager->serializeContent($blog), 
+            $blog, 
             Response::HTTP_ACCEPTED
         );
     }
 
-    #[Route('/blog/{blogID}/photo/update', name: 'update_blog_img', methods: ["UPDATE", "PUT"])]
+    #[Route('/blog/{blogID}/photo/update', name: 'update_blog_img', methods: ["POST"])]
     public function update_blog_img(int $blogID, Request $request) : JsonResponse {
         $blog = $this->blogRepository->find($blogID);
         if(empty($blog)) {
@@ -120,10 +120,13 @@ class BlogController extends AbstractController
         }
 
         try {
-            $fields = $this->articleManager->checkFields([ArticleEnum::ARTICLE_PHOTO => $photo = $request->files->get("photo")]);
+            $fields = $this->articleManager->checkFields([ArticleEnum::ARTICLE_PHOTO => $request->files->get("photo")]);
             if(empty($fields)) {
                 throw new \Exception("An error has been encountered with the sended body.", Response::HTTP_PRECONDITION_FAILED);
             }
+
+            // Save files in vehicle repository
+            $fields[ArticleEnum::ARTICLE_PHOTO] = "/content/img/blogs/" . $this->fileManager->uploadFile($fields[ArticleEnum::ARTICLE_PHOTO], $this->getParameter("articles_img_directory"), "{$blog->getId()} - {$blog->getTitle()}");
 
             $response = $this->articleManager->fillArticle($fields, $blog);
             if(is_string($response)) {
@@ -140,13 +143,13 @@ class BlogController extends AbstractController
         }
 
         return $this->json(
-            $this->serializeManager->serializeContent($blog), 
+            $blog, 
             Response::HTTP_ACCEPTED
         );
     }
 
     #[Route('/blog/{blogID}/remove', name: 'remove_blog', methods: ["DELETE"])]
-    public function remove_blog(int $blogID, Request $request) : JsonResponse {
+    public function remove_blog(int $blogID) : JsonResponse {
         $blog = $this->blogRepository->find($blogID);
         if(empty($blog)) {
             return $this->json([

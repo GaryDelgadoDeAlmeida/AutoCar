@@ -21,12 +21,14 @@ export default function Login() {
             </section>
             <section className={"page-section"}>
                 <div className={"page-wrapper"}>
-                    <div className={"card"}>
-                        <div className={"-header"}>
-                            <label className={"-title"}>Log-in to your account</label>
-                        </div>
-                        <div className={"-content"}>
-                            <LoginForm />
+                    <div className={"mw-500 w-100 my-auto"}>
+                        <div className={"card"}>
+                            <div className={"-header"}>
+                                <label className={"-title"}>Log-in to your account</label>
+                            </div>
+                            <div className={"-content"}>
+                                <LoginForm />
+                            </div>
                         </div>
                     </div>
                 </div>

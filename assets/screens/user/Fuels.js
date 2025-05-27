@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import TableCard from "../../components/TableCard";
 import Notification from "../../components/Notification";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 
 export default function Fuels() {
-
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/fuels`)
-
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/fuels/price-histories`)
+    
     useEffect(() => {
         load()
     }, [])
@@ -39,20 +37,33 @@ export default function Fuels() {
                             {Object.keys(error).length > 0 && (
                                 <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
                             )}
-
+                            
                             {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                                Object.keys(items.results ?? {}).length > 0 ? (
-                                    Object.values(items.results ?? {}).map((item, index) => (
-                                        <TableCard
-                                            key={index}
-                                            title={item.title}
-                                            description={`${item.price} €`}
-                                            link={`/fuel/${item.id}`}
-                                        />
-                                    ))
-                                ) : (
-                                    <Notification classname={"warning"} message={"No fuels has been found"} />
-                                )
+                                <table className={"table"}>
+                                    <thead className={"-secondary"}>
+                                        <tr>
+                                            <th className={"bg-site-body"}></th>
+                                            <th>Current Price (€ / L)</th>
+                                            <th>Last price (€ / L)</th>
+                                            <th>Augmentation (€ / L)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {Object.values(items.results).map((item, index) => {
+                                            let calcDiff = item.currentPrice - item.lastPrice
+                                            return (
+                                                <tr key={index}>
+                                                    <td className={"bg-black c-white fw-bold"}>{item.title}</td>
+                                                    <td className={"txt-center"}>{item.currentPrice}</td>
+                                                    <td className={"txt-center"}>{item.lastPrice}</td>
+                                                    <td className={"txt-center fw-bold"}>
+                                                        <span className={calcDiff <= 0 ? "c-green" : "c-red"}>{calcDiff > 0 ? "+" : ""}{new Intl.NumberFormat('fr-FR').format(calcDiff)}</span>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+                                </table>
                             )}
                         </>
                     )}

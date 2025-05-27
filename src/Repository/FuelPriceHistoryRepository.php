@@ -45,7 +45,7 @@ class FuelPriceHistoryRepository extends ServiceEntityRepository
      */
     public function countHistories() {
         return $this->createQueryBuilder("history")
-            ->select("COUNT(id) as nbrHistories")
+            ->select("COUNT(history.id) as nbrHistories")
             ->getQuery()
             ->getSingleResult()["nbrHistories"]
         ;

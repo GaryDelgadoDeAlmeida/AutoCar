@@ -70,7 +70,7 @@ export default function Brand() {
                                     </div>
                                     <div className={"mt-50"}>
                                         <h2 className={"page-title"}>{items.maker.name}</h2>
-                                        <p>{items.maker.description}</p>
+                                        <div className={"markup mt-25"} dangerouslySetInnerHTML={{__html: items.maker.description}}></div>
                                     </div>
                                 </>
                             )}

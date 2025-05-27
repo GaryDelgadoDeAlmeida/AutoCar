@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import TableCard from "../../components/TableCard";
 import Pagination from "../../components/Pagination";
 import HeaderAdmin from "../../components/HeaderAdmin";
@@ -22,6 +23,8 @@ export default function Characteristics() {
                 </div>
             </section>
 
+            <Link className={"btn btn-blue"} to={"/admin/characteristics/add"}>Add a characteristic</Link>
+
             <section className={"page-section"}>
                 {loading && (
                     <Notification classname={"information"} message={"Loading ..."} />
@@ -43,6 +46,8 @@ export default function Characteristics() {
                                                 title={item.title}
                                                 description={item.description}
                                                 link={"/admin/characteristic/" + item.id}
+                                                editLink={"/admin/characteristic/" + item.id + "/edit"}
+                                                removalLink={`${window.location.origin}/api/backoffice/characteristic/${item.id}/remove`}
                                             />
                                         ))}
                                     </div>

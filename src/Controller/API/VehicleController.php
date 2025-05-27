@@ -45,6 +45,26 @@ class VehicleController extends AbstractController
             $results = [
                 "results" => $this->vehicleRepository->getVehiclesForForm()
             ];
+        } elseif($request->get("request", "") == "search") {
+            $limit = is_numeric($request->get("limit")) && intval($request->get("limit")) == $request->get("limit") && $request->get("limit") > 1 ? intval($request->get("limit")) : 12;
+            $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
+
+            $parameters = array_filter($request->query->all(), function($value, $key) {
+                if(!empty($value)) {
+                    return [$key => $value];
+                }
+            }, ARRAY_FILTER_USE_BOTH);
+
+            $vehicles = $this->vehicleRepository->searchVehicles($parameters, $offset, $limit);
+            foreach($vehicles as $index => $vehicle) {
+                $vehicles[$index]["fuels"] = $this->fuelRepository->getVehicleFuels($vehicle["id"]);
+            }
+
+            $results = [
+                "offset" => $offset,
+                "maxOffset" => ceil($this->vehicleRepository->countSearchedVehicles($parameters) / $limit),
+                "results" => $vehicles
+            ];
         } else {
             $limit = is_numeric($request->get("limit")) && intval($request->get("limit")) == $request->get("limit") && $request->get("limit") > 1 ? intval($request->get("limit")) : 12;
             $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
@@ -60,10 +80,10 @@ class VehicleController extends AbstractController
             ];
         }
         
-        return $this->json($results);
+        return $this->json($results, Response::HTTP_OK);
     }
 
-    #[Route('/vehicle/{vehicleID}', name: 'get_vehicle', methods: ["GET"])]
+    #[Route('/vehicle/{vehicleID}', requirements: ["vehicleID" => "\d+"], name: 'get_vehicle', methods: ["GET"])]
     public function get_vehicle(int $vehicleID): JsonResponse {
         $vehicle = $this->vehicleRepository->getVehicle($vehicleID);
         if(empty($vehicle)) {
@@ -82,5 +102,12 @@ class VehicleController extends AbstractController
             Response::HTTP_OK,
             []
         );
+    }
+
+    #[Route("/vehicle/models", name: "get_basemodels", methods: ["GET"])]
+    public function get_basemodels() : JsonResponse {
+        return $this->json([
+            "results" => $this->vehicleRepository->getVehicleModels()
+        ]);
     }
 }

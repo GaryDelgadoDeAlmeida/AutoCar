@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Notification from "../components/Notification";
+import axios from "axios";
 
 export default function SearchForm() {
 
@@ -9,8 +10,6 @@ export default function SearchForm() {
     })
 
     const handleChange = (e) => {
-        setFormResponse({})
-        
         setCredentials({
             ...credentials,
             value: e.currentTarget.value
@@ -19,6 +18,23 @@ export default function SearchForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        axios
+            .get(`${window.location.origin}/api/blogs?q=${credentials.value}`)
+            .then((response) => {
+                setFormResponse({classname: "success", message: "Search system is still not operational. Wait just a little longer"})
+            })
+            .catch((error) => {
+                let errorMessage = "An error has been encountered during the testimonial registration process. Please, retry laterP"
+                if(error.response.data.message) {
+                    errorMessage = error.response.data.message
+                } else if(error.response.data.detail) {
+                    errorMessage = error.response.data.detail
+                }
+
+                setFormResponse({classname: "danger", message: errorMessage})
+            })
+        ;
     }
 
     return (
@@ -29,7 +45,7 @@ export default function SearchForm() {
 
             <form className={"form form-search"} onSubmit={(e) => handleSubmit(e)}>
                 <div className={"form-field-inline -g-none"}>
-                    <div className={"form-field"}>
+                    <div className={"form-field --full"}>
                         <input
                             type={"text"}
                             value={credentials.value}
@@ -37,7 +53,9 @@ export default function SearchForm() {
                             placeholder={"Search an article"}
                         />
                     </div>
-                    <button type={"submit"} className={"btn btn-secondary -inline-flex"}>Search</button>
+                    <button type={"submit"} className={"btn btn-secondary -inline-flex"}>
+                        <span>Search</span>
+                    </button>
                 </div>
             </form>
         </>

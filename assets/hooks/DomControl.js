@@ -116,19 +116,3 @@ export function generateYearMonths() {
     // return Object.assign({}, months)
     return months
 }
-
-/**
- * 
- * @param {*} vehicleOptions 
- * @returns 
- */
-export function generateVehicleOptions(vehicleOptions) {
-    let options = Object.values(vehicleOptions).map((item) => {
-        return {
-            label: `${item.name} (${(new Date(item.buildAt)).getFullYear()})`,
-            value: item.id
-        }
-    })
-
-    return options
-}

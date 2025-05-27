@@ -5,15 +5,21 @@ import Pagination from "../../components/Pagination"
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification"
 import PrivateResources from "../../hooks/PrivateResources"
+import SearchVehicleForm from "../../forms/SearchVehicleForm"
 
 export default function Vehicles() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicles?offset=${offset}`)
+    const [credentials, setCredentials] = useState({})
+    const { loading, items, load, error } = PrivateResources(
+        credentials.length == 0 
+            ? `${window.location.origin}/api/vehicles?offset=${offset}`
+            : `${window.location.origin}/api/vehicles?` + new URLSearchParams(credentials).toString() + "&offset=" + offset
+    )
 
     useEffect(() => {
         load()
-    }, [offset])
+    }, [offset, credentials])
 
     return (
         <HeaderAdmin>
@@ -31,8 +37,20 @@ export default function Vehicles() {
                         )}
 
                         {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                            Object.keys(items.results ?? {}).length > 0 ? (
-                                <>
+                            <>
+                                <div className={"mb-25"}>
+                                    <SearchVehicleForm
+                                        searchCredentials={credentials}
+                                        updateCredentials={(fieldValue) => {
+                                            setCredentials({
+                                                ...credentials,
+                                                ...fieldValue
+                                            })
+                                        }}
+                                    />
+                                </div>
+
+                                {Object.keys(items.results ?? {}).length > 0 ? (
                                     <div className={"table-list"}>
                                         {Object.values(items.results).map((item, index) => (
                                             <TableCard
@@ -42,19 +60,20 @@ export default function Vehicles() {
                                                 description={item.maker_name}
                                                 link={`/admin/vehicle/${item.id}`}
                                                 editLink={`/admin/vehicle/${item.id}/edit`}
+                                                removalLink={`${window.location.origin}/api/backoffice/vehicle/${item.id}/remove`}
                                             />
                                         ))}
                                     </div>
+                                ) : (
+                                    <Notification classname={"warning"} message={"There is no vehicle registered in the database"} />
+                                )}
 
-                                    <Pagination
-                                        offset={offset}
-                                        setOffset={setOffset}
-                                        maxOffset={items.maxOffset}
-                                    />
-                                </>
-                            ) : (
-                                <Notification classname={"warning"} message={"There is no vehicle registered in the database"} />
-                            )
+                                <Pagination
+                                    offset={items.offset}
+                                    setOffset={setOffset}
+                                    maxOffset={items.maxOffset}
+                                />
+                            </>
                         )}
                     </>
                 )}

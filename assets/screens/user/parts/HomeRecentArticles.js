@@ -6,7 +6,7 @@ import Notification from "../../../components/Notification";
 
 export default function HomeRecentArticles() {
 
-    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/blogs?offset=${1}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/blogs?offset=${1}&limit=3`)
 
     useEffect(() => {
         load()
@@ -30,7 +30,7 @@ export default function HomeRecentArticles() {
                                 <h2 className={"page-title"}>Recent articles</h2>
                                 <p className={"page-description"}>Usefull information about cars</p>
                 
-                                <div className={"mt-25 d-grid -col-4 -g-25"}>
+                                <div className={"mt-25 d-grid -col-3 -g-25"}>
                                     {Object.values(items.results).map((item, index) => (
                                         <ArticleCard 
                                             key={index} 

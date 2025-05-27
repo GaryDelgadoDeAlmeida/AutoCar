@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PrivateRessource from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
+import Select from "react-select";
 
 export default function MakerField({fieldName = "maker", fieldValue, updateCredentials}) {
 
@@ -10,8 +11,19 @@ export default function MakerField({fieldName = "maker", fieldValue, updateCrede
         load()
     }, [])
 
+    const generateOptions = (makerOptions) => {
+        let options = Object.values(makerOptions).map((item) => {
+            return {
+                label: item.name,
+                value: item.id
+            }
+        })
+    
+        return options
+    }
+
     const handleChange = (e) => {
-        updateCredentials(fieldName, e.currentTarge.value)
+        updateCredentials(fieldName, e.value)
     }
 
     return (
@@ -22,15 +34,12 @@ export default function MakerField({fieldName = "maker", fieldValue, updateCrede
                 )}
 
                 {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
-                    <select onChange={(e) => handleChange(e)} value={fieldValue}>
-                        <option value={""}>Select a maker</option>
-                        {Object.values(items.results).map((item, index) => (
-                            <option 
-                                key={index} 
-                                value={item.id}
-                            >{item.name}</option>
-                        ))}
-                    </select>
+                    <Select 
+                        value={generateOptions(Object.values(items.results ?? {})).filter((option) => option.value == fieldValue)}
+                        placeholder={"Select a maker"}
+                        onChange={(e) => handleChange(e)}
+                        options={generateOptions(Object.values(items.results ?? {}))}
+                    />
                 )}
             </>
         )

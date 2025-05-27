@@ -2,7 +2,6 @@
 
 namespace App\Controller\API;
 
-use App\Manager\SerializeManager;
 use App\Repository\VehicleTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,11 +12,9 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 #[Route('/api', name: 'api_')]
 class VehicleTypeController extends AbstractController
 {
-    private SerializeManager $serializeManager;
     private VehicleTypeRepository $vehicleTypeRepository;
 
-    function __construct(SerializeManager $serializeManager, VehicleTypeRepository $vehicleTypeRepository) {
-        $this->serializeManager = $serializeManager;
+    function __construct(VehicleTypeRepository $vehicleTypeRepository) {
         $this->vehicleTypeRepository = $vehicleTypeRepository;
     }
 
@@ -40,8 +37,10 @@ class VehicleTypeController extends AbstractController
         }
 
         return $this->json(
-            $this->serializeManager->serializeContent($vehicle_type),
-            Response::HTTP_OK
+            $vehicle_type,
+            Response::HTTP_OK,
+            [],
+            [ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles"]]
         );
     }
 }

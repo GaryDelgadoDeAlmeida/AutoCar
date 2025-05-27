@@ -17,10 +17,12 @@ export default function CarCard({carItem}) {
                 <label className={"-title"}>{carItem.name + " (" + (new Date(carItem.buildAt)).getFullYear() + ")"}</label>
                 <span className={"-sub-title"}></span>
                 <div className={"-caracteristics"}>
-                    <label className={"-caracteristic"}>
-                        <img src={`${window.location.origin}/content/svg/dollar-sign.svg`} alt={""} />
-                        <span>{carItem.price > 0 ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(carItem.price) : "N/A"}</span>
-                    </label>
+                    {carItem.price && carItem.price > 0 && (
+                        <label className={"-caracteristic"}>
+                            <img src={`${window.location.origin}/content/svg/euro-sign.svg`} alt={""} />
+                            <span>{carItem.price > 0 ? new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', currencyDisplay: "code" }).format(carItem.price).replace("EUR", "") : ""}</span>
+                        </label>
+                    )}
                     <label className={"-caracteristic"}>
                         <img src={`${window.location.origin}/content/svg/car.svg`} alt={""} />
                         <span>{carItem.maker_name}</span>

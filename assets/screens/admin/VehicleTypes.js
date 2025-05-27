@@ -22,7 +22,6 @@ export default function VehicleTypes() {
                 {loading && (
                     <Notification classname={"information"} message={"Loading ..."} />
                 )}
-
                 {!loading && (
                     <>
                         {Object.keys(error).length > 0 && (
@@ -30,19 +29,20 @@ export default function VehicleTypes() {
                         )}
 
                         {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                            Object.keys(items.results).length > 0 ? (
-                                <div className={"table-list"}>
-                                    {Object.values(items.results).map((item, index) => (
+                            <div className={"table-list"}>
+                                {Object.keys(items.results).length > 0 ? (
+                                    Object.values(items.results).map((item, index) => (
                                         <TableCard
                                             key={index}
                                             title={item.type}
-                                            link={"/admin/vehicles-type/" + item.id}
+                                            editLink={"/admin/vehicle-type/" + item.id + "/edit"}
+                                            removalLink={`${window.location.origin}/api/backoffice/`}
                                         />
-                                    ))}
-                                </div>
-                            ) : (
-                                <Notification classname={"warning"} message={"There is no vehicle type registered"} />
-                            )
+                                    ))
+                                ) : (
+                                    <Notification classname={"warning"} message={"There is no vehicle type registered"} />
+                                )}
+                            </div>
                         )}
                     </>
                 )}
