@@ -22,6 +22,8 @@ export default function Consumptions() {
                     <h1>Consumptions</h1>
                 </div>
             </section>
+            
+            <Link className={"btn btn-blue"} to={"/admin/consumptions/add"}>Add a consumption</Link>
 
             <section className={"page-section"}>
                 {loading && (
@@ -37,8 +39,6 @@ export default function Consumptions() {
                         {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                             Object.keys(items.results ?? {}).length > 0 ? (
                                 <>
-                                    <Link className={"btn btn-blue"} to={"/admin/consumptions/add"}>Add a consumption</Link>
-
                                     <div className={"table-list mt-25"}>
                                         {Object.values(items.results).map((item, index) => (
                                             <TableCard 

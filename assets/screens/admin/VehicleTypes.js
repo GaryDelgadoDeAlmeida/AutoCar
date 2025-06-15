@@ -29,20 +29,20 @@ export default function VehicleTypes() {
                         )}
 
                         {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
-                            <div className={"table-list"}>
-                                {Object.keys(items.results).length > 0 ? (
-                                    Object.values(items.results).map((item, index) => (
+                            Object.keys(items.results).length > 0 ? (
+                                <div className={"table-list"}>
+                                    {Object.values(items.results).map((item, index) => (
                                         <TableCard
                                             key={index}
                                             title={item.type}
                                             editLink={"/admin/vehicle-type/" + item.id + "/edit"}
                                             removalLink={`${window.location.origin}/api/backoffice/`}
                                         />
-                                    ))
-                                ) : (
-                                    <Notification classname={"warning"} message={"There is no vehicle type registered"} />
-                                )}
-                            </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <Notification classname={"warning"} message={"There is no vehicle type registered"} />
+                            )
                         )}
                     </>
                 )}

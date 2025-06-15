@@ -18,7 +18,7 @@
     background-color: var(--c-primary);
     box-shadow: 15px 0 15px rgba(0, 0, 0, 0.17);
 
-    @include tiny_mobile {
+    @include mobile {
         flex-direction: column;
     }
 
@@ -29,10 +29,14 @@
         margin: auto 0;
         justify-content: start;
 
+        @include mobile {
+            flex-direction: column;
+        }
+
         > img {
             width: 100px;
             min-height: 75px;
-            object-fit: cover;
+            object-fit: contain;
             // background-color: var(--c-secondary);
         }
 
@@ -55,7 +59,13 @@
     }
 
     .-footer {
+        gap: 5px;
+        display: flex;
         margin: auto 0;
         justify-content: end;
+
+        @include mobile {
+            flex-direction: column;
+        }
     }
 }
