@@ -2,13 +2,20 @@
     Form
 \* ----------------------------------------------- */
 form {
-    // 
+    //
+    
+    &.form-search {}
+    
+    &.form-search-vehicle input {
+        background-color: var(--c-white) !important;
+    }
     
     .form-field {
         flex: 1;
         display: flex;
         line-height: 30px;
         flex-direction: column;
+        min-height: 45px;
 
         &.-no-flex {
             flex: none;
@@ -16,6 +23,10 @@ form {
 
         &:not(:last-child) {
             margin-bottom: 10px;
+        }
+
+        .css-hlgwow > div:first-child {
+            padding: 0 5px;
         }
 
         label {
@@ -39,7 +50,7 @@ form {
         }
 
         input:not([type="file"]) {
-            height: 35px;
+            height: 45px;
             padding: 0 20px;
         }
 
@@ -78,7 +89,7 @@ form {
             outline: 0;
             height: 35px;
             cursor: pointer;
-            padding: 0 15px;
+            padding: 0 40px 0 15px;
             appearance: none;
             position: relative;
             background: 
@@ -118,6 +129,24 @@ form {
                 min-height: 200px;
             }
         }
+
+        .form-field-options {
+            list-style: none;
+            margin: 5px 0 0 0;
+            padding: 0;
+
+            .field-option {
+                cursor: pointer;
+                min-height: 35px;
+                margin: 0 auto;
+                padding: 5px 15px;
+                background-color: var(--c-lightGray);
+
+                &:hover {
+                    background-color: var(--c-silver);
+                }
+            }
+        }
     }
 
     .form-field-inline {
@@ -127,14 +156,29 @@ form {
         margin-bottom: 10px;
         flex-direction: row;
 
+        @include tablet {
+            &.--mobile {
+                flex-direction: column;
+            }
+        }
+
         .field {
             flex: 1;
-            border: 1px solid var(--c-silver);
             border-radius: 0% !important;
+            border: 1px solid var(--c-silver);
+
+            @include tablet {
+                flex: auto;
+            }
         }
 
         .form-field {
+            max-width: 50%;
             margin-bottom: 0;
+
+            &.--full {
+                max-width: 100%;
+            }
         }
     }
 

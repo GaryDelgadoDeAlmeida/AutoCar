@@ -1,24 +1,23 @@
-import React, { useEffect } from "react"
-import Select from "react-select"
-import Notification from "../../components/Notification"
-import PrivateResources from "../../hooks/PrivateResources"
+import React, { useEffect } from "react";
+import Select from "react-select";
+import PrivateRessource from "../../hooks/PrivateResources";
 
-export default function VehicleField({fieldName = "vehicle", fieldValue, updateCredentials}) {
+export default function VehicleModelField({fieldName = "model", fieldValue, updateCredentials}) {
 
-    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicles?request=all`)
+    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/vehicle/models`)
 
     useEffect(() => {
         load()
     }, [])
-    
-    const generateOptions = (vehicleOptions) => {
-        let options = Object.values(vehicleOptions).map((item) => {
+
+    const generateOptions = (modelsOptions) => {
+        let options = Object.values(modelsOptions).map((item) => {
             return {
-                label: `${item.name} (${(new Date(item.buildAt)).getFullYear()})`,
-                value: item.id
+                label: item.basemodel,
+                value: item.basemodel
             }
         })
-
+    
         return options
     }
 
@@ -37,7 +36,7 @@ export default function VehicleField({fieldName = "vehicle", fieldValue, updateC
                     {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                         <Select 
                             value={generateOptions(Object.values(items.results ?? {})).filter((option) => option.value == fieldValue)}
-                            placeholder={"Select a vehicle"}
+                            placeholder={"Select a model"}
                             onChange={(e) => handleChange(e)}
                             options={generateOptions(Object.values(items.results ?? {}))}
                         />

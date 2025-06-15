@@ -4,6 +4,7 @@ namespace App\Controller\API;
 
 use App\Manager\SerializeManager;
 use App\Repository\FuelPriceHistoryRepository;
+use App\Repository\FuelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,29 +15,38 @@ use Symfony\Component\Routing\Attribute\Route;
 class FuelPriceHistoryController extends AbstractController
 {
     private SerializeManager $serializeManager;
+    private FuelRepository $fuelRepository;
     private FuelPriceHistoryRepository $fuelPriceHistoryRepository;
     
     function __construct(
         SerializeManager $serializeManager, 
+        FuelRepository $fuelRepository,
         FuelPriceHistoryRepository $fuelPriceHistoryRepository
     ) {
         $this->serializeManager = $serializeManager;
+        $this->fuelRepository = $fuelRepository;
         $this->fuelPriceHistoryRepository = $fuelPriceHistoryRepository;
     }
 
     #[Route('/fuels/price-histories', name: 'get_fuels_price_histories', methods: ["GET"])]
     public function get_fuels_price_histories(): JsonResponse {
         return $this->json([
-            "results" => $this->fuelPriceHistoryRepository->getFuelsHistory()
+            "results" => array_map(function($fuel) {
+                $history = $fuel->getLastFuelPriceHistories();
+    
+                return [
+                    "id" => $fuel->getId(),
+                    "title" => $fuel->getTitle(),
+                    "currentPrice" => floatval($fuel->getPrice()),
+                    "lastPrice" => !empty($history) ? floatval($history->getPrice()) : 0
+                ];
+            }, $this->fuelRepository->findAll())
         ], Response::HTTP_OK);
     }
 
     #[Route('/fuel/{fuelID}/price-histories', name: 'get_fuel_price_histories', methods: ["GET"])]
-    public function get_fuel_price_histories(Request $request, int $fuelID): JsonResponse {
-        $limit = 20;
-        $offset = !empty($request->get("offset")) && is_numeric($request->get("offset")) && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;
-
-        $histories = $this->fuelPriceHistoryRepository->findBy(["fuel" => $fuelID], ["created_at" => "DESC"], $limit, ($offset - 1) * $limit);
+    public function get_fuel_price_histories(int $fuelID): JsonResponse {
+        $histories = $this->fuelPriceHistoryRepository->findBy(["fuel" => $fuelID], ["created_at" => "DESC"]);
         if(empty($histories)) {
             return $this->json([
                 "message" => "The fuel coudln't be found"
@@ -44,8 +54,6 @@ class FuelPriceHistoryController extends AbstractController
         }
 
         return $this->json([
-            "offset" => $offset,
-            "maxOffset" => ceil($this->fuelPriceHistoryRepository->countFuelHistories($fuelID) / $limit),
             "results" => $this->serializeManager->serializeContent($histories)
         ], Response::HTTP_OK);
     }

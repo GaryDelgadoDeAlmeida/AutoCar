@@ -121,6 +121,15 @@ class Fuel
         return $this->fuelPriceHistories;
     }
 
+    /**
+     * @return array|FuelPriceHistory
+     */
+    public function getLastFuelPriceHistories() : FuelPriceHistory|bool {
+        $histories = $this->getFuelPriceHistories();
+
+        return $histories->last();
+    }
+
     public function addFuelPriceHistory(FuelPriceHistory $fuelPriceHistory): static
     {
         if (!$this->fuelPriceHistories->contains($fuelPriceHistory)) {

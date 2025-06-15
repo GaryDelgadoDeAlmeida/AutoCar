@@ -12,7 +12,7 @@ import axios from "axios";
  */
 export default function AutocompleteField({fieldName = "destination", placeholder = "", updateCredentials}) {
 
-    const APIKEY = "ad00f23cf9e849cdb6e7b196ff55b49d"
+    const APIKEY = ""
     const [suggestions, setSuggestions] = useState({})
 
     const handleChange = (e) => {

@@ -1,0 +1,109 @@
+import React, { useState } from "react";
+import Notification from "../components/Notification";
+import axios from "axios";
+
+export default function ConsumptionForm({consumption = null}) {
+
+    const userToken = localStorage.getItem("token")
+    const [formResponse, setFormResponse] = useState({})
+    const [credentials, setCredentials] = useState({
+        title: consumption ? consumption.title : "",
+        description: consumption ? consumption.description : ""
+    })
+
+    const handleChange = (e, fieldName) => {
+        setFormResponse({})
+
+        setCredentials({
+            ...credentials,
+            [fieldName]: e.currentTarget.value
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if(credentials.title.length == 0 || credentials.description.length == 0) {
+            setFormResponse({classname: "danger", message: "All fields must be filled with some data"})
+            return
+        }
+
+        if(consumption == null) {
+            axios
+                .post(`${window.location.origin}/api/backoffice/consumption`, credentials, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": "Bearer " + (userToken ?? "")
+                    }
+                })
+                .then((response) => {
+                    setFormResponse({classname: "success", message: "The consumption '" + credentials.title + "' has been successfully registered"})
+                })
+                .catch((error) => {
+                    let errorMessage = "An error has been encountered. Please retry later"
+                    if(error.response.data.message) {
+                        errorMessage = error.response.data.message
+                    } else if(error.response.data.detail) {
+                        errorMessage = error.response.data.detail
+                    }
+
+                    setFormResponse({classname: "danger", message: errorMessage})
+                })
+            ;
+        } else {
+            axios
+                .put(`${window.location.origin}/api/backoffice/consumption/${consumption}/update`, credentials, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json",
+                        "Authorization": "Bearer " + (userToken ?? "")
+                    }
+                })
+                .then((response) => {
+                    setFormResponse({classname: "success", message: "The consumption '" + credentials.title + "' has been successfully registered"})
+                })
+                .catch((error) => {
+                    let errorMessage = "An error has been encountered. Please retry later"
+                    if(error.response.data.message) {
+                        errorMessage = error.response.data.message
+                    } else if(error.response.data.detail) {
+                        errorMessage = error.response.data.detail
+                    }
+
+                    setFormResponse({classname: "danger", message: errorMessage})
+                })
+            ;
+        }
+    }
+
+    return (
+        <>
+            {Object.keys(formResponse).length > 0 && (
+                <Notification {...formResponse} />
+            )}
+
+            <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
+                <div className={"form-field"}>
+                    <input 
+                        type={"text"}
+                        maxLength={255}
+                        value={credentials.title}
+                        onChange={(e) => handleChange(e, "title")}
+                        placeholder={"Data key to store into database"}
+                        required
+                    />
+                </div>
+                <div className={"form-field"}>
+                    <textarea 
+                        onChange={(e) => handleChange(e, "description")} 
+                        placeholder={"Description of the data key"}
+                    >{credentials.description}</textarea>
+                </div>
+                <div className={"form-actions"}>
+                    <button type={"submit"} className={"btn btn-secondary"}>Submit</button>
+                </div>
+            </form>
+        </>
+    )
+}
