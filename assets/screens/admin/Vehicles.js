@@ -44,7 +44,8 @@ export default function Vehicles() {
                                         updateCredentials={(fieldValue) => {
                                             setCredentials({
                                                 ...credentials,
-                                                ...fieldValue
+                                                ...fieldValue,
+                                                request: "search"
                                             })
                                         }}
                                     />

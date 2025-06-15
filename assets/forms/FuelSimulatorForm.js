@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Notification from "../components/Notification";
 import VehicleField from "./parts/VehicleField";
+import Notification from "../components/Notification";
+import OpenStreetMapField from "./parts/OpenStreetMapField";
 import axios from "axios";
 
 export default function FuelSimulatorForm({vehicleID = null}) {
@@ -8,6 +9,7 @@ export default function FuelSimulatorForm({vehicleID = null}) {
     const [calculResponse, setCalculResponse] = useState(0)
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
+        simulationMode: "simulation_km",
         vehicle: vehicleID,
         km: 0,
         round_trip: false,
@@ -88,6 +90,55 @@ export default function FuelSimulatorForm({vehicleID = null}) {
             )}
 
             <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
+                <div className={"form-field"}>
+                    <label>Mode de la simulation</label>
+                    <div className={"d-flex -g-5 -m-column"}>
+                        <label>
+                            <input
+                                type={"radio"} 
+                                onChange={(e) => handleChange(e, "simulationMode")} 
+                                value={"simulation_km"}
+                                name={"simulationMode"}
+                                checked={credentials.simulationMode == "simulation_km" ? true : false}
+                            />
+                            <span>Simuler sur un kilomètrage</span>
+                        </label>
+                        <label>
+                            <input 
+                                type={"radio"} 
+                                onChange={(e) => handleChange(e, "simulationMode")} 
+                                value={"simulation_two_endpoints"}
+                                name={"simulationMode"}
+                                checked={credentials.simulationMode == "simulation_two_endpoints" ? true : false}
+                            />
+                            <span>Simuler entre 2 adresses</span>
+                        </label>
+                    </div>
+                </div>
+
+                {credentials.simulationMode == "simulation_two_endpoints" && (
+                    <div className={"mb-15"}>
+                        <OpenStreetMapField updateCredentials={(fieldValue) => {
+                            setCredentials({
+                                ...credentials,
+                                km: fieldValue
+                            })
+                        }} />
+                    </div>
+                )}
+
+                <div className={"form-field"}>
+                    <label>Kilomètre à parcourir</label>
+                    <input 
+                        type={"number"} 
+                        min={0}
+                        step={".001"}
+                        value={credentials.km}
+                        onChange={(e) => handleChange(e, "km")} 
+                        readOnly={credentials.simulationMode == "simulation_two_endpoints" ? true : false}
+                    />
+                </div>
+
                 {!vehicleID && (
                     <div className={"form-field"}>
                         <label>Voiture</label>
@@ -102,17 +153,6 @@ export default function FuelSimulatorForm({vehicleID = null}) {
                         />
                     </div>
                 )}
-
-                <div className={"form-field"}>
-                    <label>Kilomètre à parcourir</label>
-                    <input 
-                        type={"number"} 
-                        min={0}
-                        step={".001"}
-                        value={credentials.km}
-                        onChange={(e) => handleChange(e, "km")} 
-                    />
-                </div>
 
                 <div className={"form-field"}>
                     <label>

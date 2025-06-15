@@ -13,20 +13,20 @@ export default function HomeRecentArticles() {
     }, [])
 
     return (
-        <>
-            {loading && (
-                <Notification classname={"information"} message={"Loading ..."} />
-            )}
+        <section className={"page-section"}>
+            <div className={"page-wrapper"}>
+                {loading && (
+                    <Notification classname={"information"} message={"Loading ..."} />
+                )}
 
-            {!loading && (
-                <>
-                    {Object.keys(error).length > 0 && (
-                        <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
-                    )}
+                {!loading && (
+                    <>
+                        {Object.keys(error).length > 0 && (
+                            <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                        )}
 
-                    {Object.keys(items).length > 0 && Object.keys(error).length == 0 && Object.keys(items.results ?? {}).length > 0 && (
-                        <section className={"page-section"}>
-                            <div className={"page-wrapper"}>
+                        {Object.keys(items).length > 0 && Object.keys(error).length == 0 && Object.keys(items.results ?? {}).length > 0 && (
+                            <>
                                 <h2 className={"page-title"}>Recent articles</h2>
                                 <p className={"page-description"}>Usefull information about cars</p>
                 
@@ -44,11 +44,11 @@ export default function HomeRecentArticles() {
                                         <span>Show More</span>
                                     </Link>
                                 </div>
-                            </div>
-                        </section>
-                    )}
-                </>
-            )}
-        </>
+                            </>
+                        )}
+                    </>
+                )}
+            </div>
+        </section>
     )
 }

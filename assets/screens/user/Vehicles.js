@@ -4,17 +4,17 @@ import Header from "../../components/Header"
 import CarCard from "../../components/CarCard"
 import Pagination from "../../components/Pagination"
 import Notification from "../../components/Notification"
-import PrivateRessource from "../../hooks/PrivateResources"
+import PrivateResources from "../../hooks/PrivateResources"
 import SearchVehicleForm from "../../forms/SearchVehicleForm"
 
 export default function Vehicles() {
 
     const [offset, setOffset] = useState(1)
     const [credentials, setCredentials] = useState({})
-    const { loading, items, load, error } = PrivateRessource(
-        Object.keys(credentials).length == 0 
-        ? `${window.location.origin}/api/vehicles?offset=${offset}` 
-        : `${window.location.origin}/api/vehicles?` + new URLSearchParams(credentials).toString() + "&offset=" + offset
+    const { loading, items, load, error } = PrivateResources(
+        credentials.length == 0 
+            ? `${window.location.origin}/api/vehicles?offset=${offset}` 
+            : `${window.location.origin}/api/vehicles?` + new URLSearchParams(credentials).toString() + "&offset=" + offset
     )
 
     useEffect(() => {

@@ -85,7 +85,7 @@ export default function MakerSingle() {
                                         <div className={"-content"}>
                                             <div className={"d-col -g-5"}>
                                                 <label className={"fw-bold"}>Localisation</label>
-                                                <span>{items.maker.location.length > 0 ? items.maker.location : "N/A"}</span>
+                                                <span>{items.maker.location && items.maker.location.length > 0 ? items.maker.location : "N/A"}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -113,7 +113,7 @@ export default function MakerSingle() {
                                     )}
                                     <h1>{items.maker.name}</h1>
 
-                                    {items.maker.description.length > 0 && (
+                                    {items.maker.description && items.maker.description.length > 0 && (
                                         <div className={"card mt-25"}>
                                             <div className={"-content"} dangerouslySetInnerHTML={{__html: items.maker.description}}></div>
                                         </div>

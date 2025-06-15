@@ -1,42 +1,204 @@
-import React from "react";
-import Header from "../../components/Header";
-import FuelSimulatorForm from "../../forms/FuelSimulatorForm";
-import { Link } from "react-router-dom";
-import Notification from "../../components/Notification";
+import React, { useState } from "react";
+import VehicleField from "./parts/VehicleField";
+import Notification from "../components/Notification";
+import OpenStreetMapField from "./parts/OpenStreetMapField";
+import axios from "axios";
 
-export default function FuelSimulator() {
+export default function FuelSimulatorForm({vehicleID = null}) {
+
+    const [calculResponse, setCalculResponse] = useState(0)
+    const [formResponse, setFormResponse] = useState({})
+    const [credentials, setCredentials] = useState({
+        simulationMode: "simulation_km",
+        vehicle: vehicleID,
+        km: 0,
+        round_trip: false,
+        calcul_week: false,
+        calcul_month: false,
+        calcul_year: false
+    })
+
+    const handleChange = (e, fieldName) => {
+        let fieldValue = e.currentTarget.value
+        if(fieldName == "fuel_type") {
+            let fuel = fuels.filter((item) => item.value == fieldValue)
+            if(fuel.length == 0) {
+                setFormResponse({classname: "danger", message: "Veuillez sélectionner un type de carburant dans la liste donnée"})
+                return
+            }
+            fuel = fuel[0]
+        } else if(fieldName == "km") {
+            if(fieldValue < 0) {
+                setFormResponse({classname: "danger", message: "Veuillez renseigner un kilomètrage supérieur à 0"})
+                return
+            }
+
+            fieldValue = parseFloat(fieldValue)
+        } else if(fieldName == "vehicul_median_fuel_conso") {
+            if(fieldValue < 0) {
+                setFormResponse({classname: "danger", message: "Veuillez renseigner une consommation de carburant moyen, selon votre véhicule, supérieur à 0"})
+                return
+            }
+
+            fieldValue = parseFloat(fieldValue)
+        } else if(["round_trip", "calcul_week", "calcul_month", "calcul_year"].indexOf(fieldName) != -1) {
+            fieldValue = e.currentTarget.checked
+        }
+
+
+        setCredentials({
+            ...credentials,
+            [fieldName]: fieldValue
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setFormResponse({})
+
+        if(!credentials.vehicle) {
+            setFormResponse({classname: "danger", message: "The vehicle must be select in order to processed to the simulation"})
+            return
+        }
+
+        axios
+            .post(`${window.location.origin}/api/fuel-simulator`, credentials, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then((response) => {
+                setCalculResponse(response.data.calcOneshotTrip)
+            })
+            .catch((error) => {
+                let errorMessage = "An error has been encountered. Please retry later"
+                if(error.response.data.message) {
+                    errorMessage = error.response.data.message
+                } else if(error.response.data.detail) {
+                    errorMessage = error.response.data.detail
+                }
+
+                setFormResponse({classname: "danger", message: errorMessage})
+            })
+        ;
+    }
 
     return (
-        <Header>
-            <section className={"page-hero-2nd"}>
-                <div className={"hero-background"}>
-                    <img src={`${window.location.origin}/content/img/background-home-2.jpg`} alt={""} />
-                </div>
-                <div className={"hero-wrapper"}>
-                    <h1 className={"-hero-title"}>Fuel Simulator</h1>
-                    <p className={"-hero-description"}>Calculate your potential costs on fuels</p>
-                    <div className={"-hero-breadcrumbs"}>
-                        <Link to={"/"}>Home</Link>
-                        <span>Fuel Simulator</span>
-                    </div>
-                </div>
-            </section>
-            <section className={"page-section"}>
-                <div className={"page-wrapper"}>
-                    <div className={"card"}>
-                        <Notification classname={"information"} message={"Any information displayed in this simulation is an estimation. Cost on fuels can be a little bit different."} />
-                    </div>
+        <>
+            {Object.keys(formResponse).length > 0 && (
+                <Notification {...formResponse} />
+            )}
 
-                    <div className={"card"}>
-                        <div className={"-header"}>
-                            <label className={"-title"}>Calculate your potential costs on fuels</label>
-                        </div>
-                        <div className={"-content"}>
-                            <FuelSimulatorForm />
-                        </div>
+            <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
+                <div className={"form-field"}>
+                    <label>Mode de la simulation</label>
+                    <div className={"d-flex -g-5 -m-column"}>
+                        <label>
+                            <input
+                                type={"radio"} 
+                                onChange={(e) => handleChange(e, "simulationMode")} 
+                                value={"simulation_km"}
+                                name={"simulationMode"}
+                                checked={credentials.simulationMode == "simulation_km" ? true : false}
+                            />
+                            <span>Simuler sur un kilomètrage</span>
+                        </label>
+                        <label>
+                            <input 
+                                type={"radio"} 
+                                onChange={(e) => handleChange(e, "simulationMode")} 
+                                value={"simulation_two_endpoints"}
+                                name={"simulationMode"}
+                                checked={credentials.simulationMode == "simulation_two_endpoints" ? true : false}
+                            />
+                            <span>Simuler entre 2 adresses</span>
+                        </label>
                     </div>
                 </div>
-            </section>
-        </Header>
+
+                {credentials.simulationMode == "simulation_two_endpoints" && (
+                    <div className={"mb-15"}>
+                        <OpenStreetMapField updateCredentials={(fieldValue) => {
+                            setCredentials({
+                                ...credentials,
+                                km: fieldValue
+                            })
+                        }} />
+                    </div>
+                )}
+
+                <div className={"form-field"}>
+                    <label>Kilomètre à parcourir</label>
+                    <input 
+                        type={"number"} 
+                        min={0}
+                        step={".001"}
+                        value={credentials.km}
+                        onChange={(e) => handleChange(e, "km")} 
+                        readOnly={credentials.simulationMode == "simulation_two_endpoints" ? true : false}
+                    />
+                </div>
+
+                {!vehicleID && (
+                    <div className={"form-field"}>
+                        <label>Voiture</label>
+                        <VehicleField
+                            fieldValue={credentials.vehicle}
+                            updateCredentials={(fieldName, fieldValue) => {
+                                setCredentials({
+                                    ...credentials,
+                                    [fieldName]: fieldValue
+                                })
+                            }}
+                        />
+                    </div>
+                )}
+
+                <div className={"form-field"}>
+                    <label>
+                        <input type={"checkbox"} onChange={(e) => handleChange(e, "round_trip")} checked={credentials.round_trip} />
+                        <span>Calculer sur un trajet aller-retour</span>
+                    </label>
+                    <label>
+                        <input type={"checkbox"} onChange={(e) => handleChange(e, "calcul_week")} checked={credentials.calcul_week} />
+                        <span>Caculer sur le trajet sur 1 semaine (aller-retour)</span>
+                    </label>
+                    <label>
+                        <input type={"checkbox"} onChange={(e) => handleChange(e, "calcul_month")} checked={credentials.calcul_month} />
+                        <span>Calculer le trajet sur 1 mois</span>
+                    </label>
+                    <label>
+                        <input type={"checkbox"} onChange={(e) => handleChange(e, "calcul_year")} checked={credentials.calcul_year} />
+                        <span>Calculer le trajet sur 1 an</span>
+                    </label>
+                </div>
+
+                <div className={"form-actions"}>
+                    <button className={"btn btn-secondary btn-rounded btn-m"} type={"submit"}>Simuler</button>
+                </div>
+
+                {calculResponse > 0 && (
+                    <div className={"form-simulator-response"}>
+                        <span>Pour un aller simple, il faudra déboursé : <b>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(calculResponse)}</b></span>
+                        
+                        {credentials.round_trip && (
+                            <span>Pour le trajet aller-retour, il faudra déboursé : <b>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(calculResponse * 2)}</b></span>
+                        )}
+
+                        {credentials.calcul_week && (
+                            <span>Pour le trajet sur 1 semaine (aller-retour), il faudra déboursé : <b>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format((calculResponse * 2) * 5)} / semaine (5j)</b></span>
+                        )}
+
+                        {credentials.calcul_month && (
+                            <span>Pour le trajet sur 1 mois (aller-retour), il faudra déboursé : <b>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format((calculResponse * 2) * (5 * 4))} / mois</b></span>
+                        )}
+
+                        {credentials.calcul_year && (
+                            <span>Pour le trajet sur 1 an (aller-retour), il faudra déboursé : <b>{new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(((calculResponse * 2) * ((5 * 4) * 12)))} / année</b></span>
+                        )}
+                    </div>
+                )}
+            </form>
+        </>
     )
 }

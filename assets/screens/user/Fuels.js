@@ -19,6 +19,7 @@ export default function Fuels() {
                 </div>
                 <div className={"hero-wrapper"}>
                     <h1 className={"-hero-title"}>Fuels</h1>
+                    <p className={"-hero-description"}>Suivez l'évolution des prix moyens de carburants en France du moment.</p>
                     <div className={"-hero-breadcrumbs"}>
                         <Link to={"/"}>Home</Link>
                         <span>Fuels</span>

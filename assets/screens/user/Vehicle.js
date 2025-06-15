@@ -133,7 +133,7 @@ export default function Vehicle() {
                                         </div>
                                         <div className={"-content"}>
                                             <div className={"d-col -g-25 mt-50"}>
-                                                <div className={"d-flex -g-5 jf-start"}>
+                                                <div className={"d-flex -g-5 jf-start -m-column"}>
                                                     <button className={`btn ${currentOnglet == "consumptions" ? "" : "btn-secondary"}`} onClick={() => handleClick()}>Consumptions</button>
                                                     <button className={`btn ${currentOnglet == "characteristics" ? "" : "btn-secondary"}`} onClick={() => handleClick("characteristics")}>Characteristics</button>
                                                 </div>

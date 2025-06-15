@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
 import ContactForm from "../../forms/ContactForm"
-import Map from "./parts/Map";
+import OpenStreetMap from "./parts/OpenStreetMap";
 
 export default function Contact() {
 
@@ -36,7 +36,7 @@ export default function Contact() {
             </section>
 
             <div className={"page-section p-0-force hm-500px"}>
-                <Map />
+                <OpenStreetMap />
             </div>
         </Header>
     )

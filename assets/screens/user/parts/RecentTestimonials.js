@@ -17,7 +17,9 @@ export default function RecentTestimonials() {
                 <>
                     {Object.keys(error).length > 0 && (
                         <section className={"page-section"}>
-                            <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                            <div className={"page-wrapper"}>
+                                <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                            </div>
                         </section>
                     )}
 

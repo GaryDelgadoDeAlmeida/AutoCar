@@ -39,7 +39,7 @@ export default function PrivateRessource(url, useToken = true) {
         ;
 
         // If Token is expired
-        if(Object.keys(error.current).length > 0 && error.current.response.status === 401) {
+        if(Object.keys(error.current).length > 0 && error.current.status === 401) {
             localStorage.setItem("user", "")
             navigate(user && user.role == "ROLE_ADMIN" ? "/admin-login" : "/login")
             return

@@ -5,7 +5,9 @@ namespace App\Command;
 use App\Entity\Vehicle;
 use App\Entity\VehicleCharacteristic;
 use App\Entity\VehicleConsumption;
+use App\Enum\MakerEnum;
 use App\Manager\ConvertManager;
+use App\Manager\MakerManager;
 use App\Repository\CharacteristicRepository;
 use App\Repository\ConsumptionRepository;
 use App\Repository\FuelRepository;
@@ -22,7 +24,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Finder\Finder;
 
 #[AsCommand(
     name: 'app:import-vehicles-csv',
@@ -30,7 +31,14 @@ use Symfony\Component\Finder\Finder;
 )]
 class ImportVehiclesCsvCommand extends Command
 {
+    // Others
     private ParameterBagInterface $param;
+    
+    // Manager
+    private MakerManager $makerManager;
+    private ConvertManager $convertManager;
+
+    // Repository
     private FuelRepository $fuelRepository;
     private MakerRepository $makerRepository;
     private VehicleRepository $vehicleRepository;
@@ -40,11 +48,10 @@ class ImportVehiclesCsvCommand extends Command
     private VehicleConsumptionRepository $vehicleConsumptionRepository;
     private VehicleCharacteristicRepository $vehicleCharacteristicRepository;
 
-    // Manager
-    private ConvertManager $convertManager;
-
     public function __construct(
         ParameterBagInterface $param,
+        MakerManager $makerManager,
+        ConvertManager $convertManager,
         FuelRepository $fuelRepository,
         MakerRepository $makerRepository,
         VehicleRepository $vehicleRepository,
@@ -52,8 +59,7 @@ class ImportVehiclesCsvCommand extends Command
         ConsumptionRepository $consumptionRepository,
         CharacteristicRepository $characteristicRepository,
         VehicleConsumptionRepository $vehicleConsumptionRepository,
-        VehicleCharacteristicRepository $vehicleCharacteristicRepository,
-        ConvertManager $convertManager
+        VehicleCharacteristicRepository $vehicleCharacteristicRepository
     ) {
         parent::__construct();
 
@@ -61,6 +67,7 @@ class ImportVehiclesCsvCommand extends Command
         $this->param = $param;
 
         // Manager
+        $this->makerManager = $makerManager;
         $this->convertManager = $convertManager;
 
         // Repository
@@ -86,24 +93,20 @@ class ImportVehiclesCsvCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('arg1');
+        $filename = "mini-cooper-hardtop-2-doors.csv";
 
         // Check if the CSV file exist in the designated repository
         $projectDir = $this->param->get("kernel.project_dir") . "/public/documents";
-        if(!file_exists("{$projectDir}/lexus-ct200h_07_04_2025.csv")) {
+        if(!file_exists("{$projectDir}/{$filename}")) {
             $io->error("The file couldn't be found");
             return Command::FAILURE;
         }
 
         // Check if the file can be open
-        $handle = fopen("{$projectDir}/lexus-ct200h_07_04_2025.csv", "r");
+        $handle = fopen("{$projectDir}/{$filename}", "r");
         if($handle === false) {
             $io->error("The file couldn't be opened");
             return Command::FAILURE;
-        }
-
-        $maker = $this->makerRepository->findOneBy(["name" => "Lexus"]);
-        if(empty($maker)) {
-            dd("The maker 'Toyota' don't exist'");
         }
 
         // Start the process to get all the datas in order to save then in the database
@@ -115,6 +118,15 @@ class ImportVehiclesCsvCommand extends Command
                 $columnsName = $row;
                 $dataColumns = array_flip($row);
                 continue;
+            }
+
+            $maker = $this->makerRepository->findOneBy(["name" => $row[$dataColumns["Make"]]]);
+            if(empty($maker)) {
+                $maker = $this->makerManager->fillMaker([
+                    MakerEnum::MAKER_NAME => $row[$dataColumns["Make"]]
+                ]);
+
+                $this->makerRepository->save($maker, true);
             }
 
             $fuel = null;
@@ -211,7 +223,7 @@ class ImportVehiclesCsvCommand extends Command
         fclose($handle);
 
         // Return a success response to the client
-        $io->success('All corrolla vehicle has been successfully added to the database');
+        $io->success('All vehicles has been successfully added to the database');
         return Command::SUCCESS;
     }
 }
