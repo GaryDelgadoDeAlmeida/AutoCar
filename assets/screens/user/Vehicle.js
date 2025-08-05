@@ -185,18 +185,26 @@ export default function Vehicle() {
                                             <label>Fuel simulator</label>
                                         </div>
                                         <div className={"-content"}>
-                                            <div className={"card mt-25"}>
-                                                <Notification classname={"information"} message={"Any information displayed in this simulation is an estimation. Cost on fuels can be a little bit different."} />
-                                            </div>
-                        
-                                            <div className={"card mt-25"}>
-                                                <div className={"-header"}>
-                                                    <label className={"-title"}>Calculate your potential costs on fuels</label>
+                                            {items.averageFuelConsumption > 0 ? (
+                                                <>
+                                                    <div className={"card mt-25"}>
+                                                        <Notification classname={"information"} message={"Any information displayed in this simulation is an estimation. Cost on fuels can be a little bit different."} />
+                                                    </div>
+                                
+                                                    <div className={"card mt-25"}>
+                                                        <div className={"-header"}>
+                                                            <label className={"-title"}>Calculate your potential costs on fuels</label>
+                                                        </div>
+                                                        <div className={"-content"}>
+                                                            <FuelSimulatorForm vehicleID={items.id} />
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div className={"card mt-25"}>
+                                                    <Notification classname={"information"} message={"The vehicle fuel consumption is unknown. We can't process a simulation"} />
                                                 </div>
-                                                <div className={"-content"}>
-                                                    <FuelSimulatorForm vehicleID={items.id} />
-                                                </div>
-                                            </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

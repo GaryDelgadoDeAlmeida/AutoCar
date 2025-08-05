@@ -74,6 +74,11 @@ class UpdateFuelPricesCommand extends Command
                 break;
             }
 
+            if(empty($response)) {
+                $foundedError = true;
+                break;
+            }
+
             foreach($response["results"] as $station) {
 
                 // Gazole / Diesel (B7)
