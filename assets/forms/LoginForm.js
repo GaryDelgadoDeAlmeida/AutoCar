@@ -16,6 +16,8 @@ export default function LoginForm() {
     })
 
     const handleChange = (e, fieldName) => {
+        setFormResponse({})
+        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value

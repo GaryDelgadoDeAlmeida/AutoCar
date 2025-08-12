@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 
 export default function HeaderAdmin(props) {
 
-    const [isLogged, setIsLogged] = useState(true)
+    const [isLogged, setIsLogged] = useState(false)
 
     const handleLogout = (e) => {
         e.preventDefault()
