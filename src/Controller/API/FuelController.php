@@ -2,7 +2,6 @@
 
 namespace App\Controller\API;
 
-use App\Manager\SerializeManager;
 use App\Repository\FuelRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,11 +12,9 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 #[Route('/api', name: 'api_')]
 class FuelController extends AbstractController
 {
-    private SerializeManager $serializeManager;
     private FuelRepository $fuelRepository;
 
-    function __construct(SerializeManager $serializeManager, FuelRepository $fuelRepository) {
-        $this->serializeManager = $serializeManager;
+    function __construct(FuelRepository $fuelRepository) {
         $this->fuelRepository = $fuelRepository;
     }
 
@@ -41,7 +38,7 @@ class FuelController extends AbstractController
             $fuel, 
             Response::HTTP_OK,
             [],
-            [ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles", "fuelPriceHistories"]]
+            [ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles", "fuelPriceHistories", "lastFuelPriceHistories"]]
         );
     }
 }

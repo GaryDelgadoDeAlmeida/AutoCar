@@ -6,7 +6,7 @@ export default function VehicleTypeForm({vehicle_type = null}) {
 
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
-        type: ""
+        type: vehicle_type ? vehicle_type.type : ""
     })
 
     const handleChange = (e, fieldName) => {
@@ -22,7 +22,7 @@ export default function VehicleTypeForm({vehicle_type = null}) {
         e.preventDefault()
 
         axios
-            .post(`${window.location.origin}/api/backoffice/characteristic`, credentials, {
+            .post(`${window.location.origin}/api/backoffice/vehicle-type`, credentials, {
                 headers: {
                     "Content-Type": "application/json",
                     "Accept": "application/json",

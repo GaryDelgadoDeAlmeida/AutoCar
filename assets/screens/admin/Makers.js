@@ -37,12 +37,15 @@ export default function Makers() {
                                     <div className={"table-list"}>
                                         {Object.values(items.results ?? {}).map((item, index) => {
                                             let makerDescription = stripHTML(item.description)
+                                            
                                             return (
                                                 <TableCard 
                                                     key={index}
+                                                    imgPath={item.logo ? item.logo : null}
                                                     title={item.name}
                                                     description={makerDescription.substring(0, 150) + (makerDescription.length > 150 ? "..." : "")}
                                                     link={"/admin/maker/" + item.id}
+                                                    removalLink={`${window.location.origin}/api/backoffice/maker/${item.id}/remove`}
                                                 />
                                             )
                                         })}

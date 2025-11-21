@@ -85,6 +85,38 @@ class UserManager {
     }
 
     /**
+     * Summary of checkPasswordFields
+     * 
+     * @param array $jsonContent
+     * @return array
+     */
+    public function checkPasswordFields(array $jsonContent, User $user) : array {
+        $fields = [];
+        $allowedFields = UserEnum::getPwdAvailableChoices();
+
+        foreach($jsonContent as $fieldName => $fieldValue) {
+            if(!in_array($fieldName, $allowedFields)) {
+                continue;
+            }
+
+            if($fieldName == UserEnum::USER_CURRENT_PASSWORD) {
+                if(!$this->passwordHasher->isPasswordValid($user, $fieldValue)) {
+                    throw new \Exception("Incorrect password");
+                }
+            }
+
+            $fields[$fieldName] = $fieldValue;
+        }
+
+        if(count($fields) < 3) {
+            $fields = [];
+            throw new \Exception("Nice try, kiddy ! But you still lose");
+        }
+
+        return $fields;
+    }
+
+    /**
      * @param array fields
      * @param ?User user
      * @return User|string

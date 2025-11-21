@@ -60,6 +60,21 @@ class CharacteristicRepository extends ServiceEntityRepository
     }
 
     /**
+     * Summary of getCharacteristicFromDescription
+     * @param string $description
+     * @return \App\Entity\Characteristic|null
+     */
+    public function getCharacteristicFromDescription(string $description) : Characteristic|null {
+        return $this->createQueryBuilder("characteristic")
+            ->where("characteristic.description LIKE :description")
+            ->setParameter("description", "{$description}%")
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
      * @param int offset
      * @param int limit
      * @return Characteristic[]

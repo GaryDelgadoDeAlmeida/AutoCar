@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import HeaderAdmin from "../../components/HeaderAdmin";
 import { Link, Navigate, useParams } from "react-router-dom";
-import PrivateRessource from "../../hooks/PrivateResources";
+import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
+import PrivateRessource from "../../hooks/PrivateResources";
 import { formatDate, stripHTML } from "../../hooks/DomControl";
 
 export default function Inbox() {

@@ -11,6 +11,11 @@ abstract class UserEnum {
     public const USER_PASSWORD_REGEX = "/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:\"\<\>,\.\?\\\]/";
     public const USER_EMAIL_REGEX = "/^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/";
 
+    // Update password purpose
+    public const USER_CURRENT_PASSWORD = "current_password";
+    public const USER_NEW_PASSWORD = "new_password";
+    public const USER_CONFIRM_NEW_PASSWORD = "confirm_new_password";
+
     protected array $typeName = [
         self::USER_FIRSTNAME => "Firstname",
         self::USER_LASTNAME => "Lastname",
@@ -24,6 +29,14 @@ abstract class UserEnum {
             self::USER_LASTNAME,
             self::USER_EMAIL,
             self::USER_PASSWORD
+        ];
+    }
+
+    public static function getPwdAvailableChoices() : array {
+        return [
+            self::USER_CURRENT_PASSWORD,
+            self::USER_NEW_PASSWORD,
+            self::USER_CONFIRM_NEW_PASSWORD
         ];
     }
 

@@ -1,7 +1,10 @@
+import axios from "axios";
 import React, { useState } from "react";
+import Notification from "../components/Notification";
 
 export default function ProfilePasswordForm() {
 
+    const storageUser = localStorage.getItem("token") ?? ""
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
         current_password: "",
@@ -19,11 +22,35 @@ export default function ProfilePasswordForm() {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        console.log("Hi handleSubmit")
+        axios
+            .put(`${window.location.origin}/api/backoffice/profile`, credentials, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + storageUser
+                }
+            })
+            .then((response) => {
+                setFormResponse({classname: "success", message: "Your account password has been successfully updated"})
+            })
+            .catch((error) => {
+                let errorMessage = ""
+                if(error.response.data.message) {
+                    errorMessage = error.response.data.message
+                } else if(error.response.data.detail) {
+                    errorMessage = error.response.data.detail
+                }
+
+                setFormResponse({classname: "danger", message: errorMessage})
+            })
+        ;
     }
 
     return (
         <>
+            {Object.keys(formResponse).length > 0 && (
+                <Notification {...formResponse} />
+            )}
+            
             <form onSubmit={(e) => handleSubmit(e)}>
                 <div className={"form-field-inline"}>
                     <div className={"form-field --full -no-flex w-200px"}>

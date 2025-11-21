@@ -77,7 +77,7 @@ class VehicleCharacteristicManager {
     public function fillVehicleCharacteristic(array $fields, ?VehicleCharacteristic $vehicleCharacteristic = new VehicleCharacteristic()) : VehicleCharacteristic|string {
         try {
             $currentTime = new \DateTimeImmutable();
-            if($vehicleCharacteristic->getId()) {
+            if(!empty($vehicleCharacteristic->getId())) {
                 $vehicleCharacteristic->setUpdatedAt($currentTime);
             } else {
                 $vehicleCharacteristic->setCreatedAt($currentTime);

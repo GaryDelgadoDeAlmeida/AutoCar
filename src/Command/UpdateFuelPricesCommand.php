@@ -45,8 +45,8 @@ class UpdateFuelPricesCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            // ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
+            // ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
         ;
     }
 
@@ -74,8 +74,7 @@ class UpdateFuelPricesCommand extends Command
                 break;
             }
 
-            if(empty($response)) {
-                $foundedError = true;
+            if(empty($response["results"])) {
                 break;
             }
 
@@ -126,6 +125,11 @@ class UpdateFuelPricesCommand extends Command
 
             $offset++;
         } while($offset < $this->totalPages);
+
+        if(empty($response["results"]) && !$foundedError) {
+            $io->error("API returned not data. Fuels pricing update process has been aborted");
+            return Command::FAILURE;
+        }
 
         if($foundedError !== false) {
             $io->error("An error has been encountered with the API. Update process has been cancelled");

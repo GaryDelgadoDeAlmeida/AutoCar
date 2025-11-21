@@ -3,6 +3,15 @@
     background-color: var(--c-primary);
     box-shadow: 15px 0 15px rgba(0, 0, 0, 0.17);
 
+    &.-no-background {
+        background-color: transparent;
+        box-shadow: none;
+
+        > .-content {
+            padding: 25px 0 0 0;
+        }
+    }
+
     .-header {
         gap: 5px;
         padding: 25px;

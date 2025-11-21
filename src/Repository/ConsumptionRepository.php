@@ -41,6 +41,20 @@ class ConsumptionRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param string description
+     * @return Consumption
+     */
+    public function getConsumptionFromDescritpion(string $description) : Consumption|null {
+        return $this->createQueryBuilder("consumption")
+            ->where("consumption.description LIKE :description")
+            ->setParameter("description", "{$description}%")
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    /**
      * @param int offset
      * @param int limit
      * @return Consumption[]

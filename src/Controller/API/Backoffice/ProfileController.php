@@ -3,6 +3,7 @@
 namespace App\Controller\API\Backoffice;
 
 use App\Entity\User;
+use App\Enum\UserEnum;
 use App\Manager\SerializeManager;
 use App\Manager\UserManager;
 use App\Repository\UserRepository;
@@ -33,7 +34,7 @@ class ProfileController extends AbstractController
     #[Route('/profile', name: 'get_profile', methods: ["GET"])]
     public function get_profile(#[CurrentUser] User $user): JsonResponse {
         return $this->json(
-            $this->serializeManager->serializeContent($user), 
+            $user, 
             Response::HTTP_OK
         );
     }
@@ -48,10 +49,16 @@ class ProfileController extends AbstractController
         }
 
         try {
-            $fields = $this->userManager->checkFields($jsonContent);
+            $fields = $this->userManager->checkPasswordFields($jsonContent, $user);
             if(empty($fields)) {
                 throw new \Exception("An error has been encountered with the sended body.", Response::HTTP_PRECONDITION_FAILED);
             }
+
+            if($fields[UserEnum::USER_NEW_PASSWORD] !== $fields[UserEnum::USER_CONFIRM_NEW_PASSWORD]) {
+                throw new \Exception("The new password and confirmation fields are different.");
+            }
+
+            $fields[UserEnum::USER_PASSWORD] = $fields[UserEnum::USER_NEW_PASSWORD];
 
             $user = $this->userManager->fillUser($fields, $user);
             if(is_string($user)) {

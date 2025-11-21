@@ -18,7 +18,7 @@ class InboxController extends AbstractController
         $this->inboxRepository = $inboxRepository;
     }
 
-    #[Route('/inboxs', name: 'get_inboxs')]
+    #[Route('/inboxes', name: 'get_inboxs')]
     public function get_inboxs(Request $request): JsonResponse {
         $limit = 10;
         $offset = is_numeric($request->get("offset")) && intval($request->get("offset")) == $request->get("offset") && $request->get("offset") > 1 ? intval($request->get("offset")) : 1;

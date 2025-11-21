@@ -8,16 +8,14 @@ export default function ContactForm() {
 
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
-        captcha: "",
+        fullname: "",
         email: "",
-        phone_number: "",
         subject: "",
-        message: ""
+        message: "",
+        captcha: "",
     })
 
     const handleChange = (e, fieldName) => {
-        setFormResponse({})
-        
         setCredentials({
             ...credentials,
             [fieldName]: e.currentTarget.value
@@ -66,7 +64,18 @@ export default function ContactForm() {
 
             <form className={"form"} onSubmit={(e) => handleSubmit(e)}>
                 <div className={"form-field-inline"}>
-                    <div className={"form-field"}>
+                    <div className={"form-field --full"}>
+                        <input 
+                            type={"tel"}
+                            maxLength={20}
+                            value={credentials.fullname}
+                            placeholder={"Your fullname*"}
+                            onChange={(e) => handleChange(e, "fullname")}
+                            required
+                        />
+                    </div>
+
+                    <div className={"form-field --full"}>
                         <input 
                             type={"email"} 
                             maxLength={255}
@@ -74,16 +83,6 @@ export default function ContactForm() {
                             placeholder={"Your email*"}
                             onChange={(e) => handleChange(e, "email")}
                             required
-                        />
-                    </div>
-                    
-                    <div className={"form-field"}>
-                        <input 
-                            type={"tel"}
-                            maxLength={20}
-                            value={credentials.phone_number}
-                            placeholder={"Your phone number"}
-                            onChange={(e) => handleChange(e, "phone_number")}
                         />
                     </div>
                 </div>
@@ -100,7 +99,10 @@ export default function ContactForm() {
                 </div>
                 
                 <div className={"form-field"}>
-                    <textarea onChange={(e) => handleChange(e, "message")}>{credentials.message}</textarea>
+                    <textarea 
+                        onChange={(e) => handleChange(e, "message")}
+                        placeholder={"Your message*"}
+                    >{credentials.message}</textarea>
                 </div>
 
                 <div className={"form-field"}>

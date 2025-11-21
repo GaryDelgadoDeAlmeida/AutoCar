@@ -97,7 +97,7 @@ export function formatDate(date, format = "en") {
 export function stripHTML(htmlValue) {
     let tmp = document.createElement("DIV");
     tmp.innerHTML = htmlValue;
-    return tmp.textContent || tmp.innerText || "";
+    return tmp.innerText || tmp.textContent || "";
 }
 
 /**

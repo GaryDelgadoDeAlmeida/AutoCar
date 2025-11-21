@@ -49,4 +49,9 @@ class NewsletterController extends AbstractController
         }
         return $this->json(null, Response::HTTP_NO_CONTENT);
     }
+
+    #[Route('/newsletters/remove', name: 'remove_newsletters', methods: ["DELETE"])]
+    public function remove_all_registration_newsletter() : JsonResponse {
+        return $this->json([], Response::HTTP_NO_CONTENT);
+    }
 }

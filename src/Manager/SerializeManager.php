@@ -2,8 +2,8 @@
 
 namespace App\Manager;
 
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 class SerializeManager {
 
@@ -20,11 +20,8 @@ class SerializeManager {
     public function serializeContent($entities) {
         return $this->serializer->serialize(
             $entities, 
-            "json", 
-            [
-                AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function($object) {
-                    return $object->getId();
-                },
+            "json", [
+                ObjectNormalizer::IGNORED_ATTRIBUTES => ["vehicles"]
             ]
         );
     }

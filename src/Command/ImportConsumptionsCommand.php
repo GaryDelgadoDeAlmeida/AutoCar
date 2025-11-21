@@ -49,33 +49,33 @@ class ImportConsumptionsCommand extends Command
 
         $consumptions = [
             "atvtype" => "type of alternative fuel or advanced technology vehicle",
-            "barrels08" => "annual petroleum consumption in barrels for fuelType1 (1)",
-            "barrelsA08" => "annual petroleum consumption in barrels for fuelType2 (1)",
+            "barrels08" => "annual petroleum consumption in barrels for fuelType1",
+            "barrelsA08" => "annual petroleum consumption in barrels for fuelType2",
             "charge120" => "time to charge an electric vehicle in hours at 120 V",
             "charge240" => "time to charge an electric vehicle in hours at 240 V",
             "charge240b" => "time to charge an electric vehicle in hours at 240 V using the alternate charger",
-            "cityCD" => "city gasoline consumption (gallons/100 miles) in charge depleting mode (4)",
+            "cityCD" => "city gasoline consumption (gallons/100 miles) in charge depleting mode",
             "cityE" => "city electricity consumption in kw-hrs/100 miles",
             "cityMpk" => "city miles per Kilogram for Hydrogen",
             "cityUmpk" => "unrounded city miles per Kilogram for Hydrogen",
-            "co2" => "tailpipe CO2 in grams/mile for fuelType1 (5)",
-            "co2A" => "tailpipe CO2 in grams/mile for fuelType2 (5)",
-            "co2TailpipeAGpm" => "tailpipe CO2 in grams/mile for fuelType2 (5)",
-            "co2TailpipeGpm" => "tailpipe CO2 in grams/mile for fuelType1 (5)",
-            "comb08" => "combined MPG for fuelType1 (2), (11)",
-            "comb08U" => "unrounded combined MPG for fuelType1 (2), (3)",
-            "combA08" => "combined MPG for fuelType2 (2)",
-            "combA08U" => "unrounded combined MPG for fuelType2 (2), (3)",
+            "co2" => "tailpipe CO2 in grams/mile for fuelType1",
+            "co2A" => "tailpipe CO2 in grams/mile for fuelType2",
+            "co2TailpipeAGpm" => "tailpipe CO2 in grams/mile for fuelType2",
+            "co2TailpipeGpm" => "tailpipe CO2 in grams/mile for fuelType1",
+            "comb08" => "combined MPG for fuelType1",
+            "comb08U" => "unrounded combined MPG for fuelType1",
+            "combA08" => "combined MPG for fuelType2",
+            "combA08U" => "unrounded combined MPG for fuelType2",
             "combE" => "combined electricity consumption in kw-hrs/100 miles",
             "combMpk" => "combined miles per Kilogram for Hydrogen",
             "combUmpk" => "unrounded combined miles per Kilogram for Hydrogen",
-            "combinedCD" => "combined gasoline consumption (gallons/100 miles) in charge depleting mode (4)",
+            "combinedCD" => "combined gasoline consumption (gallons/100 miles) in charge depleting mode",
             "combinedUF" => "EPA combined utility factor (share of electricity) for PHEV",
-            "highway08" => "highway MPG for fuelType1 (2), (11)",
-            "highway08U" => "unrounded highway MPG for fuelType1 (2), (3)",
-            "highwayA08" => "highway MPG for fuelType2 (2)",
-            "highwayA08U" => "unrounded highway MPG for fuelType2 (2),(3)",
-            "highwayCD" => "highway gasoline consumption (gallons/100miles) in charge depleting mode (4)",
+            "highway08" => "highway MPG for fuelType1",
+            "highway08U" => "unrounded highway MPG for fuelType1",
+            "highwayA08" => "highway MPG for fuelType2",
+            "highwayA08U" => "unrounded highway MPG for fuelType2",
+            "highwayCD" => "highway gasoline consumption (gallons/100miles) in charge depleting mode",
             "highwayE" => "highway electricity consumption in kw-hrs/100 miles",
             "highwayMpk" => "highway miles per Kilogram for Hydrogen",
             "highwayUmpk" => "unrounded highway miles per Kilogram for Hydrogen",
@@ -103,7 +103,7 @@ class ImportConsumptionsCommand extends Command
             $this->consumptionRepository->save($consumption, true);
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('All consumptions datas has been imported');
 
         return Command::SUCCESS;
     }

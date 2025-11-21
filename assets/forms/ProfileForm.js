@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import Notification from "../components/Notification"
+import axios from "axios";
 
-export default function ProfileForm() {
+export default function ProfileForm({profile = null}) {
 
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState({
-        firstname: "",
-        lastname: "",
-        email: ""
+        firstname: profile ? profile.firstname : "",
+        lastname: profile ? profile.lastname : "",
+        email: profile ? profile.email : ""
     })
 
     const handleChange = (e, fieldName) => {
@@ -19,6 +20,28 @@ export default function ProfileForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        axios
+            .put(`${window.location.origin}/api/backoffice/profile`, credentials, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + storageUser
+                }
+            })
+            .then((response) => {
+                setFormResponse({classname: "success", message: "Your profile has been successfully updated"})
+            })
+            .catch((error) => {
+                let errorMessage = ""
+                if(error.response.data.message) {
+                    errorMessage = error.response.data.message
+                } else if(error.response.data.detail) {
+                    errorMessage = error.response.data.detail
+                }
+
+                setFormResponse({classname: "danger", message: errorMessage})
+            })
+        ;
     }
 
     return (

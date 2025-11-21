@@ -498,17 +498,6 @@ html, body {
         .page-vehicle {
             padding-top: 25px;
 
-            .-markup {
-                margin: 0;
-                padding: 0;
-                // font-size: 1rem;
-                line-height: 1.5;
-
-                h1, h2, h3, h4, h5 {
-                    margin: 30px 0;
-                }
-            }
-
             .vehicle-presentation {
                 // 
 
@@ -559,12 +548,21 @@ html, body {
             gap: 50px;
             display: flex;
 
+            @include tablet {
+                gap: 25px;
+                flex-direction: column;
+            }
+
             .-left {
                 flex: 1;
             }
 
             .-right {
                 width: 400px;
+
+                @include tablet {
+                    width: 100%;
+                }
             }
         }
     }

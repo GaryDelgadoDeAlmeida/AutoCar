@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
-import HeaderAdmin from "../../components/HeaderAdmin"
+import { Link, Navigate, useParams } from "react-router-dom";
+import HeaderAdmin from "../../components/HeaderAdmin";
+import Notification from "../../components/Notification";
 import ArticleForm from "../../forms/ArticleForm"
+import PrivateRessources from "../../hooks/PrivateResources";
 
 export default function ArticleEdit() {
 
@@ -10,7 +12,7 @@ export default function ArticleEdit() {
         return <Navigate to={"/admin/blog"} />
     }
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/blog/${blogID}`)
+    const { loading, items, load, error } = PrivateRessources(`${window.location.origin}/api/blog/${blogID}`)
     
     useEffect(() => {
         load()
@@ -18,9 +20,9 @@ export default function ArticleEdit() {
 
     return (
         <HeaderAdmin>
-            <Link className={"btn btn-blue"} to={"/admin/blog"}>Return</Link>
+            <Link className={"btn btn-secondary"} to={"/admin/blog"}>Return</Link>
 
-            <div className={"page-section"}>
+            <section className={"page-section"}>
                 {loading && (
                     <Notification classname={"information"} message={"Loading ..."} />
                 )}
@@ -31,16 +33,16 @@ export default function ArticleEdit() {
                             <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
                         )}
 
-                        {Object.keys(items ?? {}).length > 0 && Object.keys(error).length == 0 && (
+                        {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                             <div className={"card"}>
                                 <div className={"-content"}>
-                                    <ArticleForm article={items} />
+                                    <ArticleForm article={items.article} />
                                 </div>
                             </div>
                         )}
                     </>
                 )}
-            </div>
+            </section>
         </HeaderAdmin>
     )
 }

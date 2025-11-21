@@ -15,7 +15,7 @@ use App\Repository\MakerRepository;
 use App\Repository\VehicleCharacteristicRepository;
 use App\Repository\VehicleConsumptionRepository;
 use App\Repository\VehicleRepository;
-use App\Repository\VehicleTypeRepository;
+// use App\Repository\VehicleTypeRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -42,7 +42,7 @@ class ImportVehiclesCsvCommand extends Command
     private FuelRepository $fuelRepository;
     private MakerRepository $makerRepository;
     private VehicleRepository $vehicleRepository;
-    private VehicleTypeRepository $vehicleTypeRepository;
+    // private VehicleTypeRepository $vehicleTypeRepository;
     private ConsumptionRepository $consumptionRepository;
     private CharacteristicRepository $characteristicRepository;
     private VehicleConsumptionRepository $vehicleConsumptionRepository;
@@ -55,7 +55,7 @@ class ImportVehiclesCsvCommand extends Command
         FuelRepository $fuelRepository,
         MakerRepository $makerRepository,
         VehicleRepository $vehicleRepository,
-        VehicleTypeRepository $vehicleTypeRepository,
+        // VehicleTypeRepository $vehicleTypeRepository,
         ConsumptionRepository $consumptionRepository,
         CharacteristicRepository $characteristicRepository,
         VehicleConsumptionRepository $vehicleConsumptionRepository,
@@ -74,7 +74,7 @@ class ImportVehiclesCsvCommand extends Command
         $this->fuelRepository = $fuelRepository;
         $this->makerRepository = $makerRepository;
         $this->vehicleRepository = $vehicleRepository;
-        $this->vehicleTypeRepository = $vehicleTypeRepository;
+        // $this->vehicleTypeRepository = $vehicleTypeRepository;
         $this->consumptionRepository = $consumptionRepository;
         $this->characteristicRepository = $characteristicRepository;
         $this->vehicleConsumptionRepository = $vehicleConsumptionRepository;
@@ -84,15 +84,15 @@ class ImportVehiclesCsvCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+            // ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
+            // ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+        // $arg1 = $input->getArgument('arg1');
         $filename = "mini-cooper-hardtop-2-doors.csv";
 
         // Check if the CSV file exist in the designated repository

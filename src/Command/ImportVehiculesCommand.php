@@ -149,7 +149,7 @@ class ImportVehiculesCommand extends Command
                         continue;
                     }
 
-                    $consumption = $this->consumptionRepository->findOneBy(["title" => $name]);
+                    $consumption = $this->consumptionRepository->getCharacteristicFromDescription(["title" => $name]);
                     if(!empty($consumption)) {
                         $vehicleConsumption = (new VehicleConsumption())
                             ->setConsumption($consumption)

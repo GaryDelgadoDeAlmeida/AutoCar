@@ -40,6 +40,8 @@ export default function Articles() {
                                                 imgPath={item.photo}
                                                 title={item.title}
                                                 link={"/admin/blog/" + item.id}
+                                                editLink={"/admin/blog/" + item.id + "/edit"}
+                                                removalLink={`${window.location.origin}/api/backoffice/blog/${item.id}/remove`}
                                             />
                                         ))}
                                     </div>

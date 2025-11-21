@@ -30,7 +30,7 @@ export default function Comments({articleID, allowArticleComments = true}) {
                             <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
                         )}
 
-                        {Object.keys(error).length == 0 && Object.keys(items).length > 0 && (
+                        {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                             Object.keys(items.results).length > 0 ? (
                                 Object.values(items.results).map((item, index) => (
                                     <CommentCard 

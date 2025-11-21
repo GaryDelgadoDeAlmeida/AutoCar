@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../../components/Header";
 import { Link } from "react-router-dom";
+import Header from "../../components/Header";
 
 export default function About() {
 
@@ -58,9 +58,9 @@ export default function About() {
                                 </div>
                             </div>
 
-                            <div className={"mt-25"}>
+                            {/* <div className={"mt-25"}>
                                 <Link className={"btn btn-secondary btn-m fw-bold btn-mx"} to={"/about"}>Get to know us</Link>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

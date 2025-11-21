@@ -159,7 +159,7 @@ export default function VehicleForm({vehicle = null}) {
                                 setFormResponse({classname: "success", message: "The vehicle image has been successfully saved into the database"})
                             })
                             .catch((error) => {
-                                let errorMessage = "An error has been encountered. Unfortunatly, images couldn't be saved."
+                                let errorMessage = "An error has been encountered with the sended image. Unfortunatly, image couldn't be saved."
                                 if(error.response.data.message) {
                                     errorMessage = error.response.data.message
                                 } else if(error.response.data.detail) {

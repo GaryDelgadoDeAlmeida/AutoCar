@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import ProfileForm from "../../forms/ProfileForm"
 import ProfilePasswordForm from "../../forms/ProfilePasswordForm";
+import PrivateRessource from "../../hooks/PrivateResources";
+import Notification from "../../components/Notification";
 
 export default function Profile() {
+
+    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/backoffice/profile`)
+
+    useEffect(() => {
+        load()
+    }, [])
+
+    console.log(items)
 
     return (
         <HeaderAdmin>
@@ -15,16 +25,32 @@ export default function Profile() {
             </div>
 
             <section className={"page-section"}>
-                <div className={"card"}>
-                    <div className={"-content"}>
-                        <ProfileForm />
-                    </div>
-                </div>
-                <div className={"card mt-25"}>
-                    <div className={"-content"}>
-                        <ProfilePasswordForm />
-                    </div>
-                </div>
+                {loading && (
+                    <Notification classname={"information"} message={"Loading ..."} />
+                )}
+
+                {!loading && (
+                    <>
+                        {Object.keys(error).length > 0 && (
+                            <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
+                        )}
+
+                        {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
+                            <>
+                                <div className={"card"}>
+                                    <div className={"-content"}>
+                                        <ProfileForm profile={items} />
+                                    </div>
+                                </div>
+                                <div className={"card mt-25"}>
+                                    <div className={"-content"}>
+                                        <ProfilePasswordForm />
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                    </>
+                )}
             </section>
         </HeaderAdmin>
     )

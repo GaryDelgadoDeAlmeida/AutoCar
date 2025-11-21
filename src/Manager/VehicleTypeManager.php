@@ -11,9 +11,9 @@ class VehicleTypeManager {
         $allowedFields = [];
 
         foreach($jsonContent as $fieldName => $fieldValue) {
-            if(!in_array($fieldName, $allowedFields)) {
-                continue;
-            }
+            // if(!in_array($fieldName, $allowedFields)) {
+            //     continue;
+            // }
 
             $fields[$fieldName] = $fieldValue;
         }
@@ -21,7 +21,7 @@ class VehicleTypeManager {
         return $fields;
     }
 
-    public function fillVehicleCategory(array $fields, ?VehicleType $vehicleType = new VehicleType()) : VehicleType {
+    public function fillVehicleCategory(array $fields, ?VehicleType $vehicleType = new VehicleType()) : VehicleType|string {
         try {
             $currentTime = new \DateTimeImmutable();
             if($vehicleType->getId()) {
@@ -31,7 +31,7 @@ class VehicleTypeManager {
             }
 
             foreach($fields as $fieldName => $fieldValue) {
-                if($fieldName == "") $vehicleType->setType($fieldValue);
+                if($fieldName == "type") $vehicleType->setType($fieldValue);
             }
         } catch(\Exception $e) {
             return $e->getMessage();

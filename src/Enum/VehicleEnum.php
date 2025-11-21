@@ -7,7 +7,7 @@ abstract class VehicleEnum {
     public const VEHICLE_MAKER = "maker";
     public const VEHICLE_PHOTO = "photo";
     public const VEHICLE_BASEMODEL = "basemodel";
-    public const VEHICLE_NAME = "name";
+    public const VEHICLE_NAME = "model";
     public const VEHICLE_FUEL = "fuel";
     public const VEHICLE_FUEL_TANK = "fuelTank";
     public const VEHICLE_WEIGHT = "vehiculeWeight";
