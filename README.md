@@ -1,6 +1,6 @@
-# Fuel Simulator
+# AutoCar
 
-Ce projet est un projet perso basé sur mes besoins actuels. Dans l'optique d'achat d'un bolide, j'ai besoin de déterminé combien me couterait un plein d'essence sur 1 semaine, 1 mois et 1 an. Elle me permettra également de déterminé à quel sauce je serai mangé mais aussi, déterminé la viabilité de l'achat d'un bolide sur le long terme (et donc combien je devrai dépensé dans un contexte d'une utilisation quotidienne). Durant la pandémie de la COVID-19 et de l'inflation, les prix du carburant n'ont fait qu'augmentés, atteignant ainsi une tarification record dans l'Hézagone.
+Ce projet est un projet perso basé sur mes besoins actuels. Dans l'optique d'un achat d'un bolide, j'ai besoin de déterminé les prix qu'un bolide m'apporterait me permettant ainsi de mieux gérer mes dépenses et déterminé la viabilité de l'achat d'un bolide sur le long terme. Durant la pandémie de la COVID-19 et de l'inflation, les prix du carburant n'ont fait qu'augmentés, atteignant ainsi une tarification record dans l'Hézagone. Ce projet sera aussi un moyen de trouver des stations d'essences aux prix les plus bas sur une zone donnée.
 
 ## Installation
 
