@@ -39,4 +39,17 @@ class StationRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * Count the curent number of station in the database
+     * 
+     * @return int
+     */
+    public function countStations() : int {
+        return $this->createQueryBuilder("station")
+            ->select("COUNT(station.id) as nbrStations")
+            ->getQuery()
+            ->getSingleResult()["nbrStations"]
+        ;
+    }
 }

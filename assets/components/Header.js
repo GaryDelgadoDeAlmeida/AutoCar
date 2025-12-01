@@ -20,6 +20,7 @@ export default function Header(props) {
                                 <Link to={"/vehicles"}>Vehicles</Link>
                                 <Link to={"/fuels"}>Fuels</Link>
                                 <Link to={"/fuel-simulator"}>Fuel Simulator</Link>
+                                <Link to={"/stations"}>Fuel Stations</Link>
                                 <Link to={"/blog"}>Blog</Link>
                                 <Link to={"/contact"}>Contact</Link>
                             </div>
@@ -48,6 +49,7 @@ export default function Header(props) {
                                         <li className={"-item"}><Link to={"/vehicles"}>Vehicles</Link></li>
                                         <li className={"-item"}><Link to={"/fuels"}>Fuels</Link></li>
                                         <li className={"-item"}><Link to={"/fuel-simulator"}>Fuel Simulator</Link></li>
+                                        <li className={"-item"}><Link to={"/stations"}>Fuel Stations</Link></li>
                                         <li className={"-item"}><Link to={"/blog"}>Blog</Link></li>
                                         <li className={"-item"}><Link to={"/contact"}>Contact</Link></li>
                                     </div>

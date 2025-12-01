@@ -23,6 +23,7 @@ import Faq from './screens/user/Faq';
 import Policy from './screens/user/Policy';
 import Cookie from './screens/user/Cookie';
 import FuelSimulator from './screens/user/FuelSimulator';
+import Stations from './screens/user/Stations';
 import Articles from './screens/user/Articles';
 import Article from './screens/user/Article';
 import Contact from './screens/user/Contact';
@@ -52,6 +53,8 @@ import AdminFuels from "./screens/admin/Fuels";
 import AdminFuelNew from "./screens/admin/FuelNew";
 import AdminFuelSingle from "./screens/admin/FuelSingle";
 import AdminFuelsHistory from "./screens/admin/FuelsHistory";
+import AdminStations from "./screens/admin/Stations";
+// import AdminStation from "./screens/admin/Station";
 import AdminArticles from "./screens/admin/Articles";
 import AdminArticle from "./screens/admin/Article";
 import AdminArticleNew from "./screens/admin/ArticleNew";
@@ -80,6 +83,7 @@ root.render(
                 <Route path={"/vehicles"} element={<Vehicles />} />
                 <Route path={"/vehicle/:vehicleID"} element={<Vehicle />} />
                 <Route path={"/fuel-simulator"} element={<FuelSimulator />} />
+                <Route path={"/stations"} element={<Stations />} />
                 <Route path={"/blog"} element={<Articles />} />
                 <Route path={"/blog/:blogID"} element={<Article />} />
                 <Route path={"/contact"} element={<Contact />} />
@@ -108,6 +112,9 @@ root.render(
                 <Route path={"/admin/fuels/add"} element={<AdminFuelNew />} />
                 <Route path={"/admin/fuel/:fuelID"} element={<AdminFuelSingle />} />
                 <Route path={"/admin/fuels-history"} element={<AdminFuelsHistory />} />
+                <Route path={"/admin/stations"} element={<AdminStations />} />
+                {/* <Route path={"/admin/station/add"} element={<AdminStations />} /> */}
+                {/* <Route path={"/admin/station/:stationID"} element={<AdminStation />} /> */}
                 <Route path={"/admin/blog"} element={<AdminArticles />} />
                 <Route path={"/admin/blog/add"} element={<AdminArticleNew />} />
                 <Route path={"/admin/blog/:blogID"} element={<AdminArticle />} />

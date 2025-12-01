@@ -30,6 +30,7 @@ export default function HeaderAdmin(props) {
                         <li><Link to={"/admin/characteristics"}>Characteristics</Link></li>
                         <li><Link to={"/admin/fuels"}>Fuels</Link></li>
                         <li><Link to={"/admin/fuels-history"}>Fuels Histories</Link></li>
+                        <li><Link to={"/admin/stations"}>Fuel Stations</Link></li>
                         <li><Link to={"/admin/blog"}>Articles</Link></li>
                         <li><Link to={"/admin/testimonials"}>Testimonials</Link></li>
                         <li><Link to={"/admin/newsletters"}>Newsletters</Link></li>
@@ -67,6 +68,7 @@ export default function HeaderAdmin(props) {
                             <li><Link to={"/admin/characteristics"}>Characteristics</Link></li>
                             <li><Link to={"/admin/fuels"}>Fuels</Link></li>
                             <li><Link to={"/admin/fuels-history"}>Fuels Histories</Link></li>
+                            <li><Link to={"/admin/stations"}>Fuel Stations</Link></li>
                             <li><Link to={"/admin/blog"}>Articles</Link></li>
                             <li><Link to={"/admin/testimonials"}>Testimonials</Link></li>
                             <li><Link to={"/admin/newsletters"}>Newsletters</Link></li>
