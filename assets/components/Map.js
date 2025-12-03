@@ -1,9 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import L from 'leaflet';
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
+import PrivateResources from "../hooks/PrivateResources";
 
-export default function Map({lat, lng}) {
+export default function Map({lat, lng, stationID}) {
+
+    if(isNaN(stationID)) {
+        return
+    }
+
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/station/${stationID}/fuels`)
+
+    useEffect(() => {
+        load()
+    }, [stationID])
+
+    let popinContent
+    
+    {!loading && (
+        <>
+            {Object.keys(error).length > 0 && Object.keys(items).length == 0 && (
+                popinContent = `<p>${error.response.data.message ?? error.response.data.detail}</p>`
+            )}
+
+            {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
+                popinContent = Object.values(items.results).map((item, index) => `<p key='${index}'>${item.fuel}: ${item.price} €</p>`).join("")
+            )}
+        </>
+    )}
+
+    if(popinContent) {
+        popinContent = `<h3>Prix des carburants de la station</h3>` + popinContent
+    } else {
+        popinContent = `<p>Tarification indisponible</p>`
+    }
+
+    console.log("popinContent")
+    console.log(popinContent)
 
     return (
         <MapContainer
@@ -21,16 +55,20 @@ export default function Map({lat, lng}) {
                 url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
             />
 
-            <Marker 
-                position={{
-                    lat: lat, 
-                    lng: lng
-                }} 
-                icon={L.icon({iconUrl: `${window.location.origin}/content/svg/pinpoint.svg`})}
-                // icon={L.icon({iconUrl: `${window.location.origin}/content/img/pin-point.png`})}
-            >
-                <Popup lat={lat} lng={lng} content={`<p>new popup</br> more complicated</p>`} />
-            </Marker>
+            {!loading && (
+                <Marker 
+                    position={{
+                        lat: lat, 
+                        lng: lng
+                    }} 
+                    icon={L.icon({iconUrl: `${window.location.origin}/content/svg/pinpoint.svg`})}
+                    // icon={L.icon({iconUrl: `${window.location.origin}/content/img/pin-point.png`})}
+                >
+                    {popinContent && (
+                        <Popup content={popinContent} />
+                    )}
+                </Marker>
+            )}
         </MapContainer>
     )
 }

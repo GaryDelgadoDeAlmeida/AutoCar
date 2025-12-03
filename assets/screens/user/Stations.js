@@ -21,15 +21,14 @@ export default function Stations() {
 
         setCoordinate({
             lat: station.latitude,
-            lng: station.longitude
+            lng: station.longitude,
+            stationID: station.id
         })
     }
 
-    console.log(coordinate)
-
     return (
         <Header>
-            <section className={"page-hero-2nd"}>
+            {/* <section className={"page-hero-2nd"}>
                 <div className={"hero-background"}>
                     <img src={`${window.location.origin}/content/img/background-home-2.jpg`} alt={""} />
                 </div>
@@ -40,9 +39,9 @@ export default function Stations() {
                         <span>Stations</span>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
-            <section className={"page-section"}>
+            <section className={"page-section p-0-force"}>
                 {loading && (
                     <div className={"page-wrapper"}>
                         <Notification classname={"information"} message={"Loading ..."} />

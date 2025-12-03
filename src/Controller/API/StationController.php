@@ -3,6 +3,7 @@
 namespace App\Controller\API;
 
 use App\Repository\StationRepository;
+use App\Repository\StationFuelRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,9 +16,14 @@ final class StationController extends AbstractController
 {
     private int $limit = 20;
     private StationRepository $stationRepository;
+    private StationFuelRepository $stationFuelRepository;
 
-    function __construct(StationRepository $stationRepository) {
+    function __construct(
+        StationRepository $stationRepository,
+        StationFuelRepository $stationFuelRepository
+    ) {
         $this->stationRepository = $stationRepository;
+        $this->stationFuelRepository = $stationFuelRepository;
     }
     
     #[Route('/stations', name: 'get_stations', methods: ["GET"])]
@@ -34,6 +40,19 @@ final class StationController extends AbstractController
     
     #[Route('/station/{stationID}', name: 'get_station', methods: ["GET"])]
     public function get_station(int $stationID): JsonResponse {
-        return $this->json([]);
+        $station = $this->stationRepository->find($stationID);
+        if(empty($station)) {
+            return $this->json([
+                "message" => "Station not found"
+            ], Response::HTTP_NOT_FOUND);
+        }
+        return $this->json($station, Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["stationFuels"]]);
+    }
+
+    #[Route('/station/{stationID}/fuels', name: 'get_station_fuels', methods: ["GET"])]
+    public function get_station_fuels(int $stationID) : JsonResponse {
+        return $this->json([
+            "results" => $this->stationFuelRepository->findBy(["station" => $stationID])
+        ], Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["station"]]);
     }
 }
