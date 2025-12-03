@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Pagination from "../../components/Pagination"
 import Notification from "../../components/Notification";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import ArticleCard from "../../components/ArticleCard";
 import { Link } from "react-router-dom";
 
 export default function Articles() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/blogs?offset=${offset}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/blogs?offset=${offset}`)
 
     useEffect(() => {
         load()

@@ -3,7 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import Comments from "./parts/Comments";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import axios from "axios";
 
 export default function Article() {
@@ -14,7 +14,7 @@ export default function Article() {
     }
 
     const [forceRedirect, setForRedirect] = useState(false)
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/blog/${blogID}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/blog/${blogID}`)
 
     useEffect(() => {
         load()

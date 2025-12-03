@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function PrivateRessource(url, useToken = true) {
+export default function PrivateResources(url, useToken = true) {
 
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)

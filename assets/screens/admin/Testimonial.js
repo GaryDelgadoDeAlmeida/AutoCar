@@ -3,7 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
 import TestimonialForm from "../../forms/TestimonialForm";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 
 export default function Testimonial() {
 
@@ -12,7 +12,7 @@ export default function Testimonial() {
         return <Navigate to={"/admin/testimonials"} />
     }
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/backoffice/testimonial/${testimonialID}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/backoffice/testimonial/${testimonialID}`)
     useEffect(() => {
         load()
     }, [testimonialID])

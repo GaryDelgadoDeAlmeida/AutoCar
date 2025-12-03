@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import MakerForm from "../../forms/MakerForm";
 import HeaderAdmin from "../../components/HeaderAdmin";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
 
 export default function MakerNew() {
@@ -12,7 +12,7 @@ export default function MakerNew() {
         return <Navigate to={"/admin/makers"} />
     }
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/maker/${makerID}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/maker/${makerID}`)
 
     useEffect(() => {
         load()

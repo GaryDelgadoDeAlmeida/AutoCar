@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Map from "../../components/Map";
+import StationMap from "../../components/StationMap";
 import Header from "../../components/Header";
 import Pagination from "../../components/Pagination"
 import Notification from "../../components/Notification";
@@ -75,7 +75,7 @@ export default function Stations() {
                                 </div>
                                 <div className={"-map"}>
                                     {Object.keys(coordinate).length > 0 && (
-                                        <Map {...coordinate} />
+                                        <StationMap {...coordinate} />
                                     )}
                                 </div>
                             </div>

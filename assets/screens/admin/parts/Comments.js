@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import CommentForm from "../../../forms/CommentForm";
-import PrivateRessource from "../../../hooks/PrivateResources";
+import PrivateResources from "../../../hooks/PrivateResources";
 import CommentCard from "../../../components/CommentCard";
 import Notification from "../../../components/Notification";
 
@@ -11,7 +11,7 @@ export default function Comments({articleID, allowArticleComments = true}) {
     }
 
     const storedUser = localStorage.getItem("token")
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/blog/${articleID}/comments`, false)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/blog/${articleID}/comments`, false)
 
     useEffect(() => {
         load()

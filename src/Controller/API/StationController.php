@@ -46,7 +46,10 @@ final class StationController extends AbstractController
                 "message" => "Station not found"
             ], Response::HTTP_NOT_FOUND);
         }
-        return $this->json($station, Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["stationFuels"]]);
+        return $this->json([
+            "station" => $station,
+            "fuels" => $station->getStationFuels(),
+        ], Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["stationFuels"]]);
     }
 
     #[Route('/station/{stationID}/fuels', name: 'get_station_fuels', methods: ["GET"])]

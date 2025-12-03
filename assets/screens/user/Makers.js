@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../components/Header";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
 import Pagination from "../../components/Pagination";
 import MakerCard from "../../components/MakerCard";
@@ -9,7 +9,7 @@ import MakerCard from "../../components/MakerCard";
 export default function Brands() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/makers?offset=${offset}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/makers?offset=${offset}`)
 
     useEffect(() => {
         load()

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import Notification from "../../components/Notification";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import FuelSimulatorForm from "../../forms/FuelSimulatorForm";
 
 export default function Vehicle() {
@@ -12,7 +12,7 @@ export default function Vehicle() {
         return <Navigate to={"/vehicles"} />
     }
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/vehicle/${vehicleID}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicle/${vehicleID}`)
 
     useEffect(() => {
         load()

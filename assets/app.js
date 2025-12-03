@@ -54,7 +54,8 @@ import AdminFuelNew from "./screens/admin/FuelNew";
 import AdminFuelSingle from "./screens/admin/FuelSingle";
 import AdminFuelsHistory from "./screens/admin/FuelsHistory";
 import AdminStations from "./screens/admin/Stations";
-// import AdminStation from "./screens/admin/Station";
+import AdminStation from "./screens/admin/Station";
+// import AdminStationNew from "./screens/admin/StationNew";
 import AdminArticles from "./screens/admin/Articles";
 import AdminArticle from "./screens/admin/Article";
 import AdminArticleNew from "./screens/admin/ArticleNew";
@@ -114,7 +115,7 @@ root.render(
                 <Route path={"/admin/fuels-history"} element={<AdminFuelsHistory />} />
                 <Route path={"/admin/stations"} element={<AdminStations />} />
                 {/* <Route path={"/admin/station/add"} element={<AdminStations />} /> */}
-                {/* <Route path={"/admin/station/:stationID"} element={<AdminStation />} /> */}
+                <Route path={"/admin/station/:stationID"} element={<AdminStation />} />
                 <Route path={"/admin/blog"} element={<AdminArticles />} />
                 <Route path={"/admin/blog/add"} element={<AdminArticleNew />} />
                 <Route path={"/admin/blog/:blogID"} element={<AdminArticle />} />

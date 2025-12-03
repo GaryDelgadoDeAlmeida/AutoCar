@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import Select from "react-select";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 
 export default function VehicleModelField({fieldName = "model", fieldValue, updateCredentials}) {
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/vehicle/models`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicle/models`)
 
     useEffect(() => {
         load()

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import VehicleForm from "../../forms/VehicleForm";
 import Notification from "../../components/Notification";
@@ -12,7 +12,7 @@ export default function VehicleEdit() {
         return <Navigate to={"/admin/vehicles"} />
     }
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/vehicle/${vehicleID}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicle/${vehicleID}`)
 
     useEffect(() => {
         load()

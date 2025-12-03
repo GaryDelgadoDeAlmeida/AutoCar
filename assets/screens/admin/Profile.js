@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import ProfileForm from "../../forms/ProfileForm"
 import ProfilePasswordForm from "../../forms/ProfilePasswordForm";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
 
 export default function Profile() {
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/backoffice/profile`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/backoffice/profile`)
 
     useEffect(() => {
         load()

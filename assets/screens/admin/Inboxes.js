@@ -3,13 +3,13 @@ import TableCard from "../../components/TableCard"
 import Pagination from "../../components/Pagination"
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import axios from "axios";
 
 export default function Inboxes() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/backoffice/inboxes?offset=${offset}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/backoffice/inboxes?offset=${offset}`)
 
     useEffect(() => {
         load()

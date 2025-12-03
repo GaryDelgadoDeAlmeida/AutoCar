@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
 import Select from "react-select";
 
 export default function MakerField({fieldName = "maker", fieldValue, updateCredentials}) {
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/makers?request=all`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/makers?request=all`)
 
     useEffect(() => {
         load()

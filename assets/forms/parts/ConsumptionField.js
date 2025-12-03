@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
 
 export default function ConsumptionField({index, fieldName = "consumptions", consumption, updateCredentials}) {
@@ -9,7 +9,7 @@ export default function ConsumptionField({index, fieldName = "consumptions", con
         value: "",
     })
     
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/backoffice/consumptions?request=all`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/backoffice/consumptions?request=all`)
 
     useEffect(() => {
         load()

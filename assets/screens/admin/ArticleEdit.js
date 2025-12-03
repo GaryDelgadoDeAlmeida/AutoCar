@@ -3,7 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
 import ArticleForm from "../../forms/ArticleForm"
-import PrivateRessources from "../../hooks/PrivateResources";
+import PrivateResourcess from "../../hooks/PrivateResources";
 
 export default function ArticleEdit() {
 
@@ -12,7 +12,7 @@ export default function ArticleEdit() {
         return <Navigate to={"/admin/blog"} />
     }
 
-    const { loading, items, load, error } = PrivateRessources(`${window.location.origin}/api/blog/${blogID}`)
+    const { loading, items, load, error } = PrivateResourcess(`${window.location.origin}/api/blog/${blogID}`)
     
     useEffect(() => {
         load()

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
 
 export default function CharacteristicField({index, fieldName = "characteristics", characteristic, updateCredentials}) {
@@ -9,7 +9,7 @@ export default function CharacteristicField({index, fieldName = "characteristics
         value: "",
     })
     
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/characteristics?request=all`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/characteristics?request=all`)
 
     useEffect(() => {
         load()

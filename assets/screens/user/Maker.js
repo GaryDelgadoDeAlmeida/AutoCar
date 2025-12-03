@@ -4,7 +4,7 @@ import { formatDate } from "../../hooks/DomControl";
 import Header from "../../components/Header";
 import CarCard from "../../components/CarCard";
 import Notification from "../../components/Notification";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 
 export default function Brand() {
 
@@ -13,7 +13,7 @@ export default function Brand() {
         return <Navigate to={"/makers"} />
     }
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/maker/${makerID}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/maker/${makerID}`)
     useEffect(() => {
         load()
     }, [makerID])

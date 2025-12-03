@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import PrivateRessource from "../../../hooks/PrivateResources";
+import PrivateResources from "../../../hooks/PrivateResources";
 import Notification from "../../../components/Notification";
 import CarCard from "../../../components/CarCard";
 
 export default function RecentVehicles() {
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/vehicles?limit=8`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/vehicles?limit=8`)
     
     useEffect(() => {
         load()

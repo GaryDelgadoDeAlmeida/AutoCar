@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import { formatDate, stripHTML } from "../../hooks/DomControl";
 
 export default function Inbox() {
@@ -12,7 +12,7 @@ export default function Inbox() {
         return <Navigate to={"/admin/inboxes"} />
     }
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/backoffice/inbox/${inboxID}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/backoffice/inbox/${inboxID}`)
     
     useEffect(() => {
         load()

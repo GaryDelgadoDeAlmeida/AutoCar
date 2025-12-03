@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import HeaderAdmin from "../../components/HeaderAdmin";
-import PrivateRessource from "../../hooks/PrivateResources";
+import PrivateResources from "../../hooks/PrivateResources";
 import Notification from "../../components/Notification";
 import axios from "axios";
 
@@ -13,7 +13,7 @@ export default function MakerSingle() {
     }
 
     const [removeResponse, setRemoveResponse] = useState({})
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/maker/${makerID}`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/maker/${makerID}`)
 
     useEffect(() => {
         load()

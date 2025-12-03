@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import TestimonialCard from "../../../components/TestimonialCard";
-import PrivateRessource from "../../../hooks/PrivateResources";
+import PrivateResources from "../../../hooks/PrivateResources";
 import Notification from "../../../components/Notification";
 
 export default function RecentTestimonials() {
 
-    const { loading, items, load, error } = PrivateRessource(`${window.location.origin}/api/testimonials`)
+    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/testimonials`)
 
     useEffect(() => {
         load()
