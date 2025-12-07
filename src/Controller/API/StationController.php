@@ -2,6 +2,7 @@
 
 namespace App\Controller\API;
 
+use App\Repository\FuelRepository;
 use App\Repository\StationRepository;
 use App\Repository\StationFuelRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +16,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class StationController extends AbstractController
 {
     private int $limit = 20;
+    private FuelRepository $fuelRepository;
     private StationRepository $stationRepository;
     private StationFuelRepository $stationFuelRepository;
 
     function __construct(
+        FuelRepository $fuelRepository,
         StationRepository $stationRepository,
         StationFuelRepository $stationFuelRepository
     ) {
+        $this->fuelRepository = $fuelRepository;
         $this->stationRepository = $stationRepository;
         $this->stationFuelRepository = $stationFuelRepository;
     }
@@ -46,10 +50,12 @@ final class StationController extends AbstractController
                 "message" => "Station not found"
             ], Response::HTTP_NOT_FOUND);
         }
+
         return $this->json([
             "station" => $station,
             "fuels" => $station->getStationFuels(),
-        ], Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["stationFuels"]]);
+            "fuelsMedian" => $this->fuelRepository->getFuels()
+        ], Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["stationFuels", "fuelPriceHistories", "vehicles"]]);
     }
 
     #[Route('/station/{stationID}/fuels', name: 'get_station_fuels', methods: ["GET"])]

@@ -20,37 +20,43 @@ export default function Station() {
 
     return (
         <HeaderAdmin>
-            <div className={"page-hero-2nd"}>
-                <div className={"hero-background"}></div>
-                <div className={"hero-wrapper"}>
-                    <h1 className={"-hero-title"}>Station</h1>
-                </div>
-            </div>
-
-            <section className={"page-section"}>
-                {loading && (
+            {loading && (
+                <section className={"page-section"}>
                     <Notification classname={"information"} message={"Loading ..."} />
-                )}
+                </section>
+            )}
 
-                {!loading && (
-                    <>
-                        {Object.keys(error).length > 0 && Object.keys(items).length == 0 && (
+            {!loading && (
+                <>
+                    {Object.keys(error).length > 0 && Object.keys(items).length == 0 && (
+                        <section className={"page-section"}>
                             <Notification classname={"danger"} message={error.response.data.message ?? error.response.data.detail} />
-                        )}
+                        </section>
+                    )}
 
-                        {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
-                            <>
-                                <Notification classname={"information"} message={"Page under construction"} />
+                    {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
+                        <>
+                            <div className={"page-hero-2nd"}>
+                                <div className={"hero-background"}></div>
+                                <div className={"hero-wrapper"}>
+                                    <h1 className={"-hero-title"}>Station</h1>
+                                    <p className={"-hero-description"}>{items.station.address}, {items.station.zipCode} {items.station.city}, {items.station.country}</p>
+                                </div>
+                            </div>
 
-                                {console.log(items)}
+                            {console.log(items.fuelsMedian)}
 
-                                <div className={""}>
+                            <section className={"page-section"}>
+                                <div className={"w-100"}>
                                     <table className={"table"}>
                                         <tbody>
                                             {Object.values(items.fuels).map((item, index) => (
                                                 <tr key={index}>
-                                                    <td data-column={"Fuel"}>{item.fuel}</td>
-                                                    <td data-column={"Price"}>{item.price}</td>
+                                                    <td data-column={"Fuel"}><b>{item.fuel}</b></td>
+                                                    <td data-column={"Price"}>
+                                                        <span>{item.price}</span>
+                                                        <span>{Object.values(items.fuelPriceHistories ?? []).filter((fuel) => fuel.fuelKey == item.fuelKey)[0]?.price > item.price ? "-" : "+"}</span>
+                                                    </td>
                                                     <td data-column={"Updated at"}>{item.updatedAt ?? item.createdAt}</td>
                                                 </tr>
                                             ))}
@@ -64,11 +70,11 @@ export default function Station() {
                                         lng={items.station.longitude}
                                     />
                                 </div>
-                            </>
-                        )}
-                    </>
-                )}
-            </section>
+                            </section>
+                        </>
+                    )}
+                </>
+            )}
         </HeaderAdmin>
     )
 }
