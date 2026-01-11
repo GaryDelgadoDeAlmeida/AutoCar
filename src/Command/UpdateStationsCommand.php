@@ -88,7 +88,7 @@ class UpdateStationsCommand extends Command
                         $this->stationRepository->save($station, true);
                     }
 
-                    // 
+                    // Gazole/Diesel
                     if(!empty($result["gazole_prix"])) {
                         $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "diesel"], ["id" => "DESC"]);
                         if(empty($stationFuel)) {
@@ -110,6 +110,8 @@ class UpdateStationsCommand extends Command
 
                         $this->stationFuelRepository->save($stationFuel, true);
                     }
+
+                    // Essence SP95
                     if(!empty($result["sp95_prix"])) {
                         $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "sp95"], ["id" => "DESC"]);
                         if(empty($stationFuel)) {
@@ -131,6 +133,8 @@ class UpdateStationsCommand extends Command
 
                         $this->stationFuelRepository->save($stationFuel, true);
                     }
+
+                    // Essence SP95-E85
                     if(!empty($result["e85_prix"])) {
                         $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "e85"], ["id" => "DESC"]);
                         if(empty($stationFuel)) {
@@ -152,6 +156,8 @@ class UpdateStationsCommand extends Command
 
                         $this->stationFuelRepository->save($stationFuel, true);
                     }
+
+                    // GLP
                     if(!empty($result["gplc_prix"])) {
                         $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "gpl"], ["id" => "DESC"]);
                         if(empty($stationFuel)) {
@@ -173,6 +179,8 @@ class UpdateStationsCommand extends Command
 
                         $this->stationFuelRepository->save($stationFuel, true);
                     }
+
+                    // Essence SP98-E10
                     if(!empty($result["e10_prix"])) {
                         $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "sp98-e10"], ["id" => "DESC"]);
                         if(empty($stationFuel)) {
@@ -194,6 +202,8 @@ class UpdateStationsCommand extends Command
 
                         $this->stationFuelRepository->save($stationFuel, true);
                     }
+
+                    // Essence SP98
                     if(!empty($result["sp98_prix"])) {
                         $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "sp98"], ["id" => "DESC"]);
                         if(empty($stationFuel)) {
@@ -230,7 +240,7 @@ class UpdateStationsCommand extends Command
             return Command::FAILURE;
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success("All stations fuels price has successfully updated");
         return Command::SUCCESS;
     }
 

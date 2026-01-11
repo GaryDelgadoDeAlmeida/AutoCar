@@ -84,6 +84,16 @@ php -d memory_limit=-1 bin/console app:import-vehicules
 
 Étant donnée que l'importer est beaucoup trop lourd, j'ai utiliser l'attribut `memory_limit=-1` pour ne pas limiter la mémoire PHP et continuer l'import jusqu'à la fin.
 
+Pour mettre à jour le prix moyen du carburant
+```bash
+symfony console app:update-fuel-prices
+```
+
+Pour mettre à jour tous les prix de toutes les stations services
+```bash
+php -d memory_limit=-1 bin/console app:update-stations
+```
+
 ## Issues
 
 Lors de l'installation de symfony, le package `AssetMapper` (c'est l'équivalent de `webpack-encore`) est automatiquement installé. Pour le désinstaller de symfony :
