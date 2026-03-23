@@ -29,6 +29,27 @@ final class StationController extends AbstractController
         $this->stationRepository = $stationRepository;
         $this->stationFuelRepository = $stationFuelRepository;
     }
+
+    #[Route('/stations/zip-codes', name: 'get_stations_zip_code', methods: ["GET"])]
+    public function get_stations_zip_code(Request $request) {
+        $zipCodes = array_map(fn($element) => $element["zipCode"], $this->stationRepository->getExistingZipCodes());
+        sort($zipCodes);
+
+        return $this->json($zipCodes, Response::HTTP_OK);
+    }
+    
+    #[Route('/stations/search', name: 'search_stations', methods: ["POST"])]
+    public function search_stations(Request $request): JsonResponse {
+        $offset = $request->get("offset", 1);
+        $searchAttributes = json_decode($request->getContent());
+
+        return $this->json([
+            "results" => $this->stationRepository->findBy([], ["createdAt" => "DESC"], $this->limit, ($offset - 1) * $this->limit),
+            "offset" => $offset,
+            "limit" => $this->limit,
+            "maxOffset" => ceil($this->stationRepository->countStations() / $this->limit),
+        ], Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["stationFuels"]]);
+    }
     
     #[Route('/stations', name: 'get_stations', methods: ["GET"])]
     public function get_stations(Request $request): JsonResponse {

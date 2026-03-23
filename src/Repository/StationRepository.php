@@ -40,6 +40,14 @@ class StationRepository extends ServiceEntityRepository
         }
     }
 
+    public function getExistingZipCodes() {
+        return $this->createQueryBuilder("s")
+            ->select("DISTINCT s.zipCode")
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /**
      * Count the curent number of station in the database
      * 

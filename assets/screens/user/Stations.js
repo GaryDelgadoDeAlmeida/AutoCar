@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import Pagination from "../../components/Pagination"
 import Notification from "../../components/Notification";
 import PrivateResources from "../../hooks/PrivateResources";
+import SearchStationsForm from "../../forms/SearchStationsForm";
 
 export default function Stations() {
 
@@ -26,21 +27,9 @@ export default function Stations() {
         })
     }
 
+
     return (
         <Header>
-            {/* <section className={"page-hero-2nd"}>
-                <div className={"hero-background"}>
-                    <img src={`${window.location.origin}/content/img/background-home-2.jpg`} alt={""} />
-                </div>
-                <div className={"hero-wrapper"}>
-                    <h1 className={"-hero-title"}>Stations</h1>
-                    <div className={"-hero-breadcrumbs"}>
-                        <Link to={"/"}>Home</Link>
-                        <span>Stations</span>
-                    </div>
-                </div>
-            </section> */}
-
             <section className={"page-section p-0-force"}>
                 {loading && (
                     <div className={"page-wrapper"}>
@@ -59,6 +48,8 @@ export default function Stations() {
                         {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                             <div className={"stations"}>
                                 <div className={"-list"}>
+                                    <SearchStationsForm />
+
                                     {Object.values(items.results).map((item, index) => (
                                         <li className={"station-item"} key={index} onClick={(e) => handleClick(e, item)}>
                                             <span>{item.address}, {item.zipCode} {item.city}</span>

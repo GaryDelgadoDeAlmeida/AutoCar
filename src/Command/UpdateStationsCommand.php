@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Enum\FuelKeyEnum;
 use App\Enum\StationEnum;
 use App\Enum\StationFuelEnum;
 use App\Manager\StationFuelManager;
@@ -10,10 +11,12 @@ use App\Repository\StationFuelRepository;
 use App\Repository\StationRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
@@ -54,181 +57,42 @@ class UpdateStationsCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $limit = 100;
         $foundedError = null;
+
+        // Ask the scraping method to the client
+        $options = [
+            "instant_flux" => "API flux instantanné",
+            "instant_flux_json" => "JSON flux instantanné",
+            "daily_update" => "API flux quotidien",
+            // "website" => "Scrap Website"
+        ];
+        $helper = new QuestionHelper();
+        $question = new ChoiceQuestion(
+            "Veuillez sélectionner la source de donnée pour effectuée la mise à jour",
+            array_values($options)
+        );
+        
+        // Rretrive the selected shop
+        $givenOption = $helper->ask($input, $output, $question);
+        $selectedOption = array_search($givenOption, $options);
         
         try {
-            do {
-                ["response" => $response, "error" => $error] = $this->callGouvAPI($this->offset, $limit);
-                if(!empty($error)) {
-                    $foundedError = $error;
+            switch($selectedOption) {
+                case "instant_flux":
+                    $foundedError = $this->fillWithInstantFluxFuels($limit);
                     break;
-                }
-
-                if(empty($response["results"])) {
+                
+                case "instant_flux_json":
+                    // $foundedError = $this->fillWithInstantFluxFuels($limit);
+                    $foundedError = $this->fillWithInstantFluxFuelsJSON();
                     break;
-                }
+                
+                case "daily_update":
+                    $foundedError = $this->fillWithDailyUpdateFuels($limit);
+                    break;
 
-                foreach($response["results"] as $result) {
-                    $station = $this->stationRepository->findOneBy([
-                        "latitude" => $result["geom"]["lat"], 
-                        "longitude" => $result["geom"]["lon"]
-                    ], ["id" => "DESC"]);
-                    if(empty($station)) {
-                        $station = $this->stationManager->fillStation([
-                            StationEnum::STATION_ADDRESS => $result["adresse"],
-                            StationEnum::STATION_CITY => $result["ville"],
-                            StationEnum::STATION_ZIPCODE => $result["cp"],
-                            StationEnum::STATION_COUNTRY => "",
-                            StationEnum::STATION_LATITUDE => $result["geom"]["lat"],
-                            StationEnum::STATION_LONGITUDE => $result["geom"]["lon"]
-                        ]);
-                        if(is_string($station)) {
-                            throw new \Exception($station);
-                        }
-
-                        $this->stationRepository->save($station, true);
-                    }
-
-                    // Gazole/Diesel
-                    if(!empty($result["gazole_prix"])) {
-                        $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "diesel"], ["id" => "DESC"]);
-                        if(empty($stationFuel)) {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_STATION => $station,
-                                StationFuelEnum::STATIONFUEL_FUEL => "Gazole / Diesel (B7)",
-                                StationFuelEnum::STATIONFUEL_FUELKEY => "diesel",
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["gazole_prix"],
-                            ]);
-                        } else {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["gazole_prix"]
-                            ], $stationFuel);
-                        }
-
-                        if(is_string($stationFuel)) {
-                            throw new \Exception($stationFuel);
-                        }
-
-                        $this->stationFuelRepository->save($stationFuel, true);
-                    }
-
-                    // Essence SP95
-                    if(!empty($result["sp95_prix"])) {
-                        $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "sp95"], ["id" => "DESC"]);
-                        if(empty($stationFuel)) {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_STATION => $station,
-                                StationFuelEnum::STATIONFUEL_FUEL => "Sans Plomb 95 (E5)",
-                                StationFuelEnum::STATIONFUEL_FUELKEY => "sp95",
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["sp95_prix"],
-                            ]);
-                        } else {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["sp95_prix"]
-                            ], $stationFuel);
-                        }
-
-                        if(is_string($stationFuel)) {
-                            throw new \Exception($stationFuel);
-                        }
-
-                        $this->stationFuelRepository->save($stationFuel, true);
-                    }
-
-                    // Essence SP95-E85
-                    if(!empty($result["e85_prix"])) {
-                        $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "e85"], ["id" => "DESC"]);
-                        if(empty($stationFuel)) {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_STATION => $station,
-                                StationFuelEnum::STATIONFUEL_FUEL => "BioEthanol E85",
-                                StationFuelEnum::STATIONFUEL_FUELKEY => "e85",
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["e85_prix"],
-                            ]);
-                        } else {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["e85_prix"]
-                            ], $stationFuel);
-                        }
-
-                        if(is_string($stationFuel)) {
-                            throw new \Exception($stationFuel);
-                        }
-
-                        $this->stationFuelRepository->save($stationFuel, true);
-                    }
-
-                    // GLP
-                    if(!empty($result["gplc_prix"])) {
-                        $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "gpl"], ["id" => "DESC"]);
-                        if(empty($stationFuel)) {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_STATION => $station,
-                                StationFuelEnum::STATIONFUEL_FUEL => "GPL",
-                                StationFuelEnum::STATIONFUEL_FUELKEY => "gpl",
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["gplc_prix"],
-                            ]);
-                        } else {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["gplc_prix"]
-                            ], $stationFuel);
-                        }
-
-                        if(is_string($stationFuel)) {
-                            throw new \Exception($stationFuel);
-                        }
-
-                        $this->stationFuelRepository->save($stationFuel, true);
-                    }
-
-                    // Essence SP98-E10
-                    if(!empty($result["e10_prix"])) {
-                        $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "sp98-e10"], ["id" => "DESC"]);
-                        if(empty($stationFuel)) {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_STATION => $station,
-                                StationFuelEnum::STATIONFUEL_FUEL => "Super 98 (E10)",
-                                StationFuelEnum::STATIONFUEL_FUELKEY => "sp98-e10",
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["e10_prix"],
-                            ]);
-                        } else {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["e10_prix"]
-                            ], $stationFuel);
-                        }
-
-                        if(is_string($stationFuel)) {
-                            throw new \Exception($stationFuel);
-                        }
-
-                        $this->stationFuelRepository->save($stationFuel, true);
-                    }
-
-                    // Essence SP98
-                    if(!empty($result["sp98_prix"])) {
-                        $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "sp98"], ["id" => "DESC"]);
-                        if(empty($stationFuel)) {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_STATION => $station,
-                                StationFuelEnum::STATIONFUEL_FUEL => "Sans Plomb 98 (E5)",
-                                StationFuelEnum::STATIONFUEL_FUELKEY => "sp98",
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["sp98_prix"],
-                            ]);
-                        } else {
-                            $stationFuel = $this->stationFuelManager->fillStationFuel([
-                                StationFuelEnum::STATIONFUEL_PRICE => $result["sp98_prix"]
-                            ], $stationFuel);
-                        }
-
-                        if(is_string($stationFuel)) {
-                            throw new \Exception($stationFuel);
-                        }
-
-                        $this->stationFuelRepository->save($stationFuel, true);
-                    }
-                }
-
-                $this->offset++;
-            } while($this->offset < $this->totalPages);
+                default:
+                    break;
+            }
         } catch(\Exception $e) {
             $io->error($e->getMessage());
             return Command::FAILURE;
@@ -236,12 +100,510 @@ class UpdateStationsCommand extends Command
 
         if($foundedError) {
             $io->error("An error has been encoutered. The process has been cancelled");
+            dd($foundedError);
             $io->error($foundedError);
             return Command::FAILURE;
         }
 
         $io->success("All stations fuels price has successfully updated");
         return Command::SUCCESS;
+    }
+
+    private function fillWithInstantFluxFuels(int $limit = 20) {
+        $foundedError = null;
+
+        do {
+            ["response" => $response, "error" => $error] = $this->callFranceGouvAPI("https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?limit={$limit}&offset={$this->offset}", $limit);
+            if(!empty($error)) {
+                $foundedError = $error;
+                break;
+            }
+
+            if(empty($response["results"])) {
+                break;
+            }
+
+            foreach($response["results"] as $result) {
+                $station = $this->stationRepository->findOneBy([
+                    "latitude" => $result["geom"]["lat"], 
+                    "longitude" => $result["geom"]["lon"]
+                ], ["id" => "DESC"]);
+                if(empty($station)) {
+                    $station = $this->stationManager->fillStation([
+                        StationEnum::STATION_ADDRESS => $result["adresse"],
+                        StationEnum::STATION_CITY => $result["ville"],
+                        StationEnum::STATION_ZIPCODE => $result["cp"],
+                        StationEnum::STATION_COUNTRY => "",
+                        StationEnum::STATION_LATITUDE => $result["geom"]["lat"],
+                        StationEnum::STATION_LONGITUDE => $result["geom"]["lon"]
+                    ]);
+                    if(is_string($station)) {
+                        throw new \Exception($station);
+                    }
+
+                    $this->stationRepository->save($station, true);
+                }
+
+                if(!empty($result["gazole_prix"])) {
+                    $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => FuelKeyEnum::FUELKEY_DIESEL], ["id" => "DESC"]);
+                    if(empty($stationFuel)) {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_STATION => $station,
+                            StationFuelEnum::STATIONFUEL_FUEL => "Gazole / Diesel (B7)",
+                            StationFuelEnum::STATIONFUEL_FUELKEY => FuelKeyEnum::FUELKEY_DIESEL,
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["gazole_prix"],
+                        ]);
+                    } else {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["gazole_prix"]
+                        ], $stationFuel);
+                    }
+
+                    if(is_string($stationFuel)) {
+                        throw new \Exception($stationFuel);
+                    }
+
+                    $this->stationFuelRepository->save($stationFuel, true);
+                }
+
+                // Essence SP95
+                if(!empty($result["sp95_prix"])) {
+                    $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "sp95"], ["id" => "DESC"]);
+                    if(empty($stationFuel)) {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_STATION => $station,
+                            StationFuelEnum::STATIONFUEL_FUEL => "Sans Plomb 95 (E5)",
+                            StationFuelEnum::STATIONFUEL_FUELKEY => "sp95",
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["sp95_prix"],
+                        ]);
+                    } else {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["sp95_prix"]
+                        ], $stationFuel);
+                    }
+
+                    if(is_string($stationFuel)) {
+                        throw new \Exception($stationFuel);
+                    }
+
+                    $this->stationFuelRepository->save($stationFuel, true);
+                }
+
+                // Essence SP95-E85
+                if(!empty($result["e85_prix"])) {
+                    $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "e85"], ["id" => "DESC"]);
+                    if(empty($stationFuel)) {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_STATION => $station,
+                            StationFuelEnum::STATIONFUEL_FUEL => "BioEthanol E85",
+                            StationFuelEnum::STATIONFUEL_FUELKEY => "e85",
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["e85_prix"],
+                        ]);
+                    } else {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["e85_prix"]
+                        ], $stationFuel);
+                    }
+
+                    if(is_string($stationFuel)) {
+                        throw new \Exception($stationFuel);
+                    }
+
+                    $this->stationFuelRepository->save($stationFuel, true);
+                }
+
+                // GLP
+                if(!empty($result["gplc_prix"])) {
+                    $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "gpl"], ["id" => "DESC"]);
+                    if(empty($stationFuel)) {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_STATION => $station,
+                            StationFuelEnum::STATIONFUEL_FUEL => "GPL",
+                            StationFuelEnum::STATIONFUEL_FUELKEY => "gpl",
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["gplc_prix"],
+                        ]);
+                    } else {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["gplc_prix"]
+                        ], $stationFuel);
+                    }
+
+                    if(is_string($stationFuel)) {
+                        throw new \Exception($stationFuel);
+                    }
+
+                    $this->stationFuelRepository->save($stationFuel, true);
+                }
+
+                // Essence SP95-E10
+                if(!empty($result["e10_prix"])) {
+                    $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => FuelKeyEnum::FUELKEY_SP95E10], ["id" => "DESC"]);
+                    if(empty($stationFuel)) {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_STATION => $station,
+                            StationFuelEnum::STATIONFUEL_FUEL => "Super 95 (E10)",
+                            StationFuelEnum::STATIONFUEL_FUELKEY => FuelKeyEnum::FUELKEY_SP95E10,
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["e10_prix"],
+                        ]);
+                    } else {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["e10_prix"]
+                        ], $stationFuel);
+                    }
+
+                    if(is_string($stationFuel)) {
+                        throw new \Exception($stationFuel);
+                    }
+
+                    $this->stationFuelRepository->save($stationFuel, true);
+                }
+
+                // Essence SP98
+                if(!empty($result["sp98_prix"])) {
+                    $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => FuelKeyEnum::FUELKEY_SP98], ["id" => "DESC"]);
+                    if(empty($stationFuel)) {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_STATION => $station,
+                            StationFuelEnum::STATIONFUEL_FUEL => "Sans Plomb 98 (E5)",
+                            StationFuelEnum::STATIONFUEL_FUELKEY => FuelKeyEnum::FUELKEY_SP98,
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["sp98_prix"],
+                        ]);
+                    } else {
+                        $stationFuel = $this->stationFuelManager->fillStationFuel([
+                            StationFuelEnum::STATIONFUEL_PRICE => $result["sp98_prix"]
+                        ], $stationFuel);
+                    }
+
+                    if(is_string($stationFuel)) {
+                        throw new \Exception($stationFuel);
+                    }
+
+                    $this->stationFuelRepository->save($stationFuel, true);
+                }
+            }
+
+            $this->offset++;
+        } while($this->offset < $this->totalPages);
+
+        return $foundedError;
+    }
+
+    /**
+     * Summary of fillWithInstantFluxFuelsJSON
+     * 
+     * @throws \Exception
+     * @return null
+     */
+    private function fillWithInstantFluxFuelsJSON() {
+        $distantResponse = file_get_contents("https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/exports/json");
+        $jsonResponse = !empty($distantResponse) ? json_decode($distantResponse, true) : [];
+
+        if(empty($jsonResponse)) {
+            return null;
+        }
+
+        foreach($jsonResponse as $result) {
+            $station = $this->stationRepository->findOneBy([
+                "latitude" => $result["geom"]["lat"], 
+                "longitude" => $result["geom"]["lon"]
+            ], ["id" => "DESC"]);
+            if(empty($station)) {
+                $station = $this->stationManager->fillStation([
+                    StationEnum::STATION_ADDRESS => $result["adresse"],
+                    StationEnum::STATION_CITY => $result["ville"],
+                    StationEnum::STATION_ZIPCODE => $result["cp"],
+                    StationEnum::STATION_COUNTRY => "",
+                    StationEnum::STATION_LATITUDE => $result["geom"]["lat"],
+                    StationEnum::STATION_LONGITUDE => $result["geom"]["lon"]
+                ]);
+                if(is_string($station)) {
+                    throw new \Exception($station);
+                }
+
+                $this->stationRepository->save($station, true);
+            }
+
+            if(!empty($result["gazole_prix"])) {
+                $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => FuelKeyEnum::FUELKEY_DIESEL], ["id" => "DESC"]);
+                if(empty($stationFuel)) {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_STATION => $station,
+                        StationFuelEnum::STATIONFUEL_FUEL => "Gazole / Diesel (B7)",
+                        StationFuelEnum::STATIONFUEL_FUELKEY => FuelKeyEnum::FUELKEY_DIESEL,
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["gazole_prix"],
+                    ]);
+                } else {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["gazole_prix"]
+                    ], $stationFuel);
+                }
+
+                if(is_string($stationFuel)) {
+                    throw new \Exception($stationFuel);
+                }
+
+                $this->stationFuelRepository->save($stationFuel, true);
+            }
+
+            // Essence SP95
+            if(!empty($result["sp95_prix"])) {
+                $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "sp95"], ["id" => "DESC"]);
+                if(empty($stationFuel)) {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_STATION => $station,
+                        StationFuelEnum::STATIONFUEL_FUEL => "Sans Plomb 95 (E5)",
+                        StationFuelEnum::STATIONFUEL_FUELKEY => "sp95",
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["sp95_prix"],
+                    ]);
+                } else {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["sp95_prix"]
+                    ], $stationFuel);
+                }
+
+                if(is_string($stationFuel)) {
+                    throw new \Exception($stationFuel);
+                }
+
+                $this->stationFuelRepository->save($stationFuel, true);
+            }
+
+            // Essence SP95-E85
+            if(!empty($result["e85_prix"])) {
+                $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "e85"], ["id" => "DESC"]);
+                if(empty($stationFuel)) {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_STATION => $station,
+                        StationFuelEnum::STATIONFUEL_FUEL => "BioEthanol E85",
+                        StationFuelEnum::STATIONFUEL_FUELKEY => "e85",
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["e85_prix"],
+                    ]);
+                } else {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["e85_prix"]
+                    ], $stationFuel);
+                }
+
+                if(is_string($stationFuel)) {
+                    throw new \Exception($stationFuel);
+                }
+
+                $this->stationFuelRepository->save($stationFuel, true);
+            }
+
+            // GLP
+            if(!empty($result["gplc_prix"])) {
+                $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => "gpl"], ["id" => "DESC"]);
+                if(empty($stationFuel)) {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_STATION => $station,
+                        StationFuelEnum::STATIONFUEL_FUEL => "GPL",
+                        StationFuelEnum::STATIONFUEL_FUELKEY => "gpl",
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["gplc_prix"],
+                    ]);
+                } else {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["gplc_prix"]
+                    ], $stationFuel);
+                }
+
+                if(is_string($stationFuel)) {
+                    throw new \Exception($stationFuel);
+                }
+
+                $this->stationFuelRepository->save($stationFuel, true);
+            }
+
+            // Essence SP95-E10
+            if(!empty($result["e10_prix"])) {
+                $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => FuelKeyEnum::FUELKEY_SP95E10], ["id" => "DESC"]);
+                if(empty($stationFuel)) {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_STATION => $station,
+                        StationFuelEnum::STATIONFUEL_FUEL => "Super 95 (E10)",
+                        StationFuelEnum::STATIONFUEL_FUELKEY => FuelKeyEnum::FUELKEY_SP95E10,
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["e10_prix"],
+                    ]);
+                } else {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["e10_prix"]
+                    ], $stationFuel);
+                }
+
+                if(is_string($stationFuel)) {
+                    throw new \Exception($stationFuel);
+                }
+
+                $this->stationFuelRepository->save($stationFuel, true);
+            }
+
+            // Essence SP98
+            if(!empty($result["sp98_prix"])) {
+                $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => FuelKeyEnum::FUELKEY_SP98], ["id" => "DESC"]);
+                if(empty($stationFuel)) {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_STATION => $station,
+                        StationFuelEnum::STATIONFUEL_FUEL => "Sans Plomb 98 (E5)",
+                        StationFuelEnum::STATIONFUEL_FUELKEY => FuelKeyEnum::FUELKEY_SP98,
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["sp98_prix"],
+                    ]);
+                } else {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["sp98_prix"]
+                    ], $stationFuel);
+                }
+
+                if(is_string($stationFuel)) {
+                    throw new \Exception($stationFuel);
+                }
+
+                $this->stationFuelRepository->save($stationFuel, true);
+            }
+        }
+
+        return null;
+    }
+
+    private function fillWithDailyUpdateFuels(int $limit = 20) {
+        $foundedError = null;
+
+        do {
+            ["response" => $response, "error" => $error] = $this->callFranceGouvAPI("https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-carburants-quotidien/records?limit={$limit}&offset={$this->offset}", $limit);
+            if(!empty($error)) {
+                $foundedError = $error;
+                break;
+            }
+
+            if(empty($response["results"])) {
+                break;
+            }
+
+            foreach($response["results"] as $result) {
+                $station = $this->stationRepository->findOneBy([
+                    "latitude" => $result["geom"]["lat"], 
+                    "longitude" => $result["geom"]["lon"]
+                ], ["id" => "DESC"]);
+                if(empty($station)) {
+                    $station = $this->stationManager->fillStation([
+                        StationEnum::STATION_ADDRESS => $result["adresse"],
+                        StationEnum::STATION_CITY => $result["ville"],
+                        StationEnum::STATION_ZIPCODE => $result["cp"],
+                        StationEnum::STATION_COUNTRY => "",
+                        StationEnum::STATION_LATITUDE => $result["geom"]["lat"],
+                        StationEnum::STATION_LONGITUDE => $result["geom"]["lon"]
+                    ]);
+                    if(is_string($station)) {
+                        throw new \Exception($station);
+                    }
+
+                    $this->stationRepository->save($station, true);
+                }
+
+                $fuelKey = $fuelLabel = "";
+                switch(strtolower($result["prix_nom"])) {
+
+                    // Essence SP98
+                    case "sp98":
+                        $fuelLabel = "Sans Plomb 98 (E5)";
+                        $fuelKey = FuelKeyEnum::FUELKEY_SP98;
+                        break;
+                    
+                    // Essence SP95
+                    case "sp95":
+                        $fuelLabel = "Sans Plomb 95 (E5)";
+                        $fuelKey = FuelKeyEnum::FUELKEY_SP95;
+                        break;
+                    
+                    // Gazole / Diesel
+                    case "gazole":
+                        $fuelLabel = "Gazole / Diesel (B7)";
+                        $fuelKey = FuelKeyEnum::FUELKEY_DIESEL;
+                        break;
+                    
+                    // Essence SP95-E10
+                    case "e10":
+                        $fuelLabel = "Super 95 (E10)";
+                        $fuelKey = FuelKeyEnum::FUELKEY_SP95E10;
+                        break;
+                    
+                    // Essence BioEthanol E85 (SP95-E85)
+                    case "e85":
+                        $fuelLabel = "BioEthanol E85";
+                        $fuelKey = FuelKeyEnum::FUELKEY_E85;
+                        break;
+                    
+                    // GLP
+                    case "gplc":
+                    case "gpl":
+                        $fuelLabel = "GPL";
+                        $fuelKey = FuelKeyEnum::FUELKEY_GPLC;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                if(empty($fuelKey)) {
+                    throw new \Exception("The fuel '{$result["prix_nom"]}' isn't allowed");
+                }
+
+                $stationFuel = $this->stationFuelRepository->findOneBy(["station" => $station->getId(), "fuelKey" => $fuelKey], ["id" => "DESC"]);
+                if(empty($stationFuel)) {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_STATION => $station,
+                        StationFuelEnum::STATIONFUEL_FUEL => $fuelLabel,
+                        StationFuelEnum::STATIONFUEL_FUELKEY => $fuelKey,
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["prix_valeur"],
+                    ]);
+                } else {
+                    $stationFuel = $this->stationFuelManager->fillStationFuel([
+                        StationFuelEnum::STATIONFUEL_PRICE => $result["prix_valeur"]
+                    ], $stationFuel);
+                }
+
+                if(is_string($stationFuel)) {
+                    throw new \Exception($stationFuel);
+                }
+
+                $this->stationFuelRepository->save($stationFuel, true);
+            }
+
+            $this->offset++;
+        } while($this->offset < $this->totalPages);
+
+        return $foundedError;
+    }
+
+    /**
+     * Get all stations of France
+     * 
+     * @param int $offset
+     * @param int $limit
+     * @return array{error: string, response: mixed}
+     */
+    private function callFranceGouvAPI(string $distantURL, int $limit) {
+        curl_setopt_array($ch = curl_init(), [
+            CURLOPT_URL => $distantURL,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => false,
+            CURLOPT_HTTPHEADER => [
+                "Content-Type" => "application/json",
+                "Accept" => "application/json"
+            ]
+        ]);
+
+        $response = curl_exec($ch);
+        $jsonResponse = json_decode($response, true);
+        $error = curl_error($ch);
+
+        curl_close($ch);
+
+        $totalPages = isset($jsonResponse["total_count"]) ? ceil($jsonResponse["total_count"] / $limit) : 0;
+        if($this->totalPages != $totalPages) {
+            $this->totalPages = $totalPages;
+        }
+
+        return ["response" => $jsonResponse, "error" => $error];
     }
 
     /**
@@ -253,7 +615,9 @@ class UpdateStationsCommand extends Command
      */
     private function callGouvAPI(int $offset = 1, int $limit = 20) {
         curl_setopt_array($ch = curl_init(), [
-            CURLOPT_URL => "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?limit={$limit}&offset={$offset}",
+            // CURLOPT_URL => "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?limit={$limit}&offset={$offset}",
+            CURLOPT_URL => "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-carburants-quotidien/records?limit={$limit}&offset={$offset}",
+            // CURLOPT_URL => "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-carburants-quotidien/records?refine=prix_maj%3A%22" . (new \DateTime())->format("y") . "%22&limit={$limit}&offset={$offset}",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => false,
             CURLOPT_HTTPHEADER => [

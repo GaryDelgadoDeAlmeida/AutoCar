@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
+import { formatDate } from "../../hooks/DomControl"
 import Map from "../../components/Map";
 import HeaderAdmin from "../../components/HeaderAdmin";
 import Notification from "../../components/Notification";
@@ -36,6 +37,8 @@ export default function Station() {
 
                     {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                         <>
+                            <Link className={"btn btn-blue"} to={"/admin/stations"}>Return</Link>
+
                             <div className={"page-hero-2nd"}>
                                 <div className={"hero-background"}></div>
                                 <div className={"hero-wrapper"}>
@@ -53,11 +56,15 @@ export default function Station() {
                                             {Object.values(items.fuels).map((item, index) => (
                                                 <tr key={index}>
                                                     <td data-column={"Fuel"}><b>{item.fuel}</b></td>
-                                                    <td data-column={"Price"}>
-                                                        <span>{item.price}</span>
-                                                        <span>{Object.values(items.fuelPriceHistories ?? []).filter((fuel) => fuel.fuelKey == item.fuelKey)[0]?.price > item.price ? "-" : "+"}</span>
+                                                    <td data-column={"Price"} className={"d-flex"}>
+                                                        {Object.values(items.fuelPriceHistories ?? []).filter((fuel) => fuel.fuelKey == item.fuelKey)[0]?.price > item.price ? (
+                                                            <img className={"-icon"} src={`${window.location.origin}/content/svg/trending-down-green.svg`} alt={"Inferior to median price"} />
+                                                        ) : (
+                                                            <img className={"-icon"} src={`${window.location.origin}/content/svg/trending-up-red.svg`} alt={"Superior to median price"} />
+                                                        )}
+                                                        <span>{item.price} €</span>
                                                     </td>
-                                                    <td data-column={"Updated at"}>{item.updatedAt ?? item.createdAt}</td>
+                                                    <td data-column={"Updated at"}>{formatDate(item.updatedAt ?? item.createdAt, "fr")}</td>
                                                 </tr>
                                             ))}
                                         </tbody>

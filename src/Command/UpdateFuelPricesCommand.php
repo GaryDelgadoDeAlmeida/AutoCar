@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Enum\FuelEnum;
+use App\Enum\FuelKeyEnum;
 use App\Enum\FuelPriceHistoryEnum;
 use App\Manager\FuelManager;
 use App\Manager\FuelPriceHistoryManager;
@@ -137,25 +138,123 @@ class UpdateFuelPricesCommand extends Command
         }
 
         // Gazole
-        $this->updateFuel("diesel", $priceMedians['gazole']["price"] / $priceMedians['gazole']["nbr"]);
+        $this->updateFuel(FuelKeyEnum::FUELKEY_DIESEL, $priceMedians['gazole']["price"] / $priceMedians['gazole']["nbr"]);
 
         // Sans Plomb 98 (E5)
-        $this->updateFuel("sp98", $priceMedians['sp98']["price"] / $priceMedians['sp98']["nbr"]);
+        $this->updateFuel(FuelKeyEnum::FUELKEY_SP98, $priceMedians['sp98']["price"] / $priceMedians['sp98']["nbr"]);
 
         // Sans Plomb 95 (E5)
-        $this->updateFuel("sp95", $priceMedians['sp95']["price"] / $priceMedians['sp95']["nbr"]);
+        $this->updateFuel(FuelKeyEnum::FUELKEY_SP95, $priceMedians['sp95']["price"] / $priceMedians['sp95']["nbr"]);
 
-        // Sans Plomb 95 (E10)
-        $this->updateFuel("sp95-e10", $priceMedians['e10']["price"] / $priceMedians['e10']["nbr"]);
+        // Super 95 (E10)
+        $this->updateFuel(FuelKeyEnum::FUELKEY_SP95E10, $priceMedians['e10']["price"] / $priceMedians['e10']["nbr"]);
 
         // BioEthanol E85
-        $this->updateFuel("e85", $priceMedians['e85']["price"] / $priceMedians['e85']["nbr"]);
+        $this->updateFuel(FuelKeyEnum::FUELKEY_E85, $priceMedians['e85']["price"] / $priceMedians['e85']["nbr"]);
 
         // GPL
         $this->updateFuel("gpl", $priceMedians['gpl']["price"] / $priceMedians['gpl']["nbr"]);
 
         $io->success('Fuels has been successfully updated');
         return Command::SUCCESS;
+    }
+
+    private function fillWithInstantFluxFuels(int $limit = 20) {
+        $offset = 1;
+        $foundedError = null;
+
+        do {
+            ["response" => $response, "error" => $error] = $this->callFranceGouvAPI("https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/prix-des-carburants-en-france-flux-instantane-v2/records?limit={$limit}&offset={$offset}", $limit);
+            if(!empty($error)) {
+                $foundedError = $error;
+                break;
+            }
+
+            if(empty($response["results"])) {
+                break;
+            }
+
+            foreach($response["results"] as $station) {
+
+                // Gazole / Diesel (B7)
+                // $gazoleUpdatedAt = new \DateTimeImmutable($station["gazole_maj"]);
+                if(!empty($station["gazole_prix"]) /*&& $gazoleUpdatedAt->format("Y-m-d") == $currentTime->format("Y-m-d")*/) {
+                    $priceMedians["gazole"]["nbr"]++;
+                    $priceMedians["gazole"]["price"] += floatval($station["gazole_prix"]);
+                }
+                
+                // Sans Plomb 98 (E5)
+                // $sp98UpdatedAt = new \DateTimeImmutable($station["sp98_maj"]);
+                if(!empty($station["sp98_prix"]) /*&& $sp98UpdatedAt->format("Y-m-d") == $currentTime->format("Y-m-d")*/) {
+                    $priceMedians["sp98"]["nbr"]++;
+                    $priceMedians["sp98"]["price"] += floatval($station["sp98_prix"]);
+                }
+                
+                // Sans Plomb 95 (E5)
+                // $sp95UpdatedAt = new \DateTimeImmutable($station["sp95_maj"]);
+                if(!empty($station["sp95_prix"]) /*&& $sp95UpdatedAt->format("Y-m-d") == $currentTime->format("Y-m-d")*/) {
+                    $priceMedians["sp95"]["nbr"]++;
+                    $priceMedians["sp95"]["price"] += floatval($station["sp95_prix"]);
+                }
+                
+                // Sans Plomb 95 (E10)
+                // $e10UpdatedAt = new \DateTimeImmutable($station["e10_maj"]);
+                if(!empty($station["e10_prix"]) /*&& $e10UpdatedAt->format("Y-m-d") == $currentTime->format("Y-m-d")*/) {
+                    $priceMedians["e10"]["nbr"]++;
+                    $priceMedians["e10"]["price"] += floatval($station["e10_prix"]);
+                }
+                
+                // BioEthanol (E85)
+                // $e85UpdatedAt = new \DateTimeImmutable($station["e85_maj"]);
+                if(!empty($station["e85_prix"]) /*&& $e85UpdatedAt->format("Y-m-d") == $currentTime->format("Y-m-d")*/) {
+                    $priceMedians["e85"]["nbr"]++;
+                    $priceMedians["e85"]["price"] += floatval($station["e85_prix"]);
+                }
+                
+                // GPL
+                // $gplcUpdatedAt = new \DateTimeImmutable($station["gplc_maj"]);
+                if(!empty($station["gplc_prix"]) /*&& $gplcUpdatedAt->format("Y-m-d") == $currentTime->format("Y-m-d")*/) {
+                    $priceMedians["gpl"]["nbr"]++;
+                    $priceMedians["gpl"]["price"] += floatval($station["gplc_prix"]);
+                }
+            }
+
+            $offset++;
+        } while($offset < $this->totalPages);
+
+        return $foundedError;
+    }
+
+    /**
+     * Get all stations of France
+     * 
+     * @param int $offset
+     * @param int $limit
+     * @return array{error: string, response: mixed}
+     */
+    private function callFranceGouvAPI(string $distantURL, int $limit) {
+        curl_setopt_array($ch = curl_init(), [
+            CURLOPT_URL => $distantURL,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => false,
+            CURLOPT_HTTPHEADER => [
+                "Content-Type" => "application/json",
+                "Accept" => "application/json"
+            ]
+        ]);
+
+        $response = curl_exec($ch);
+        $jsonResponse = json_decode($response, true);
+        $error = curl_error($ch);
+
+        curl_close($ch);
+
+        $totalPages = isset($jsonResponse["total_count"]) ? ceil($jsonResponse["total_count"] / $limit) : 0;
+        if($this->totalPages != $totalPages) {
+            $this->totalPages = $totalPages;
+        }
+
+        return ["response" => $jsonResponse, "error" => $error];
     }
 
     /**
