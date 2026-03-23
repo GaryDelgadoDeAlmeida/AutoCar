@@ -39,4 +39,19 @@ class StationFuelRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * Get the median price of a fuel
+     * 
+     * @param string $fuel
+     * @return float
+     */
+    public function avgFuelPrice(string $fuel): float {
+        return $this->createQueryBuilder("station_fuel")
+            ->select("AVG(station_fuel.price) as avgPrice")
+            ->where("station_fuel.fuelKey LIKE :fuelName")
+            ->getQuery()
+            ->getSingleResult()["avgPrice"]
+        ;
+    }
 }

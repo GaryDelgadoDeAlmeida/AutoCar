@@ -11,11 +11,16 @@ export default function Stations() {
 
     const [offset, setOffset] = useState(1)
     const [coordinate, setCoordinate] = useState({})
-    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/stations?offset=${offset}`)
+    const [credentials, setCredentials] = useState({})
+    const { loading, items, load, error } = PrivateResources(
+        Object.keys(credentials).length === 0 
+            ? `${window.location.origin}/api/stations?offset=${offset}` 
+            : `${window.location.origin}/api/stations/search?offset=${offset}` + "&" + new URLSearchParams(credentials).toString()
+    )
 
     useEffect(() => {
         load()
-    }, [offset])
+    }, [offset, credentials])
 
     const handleClick = (e, station) => {
         e.preventDefault()
@@ -48,7 +53,16 @@ export default function Stations() {
                         {Object.keys(items).length > 0 && Object.keys(error).length == 0 && (
                             <div className={"stations"}>
                                 <div className={"-list"}>
-                                    <SearchStationsForm />
+                                    <SearchStationsForm 
+                                        updateParentCredentials={(childCredentials) => {
+                                            setCredentials({
+                                                ...credentials,
+                                                ...childCredentials,
+                                                request: "search"
+                                            })
+                                            setOffset(1)
+                                        }}
+                                    />
 
                                     {Object.values(items.results).map((item, index) => (
                                         <li className={"station-item"} key={index} onClick={(e) => handleClick(e, item)}>

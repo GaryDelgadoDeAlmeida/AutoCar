@@ -12,7 +12,7 @@ export default function Vehicles() {
     const [offset, setOffset] = useState(1)
     const [credentials, setCredentials] = useState({})
     const { loading, items, load, error } = PrivateResources(
-        credentials.length == 0 
+        Object.keys(credentials).length == 0 
             ? `${window.location.origin}/api/vehicles?offset=${offset}` 
             : `${window.location.origin}/api/vehicles?` + new URLSearchParams(credentials).toString() + "&offset=" + offset
     )

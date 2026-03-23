@@ -40,9 +40,53 @@ class StationRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Get all zip code where a stations is located
+     */
     public function getExistingZipCodes() {
         return $this->createQueryBuilder("s")
             ->select("DISTINCT s.zipCode")
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Get all city where a stations is located
+     */
+    public function getExistingCities() {
+        return $this->createQueryBuilder("s")
+            ->select("DISTINCT s.city")
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function searchStationsByParameters(array $parameters, int $offset, int $limit) : array {
+        $qb = $this->createQueryBuilder("s");
+
+        if(!empty($parameters["fuel"])) {
+            $qb
+                ->innerJoin("App\Entity\StationFuel", "sf", "sf.station = s.id")
+                ->where("sf.fuelKey LIKE :fuel")
+                ->setParameter("fuel", $parameters["fuel"])
+            ;
+        }
+
+        if($parameters["use_position"] === "true") {}
+
+        if(!empty($parameters["address"])) {}
+
+        if(!empty($parameters["city"])) {
+            $qb
+                ->andWhere("s.city LIKE :stationCity")
+                ->setParameter("stationCity", $parameters["city"])
+            ;
+        }
+
+        return $qb
+            ->setFirstResult(($offset - 1) * $limit)
+            ->setMaxResults($limit)
             ->getQuery()
             ->getResult()
         ;
@@ -56,6 +100,41 @@ class StationRepository extends ServiceEntityRepository
     public function countStations() : int {
         return $this->createQueryBuilder("station")
             ->select("COUNT(station.id) as nbrStations")
+            ->getQuery()
+            ->getSingleResult()["nbrStations"]
+        ;
+    }
+
+    /**
+     * Count results from search stations using sended parameters
+     * 
+     * @param array $parameters
+     * @return int
+     */
+    public function countStationsByParameters(array $parameters) : int {
+        $qb = $this->createQueryBuilder("s")
+            ->select("COUNT(s.id) as nbrStations");
+
+        if(!empty($parameters["fuel"])) {
+            $qb
+                ->innerJoin("App\Entity\StationFuel", "sf", "sf.station = s.id")
+                ->where("sf.fuelKey LIKE :fuel")
+                ->setParameter("fuel", $parameters["fuel"])
+            ;
+        }
+
+        if($parameters["use_position"] === "true") {}
+
+        if(!empty($parameters["address"])) {}
+
+        if(!empty($parameters["city"])) {
+            $qb
+                ->andWhere("s.city LIKE :stationCity")
+                ->setParameter("stationCity", $parameters["city"])
+            ;
+        }
+
+        return $qb
             ->getQuery()
             ->getSingleResult()["nbrStations"]
         ;

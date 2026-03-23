@@ -9,6 +9,15 @@ form {
     &.form-search-vehicle input {
         background-color: var(--c-white) !important;
     }
+
+    .form-field,
+    .form-select,
+    .form-checkbox, 
+    .form-radio {
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+    }
     
     .form-field {
         flex: 1;
@@ -19,10 +28,6 @@ form {
 
         &.-no-flex {
             flex: none;
-        }
-
-        &:not(:last-child) {
-            margin-bottom: 10px;
         }
 
         .css-hlgwow > div:first-child {
@@ -155,8 +160,9 @@ form {
         select {
             outline: 0;
             width: 100%;
-            height: 35px;
+            height: 40px;
             cursor: pointer;
+            border-radius: 5px;
             padding: 0 40px 0 15px;
             appearance: none;
             position: relative;
@@ -194,7 +200,7 @@ form {
 
     .form-checkbox, .form-radio {
         flex: 1;
-        min-height: 45px;
+        // min-height: 45px;
         line-height: 30px;
 
         label {

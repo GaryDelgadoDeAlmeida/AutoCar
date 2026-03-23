@@ -37,17 +37,30 @@ final class StationController extends AbstractController
 
         return $this->json($zipCodes, Response::HTTP_OK);
     }
+
+    #[Route('/stations/cities', name: 'get_stations_cities', methods: ["GET"])]
+    public function get_stations_cities() {
+        $cities = array_map(fn($element) => $element["city"], $this->stationRepository->getExistingCities());
+        sort($cities);
+
+        return $this->json($cities, Response::HTTP_OK);
+    }
     
-    #[Route('/stations/search', name: 'search_stations', methods: ["POST"])]
+    #[Route('/stations/search', name: 'search_stations', methods: ["GET"])]
     public function search_stations(Request $request): JsonResponse {
         $offset = $request->get("offset", 1);
-        $searchAttributes = json_decode($request->getContent());
+
+        $searchAttributes = array_filter($request->query->all(), function($value, $key) {
+            if(!empty($value)) {
+                return [$key => $value];
+            }
+        }, ARRAY_FILTER_USE_BOTH);
 
         return $this->json([
-            "results" => $this->stationRepository->findBy([], ["createdAt" => "DESC"], $this->limit, ($offset - 1) * $this->limit),
+            "results" => $this->stationRepository->searchStationsByParameters($searchAttributes, $offset, $this->limit),
             "offset" => $offset,
             "limit" => $this->limit,
-            "maxOffset" => ceil($this->stationRepository->countStations() / $this->limit),
+            "maxOffset" => ceil($this->stationRepository->countStationsByParameters($searchAttributes) / $this->limit),
         ], Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["stationFuels"]]);
     }
     
