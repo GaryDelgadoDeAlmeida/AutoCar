@@ -54,6 +54,7 @@ export default function Stations() {
                             <div className={"stations"}>
                                 <div className={"-list"}>
                                     <SearchStationsForm 
+                                        searchCredentials={credentials}
                                         updateParentCredentials={(childCredentials) => {
                                             setCredentials({
                                                 ...credentials,

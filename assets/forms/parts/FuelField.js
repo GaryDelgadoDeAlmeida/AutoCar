@@ -3,7 +3,7 @@ import Select from "react-select";
 import Notification from "../../components/Notification";
 import PrivateResources from "../../hooks/PrivateResources"
 
-export default function FuelField({fieldName = "fuel", fieldValue, updateCredentials}) {
+export default function FuelField({fieldName = "fuel", fieldValue, useKey = false, updateCredentials}) {
 
     const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/fuels`)
 
@@ -15,7 +15,7 @@ export default function FuelField({fieldName = "fuel", fieldValue, updateCredent
         let options = Object.values(makerOptions).map((item) => {
             return {
                 label: item.title,
-                value: item.id
+                value: useKey ? item.fuelKey : item.id
             }
         })
     

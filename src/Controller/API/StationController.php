@@ -50,6 +50,7 @@ final class StationController extends AbstractController
     public function search_stations(Request $request): JsonResponse {
         $offset = $request->get("offset", 1);
 
+        // Get all parameters
         $searchAttributes = array_filter($request->query->all(), function($value, $key) {
             if(!empty($value)) {
                 return [$key => $value];
@@ -57,9 +58,9 @@ final class StationController extends AbstractController
         }, ARRAY_FILTER_USE_BOTH);
 
         return $this->json([
-            "results" => $this->stationRepository->searchStationsByParameters($searchAttributes, $offset, $this->limit),
             "offset" => $offset,
             "limit" => $this->limit,
+            "results" => $this->stationRepository->searchStationsByParameters($searchAttributes, $offset, $this->limit),
             "maxOffset" => ceil($this->stationRepository->countStationsByParameters($searchAttributes) / $this->limit),
         ], Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["stationFuels"]]);
     }

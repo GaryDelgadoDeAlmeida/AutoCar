@@ -36,9 +36,6 @@ export default function StationMap({lat, lng, stationID, showMessage = true}) {
         popinContent = `<p>Tarification indisponible</p>`
     }
 
-    console.log("popinContent")
-    console.log(popinContent)
-
     return (
         <MapContainer
             key={`${lat}-${lng}-map`} // Adding this property change who the object is set. This allow the component to refresh when value changes. Else, the component MapContainer won't update but the Marker will

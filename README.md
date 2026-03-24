@@ -47,6 +47,34 @@ Une fois la commande ci-dessus lancée, elle va créer un sous-dossier jwt dans 
 
 Il faudra maintenant configurer le fichier packages/security.yaml. Je recommande d'utiliser la doc de symfony pour configurer la connexion par token ou de regarder la configuration dans mes autres projets utilisant cette méthode de connexion
 
+## Doctrine spatial
+
+Il n'y a vraiment aucune information exploitable sur le net. 
+
+Sur la base d'un fichier que j'ai trouvé sur le GIT, j'ai pû créer 2 fichiers qui utilise les fonctions d'origine de MySQL car Doctrine ne reconnaît ni l'un ni l'autre de base. J'ai créer un 1 fichier que j'ai nommé `StDistanceSphere.php`, il utilise la fonction ST_DISTANCE_SPHERE de MySQL et 1 autre fichier, que j'ai nommé `Point.php`, qui va utilisé la fonction POINT de MySQL. Une fois ces 2 fichiers créés, il faudra ajouter ces 2 fonctions au fonctionnement de Doctrine, dans le fichier `doctrine.yaml`
+```yaml
+doctrine:
+    [...]
+    orm:
+        [...]
+        dql:
+            numeric_functions:
+                POINT: App\Doctrine\Point
+                ST_DISTANCE_SPHERE: App\Doctrine\StDistanceSphere
+```
+
+Exemple de requête doctrine :
+```php
+$qb->andWhere("ST_DISTANCE_SPHERE(
+    POINT(object.longitude, object.latitude),
+    POINT(:lng, :lat)
+) <= 5000")
+```
+
+Avec ça, la requête fonctionne (ou dû moins, ça marche pour moi) comme elle le devrait comme son équivalent en requête SQL standard
+
+PS : Dans l'exemple de requête, 5000 correspond à 5km (soit 5 * 1000 = 5000)
+
 ## Commandes utiles
 
 Voici ci-joint les commandes qui débloque quand le besoin ce présente

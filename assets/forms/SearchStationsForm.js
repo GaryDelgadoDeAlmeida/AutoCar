@@ -3,18 +3,17 @@ import FuelField from "./parts/FuelField";
 import axios from "axios";
 import Notification from "../components/Notification";
 
-export default function SearchStationsForm({updateParentCredentials}) {
+export default function SearchStationsForm({searchCredentials, updateParentCredentials}) {
 
     const [locations, setLocations] = useState({})
     const [formResponse, setFormResponse] = useState({})
-    const [credentials, setCredentials] = useState({
+    const [credentials, setCredentials] = useState(Object.keys(searchCredentials).length > 0 ? {...searchCredentials} : {
         use_position: false,
         address: "",
         radius: "",
         fuel: "",
     })
     
-    // Added 13/20/2026 => Not added in git
     useEffect(() => {
         getLocation()
     }, [])
@@ -29,11 +28,13 @@ export default function SearchStationsForm({updateParentCredentials}) {
                 navigator.geolocation.getCurrentPosition((pos) => {
                     var crd = pos.coords;
 
-                    console.log("Votre position actuelle est :");
-                    console.log(`Latitude : ${crd.latitude}`);
-                    console.log(`Longitude : ${crd.longitude}`);
-                    console.log(`La précision est de ${crd.accuracy} mètres.`);
                     setLocations({
+                        latitude: crd.latitude,
+                        longitude: crd.longitude,
+                        accuracy: crd.accuracy
+                    })
+                    setCredentials({
+                        ...credentials,
                         latitude: crd.latitude,
                         longitude: crd.longitude,
                         accuracy: crd.accuracy
@@ -46,10 +47,7 @@ export default function SearchStationsForm({updateParentCredentials}) {
         } else {
             alert('Geolocation is not supported in your browser.');
         }
-
-        console.log(navigator.geolocation)
     }
-    // End Added 13/20/2026 => Not added in git
 
     const handleChange = (e, fieldName) => {
         setFormResponse({})
@@ -143,21 +141,24 @@ export default function SearchStationsForm({updateParentCredentials}) {
                 )}
 
                 <div className={"form-field-inline mt-5"}>
-                    <div className={"form-select"}>
-                        <select name={"radius"} value={credentials.radius} onChange={(e) => handleChange(e, "radius")}>
-                            <option value={""}>Veuillez sélectionner un rayon de recherche (en KM)</option>
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={5}>5</option>
-                            <option value={10}>10</option>
-                        </select>
-                    </div>
+                    {credentials.use_position && (
+                        <div className={"form-select"}>
+                            <select name={"radius"} value={credentials.radius} onChange={(e) => handleChange(e, "radius")}>
+                                <option value={""}>Veuillez sélectionner un rayon de recherche (en KM)</option>
+                                <option value={1}>1</option>
+                                <option value={2}>2</option>
+                                <option value={3}>3</option>
+                                <option value={5}>5</option>
+                                <option value={10}>10</option>
+                            </select>
+                        </div>
+                    )}
 
                     <div className={"form-select"}>
                         <FuelField
                             fieldValue={credentials.fuel}
                             fieldName={"fuel"}
+                            useKey={true}
                             updateCredentials={(fieldName, fieldValue) => {
                                 setCredentials({
                                     ...credentials,

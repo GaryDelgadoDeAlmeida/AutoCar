@@ -19,8 +19,9 @@ class StationRepository extends ServiceEntityRepository
     /**
      * @param Station entity
      * @param bool flush into database
+     * @return void
      */
-    public function save(Station $entity, bool $flush = false) {
+    public function save(Station $entity, bool $flush = false) : void {
         $this->getEntityManager()->persist($entity);
 
         if($flush) {
@@ -31,8 +32,9 @@ class StationRepository extends ServiceEntityRepository
     /**
      * @param Station entity
      * @param bool flush remove into database
+     * @return void
      */
-    public function remove(Station $entity, bool $flush = false) {
+    public function remove(Station $entity, bool $flush = false) : void {
         $this->getEntityManager()->remove($entity);
 
         if($flush) {
@@ -42,8 +44,10 @@ class StationRepository extends ServiceEntityRepository
 
     /**
      * Get all zip code where a stations is located
+     * 
+     * @return array
      */
-    public function getExistingZipCodes() {
+    public function getExistingZipCodes() : array {
         return $this->createQueryBuilder("s")
             ->select("DISTINCT s.zipCode")
             ->getQuery()
@@ -53,8 +57,10 @@ class StationRepository extends ServiceEntityRepository
 
     /**
      * Get all city where a stations is located
+     * 
+     * @return array
      */
-    public function getExistingCities() {
+    public function getExistingCities() : array {
         return $this->createQueryBuilder("s")
             ->select("DISTINCT s.city")
             ->getQuery()
@@ -62,26 +68,49 @@ class StationRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * Search stations by parameters
+     * 
+     * @param array $parameters
+     * @param int $offset
+     * @param int $limit
+     * @return array
+     */
     public function searchStationsByParameters(array $parameters, int $offset, int $limit) : array {
         $qb = $this->createQueryBuilder("s");
 
         if(!empty($parameters["fuel"])) {
             $qb
                 ->innerJoin("App\Entity\StationFuel", "sf", "sf.station = s.id")
-                ->where("sf.fuelKey LIKE :fuel")
+                ->andWhere("sf.fuelKey LIKE :fuel")
                 ->setParameter("fuel", $parameters["fuel"])
             ;
         }
 
-        if($parameters["use_position"] === "true") {}
-
-        if(!empty($parameters["address"])) {}
-
-        if(!empty($parameters["city"])) {
+        if($parameters["use_position"] === "true") {
             $qb
-                ->andWhere("s.city LIKE :stationCity")
-                ->setParameter("stationCity", $parameters["city"])
+                ->andWhere("ST_DISTANCE_SPHERE(
+                    POINT(s.longitude, s.latitude),
+                    POINT(:longitude, :latitude)
+                ) <= :radiusMeter")
+                ->setParameter("longitude", $parameters["longitude"])
+                ->setParameter("latitude", $parameters["latitude"])
+                ->setParameter("radiusMeter", intval($parameters["radius"]) * 1000)
             ;
+        } else {
+            if(!empty($parameters["address"])) {
+                $qb
+                    ->andWhere("s.name LIKE :stationAddress")
+                    ->setParameter("stationAddress", $parameters["address"])
+                ;
+            }
+
+            if(!empty($parameters["city"])) {
+                $qb
+                    ->andWhere("s.city LIKE :stationCity")
+                    ->setParameter("stationCity", $parameters["city"])
+                ;
+            }
         }
 
         return $qb
@@ -113,25 +142,41 @@ class StationRepository extends ServiceEntityRepository
      */
     public function countStationsByParameters(array $parameters) : int {
         $qb = $this->createQueryBuilder("s")
-            ->select("COUNT(s.id) as nbrStations");
+            ->select("COUNT(s.id) as nbrStations")
+        ;
 
         if(!empty($parameters["fuel"])) {
             $qb
                 ->innerJoin("App\Entity\StationFuel", "sf", "sf.station = s.id")
-                ->where("sf.fuelKey LIKE :fuel")
+                ->andWhere("sf.fuelKey LIKE :fuel")
                 ->setParameter("fuel", $parameters["fuel"])
             ;
         }
 
-        if($parameters["use_position"] === "true") {}
-
-        if(!empty($parameters["address"])) {}
-
-        if(!empty($parameters["city"])) {
+        if($parameters["use_position"] === "true") {
             $qb
-                ->andWhere("s.city LIKE :stationCity")
-                ->setParameter("stationCity", $parameters["city"])
+                ->andWhere("ST_DISTANCE_SPHERE(
+                    POINT(s.longitude, s.latitude),
+                    POINT(:longitude, :latitude)
+                ) <= :radiusMeter")
+                ->setParameter("longitude", $parameters["longitude"])
+                ->setParameter("latitude", $parameters["latitude"])
+                ->setParameter("radiusMeter", intval($parameters["radius"]) * 1000)
             ;
+        } else {
+            if(!empty($parameters["address"])) {
+                $qb
+                    ->andWhere("s.name LIKE :stationAddress")
+                    ->setParameter("stationAddress", $parameters["address"])
+                ;
+            }
+
+            if(!empty($parameters["city"])) {
+                $qb
+                    ->andWhere("s.city LIKE :stationCity")
+                    ->setParameter("stationCity", $parameters["city"])
+                ;
+            }
         }
 
         return $qb
