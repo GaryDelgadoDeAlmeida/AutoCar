@@ -9,6 +9,9 @@ export default function SearchStationsForm({searchCredentials, updateParentCrede
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState(Object.keys(searchCredentials).length > 0 ? {...searchCredentials} : {
         use_position: false,
+        latitude: "",
+        longitude: "",
+        accuracy: "",
         address: "",
         radius: "",
         fuel: "",
