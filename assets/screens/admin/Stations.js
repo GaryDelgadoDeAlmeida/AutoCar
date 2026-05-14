@@ -3,17 +3,22 @@ import HeaderAdmin from "../../components/HeaderAdmin"
 import Notification from "../../components/Notification";
 import Pagination from "../../components/Pagination"
 import PrivateResources from "../../hooks/PrivateResources"
-import { Link } from "react-router-dom";
 import TableCard from "../../components/TableCard";
+import SearchStationsForm from "../../forms/SearchStationsForm";
 
 export default function Stations() {
 
     const [offset, setOffset] = useState(1)
-    const { loading, items, load, error } = PrivateResources(`${window.location.origin}/api/stations?offset=${offset}`)
+    const [credentials, setCredentials] = useState({})
+    const { loading, items, load, error } = PrivateResources(
+        Object.keys(credentials).length === 0 
+            ? `${window.location.origin}/api/stations?offset=${offset}` 
+            : `${window.location.origin}/api/stations/search?offset=${offset}` + "&" + new URLSearchParams(credentials).toString()
+    )
 
     useEffect(() => {
         load()
-    }, [offset])
+    }, [offset, credentials])
 
     return (
         <HeaderAdmin>
@@ -23,6 +28,20 @@ export default function Stations() {
                     <h1 className={"-hero-title"}>Stations</h1>
                 </div>
             </div>
+
+            <section className={"page-section"}>
+                <SearchStationsForm
+                    useLocationOption={false}
+                    updateParentCredentials={(childCredentials) => {
+                        setCredentials({
+                            ...credentials,
+                            ...childCredentials,
+                            request: "search"
+                        })
+                        setOffset(1)
+                    }}
+                />
+            </section>
 
             <section className={"page-section"}>
                 {loading && (

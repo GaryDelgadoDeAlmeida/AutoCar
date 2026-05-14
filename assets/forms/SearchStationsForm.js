@@ -3,15 +3,12 @@ import FuelField from "./parts/FuelField";
 import axios from "axios";
 import Notification from "../components/Notification";
 
-export default function SearchStationsForm({searchCredentials, updateParentCredentials}) {
+export default function SearchStationsForm({searchCredentials = {}, useLocationOption = true, updateParentCredentials}) {
 
     const [locations, setLocations] = useState({})
     const [formResponse, setFormResponse] = useState({})
     const [credentials, setCredentials] = useState(Object.keys(searchCredentials).length > 0 ? {...searchCredentials} : {
         use_position: false,
-        latitude: "",
-        longitude: "",
-        accuracy: "",
         address: "",
         radius: "",
         fuel: "",
@@ -111,12 +108,14 @@ export default function SearchStationsForm({searchCredentials, updateParentCrede
             )}
 
             <form className={"form bg-white p-25"} onSubmit={(e) => handleSubmit(e)}>
-                <div className={"form-checkbox"}>
-                    <label>
-                        <input type={"checkbox"} name={"use_position"} onChange={(e) => handleChange(e, "use_position")} checked={credentials.use_position ? "checked" : ""} />
-                        <span>Use current position</span>
-                    </label>
-                </div>
+                {useLocationOption && (
+                    <div className={"form-checkbox"}>
+                        <label>
+                            <input type={"checkbox"} name={"use_position"} onChange={(e) => handleChange(e, "use_position")} checked={credentials.use_position ? "checked" : ""} />
+                            <span>Use current position</span>
+                        </label>
+                    </div>
+                )}
 
                 {!credentials.use_position && (
                     <div className={"form-field-inline"}>
@@ -144,7 +143,7 @@ export default function SearchStationsForm({searchCredentials, updateParentCrede
                 )}
 
                 <div className={"form-field-inline mt-5"}>
-                    {credentials.use_position && (
+                    {credentials.use_position && useLocationOption && (
                         <div className={"form-select"}>
                             <select name={"radius"} value={credentials.radius} onChange={(e) => handleChange(e, "radius")}>
                                 <option value={""}>Veuillez sélectionner un rayon de recherche (en KM)</option>

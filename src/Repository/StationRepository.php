@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Station;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -77,11 +78,13 @@ class StationRepository extends ServiceEntityRepository
      * @return array
      */
     public function searchStationsByParameters(array $parameters, int $offset, int $limit) : array {
-        $qb = $this->createQueryBuilder("s");
+        $qb = $this->createQueryBuilder("s")
+            ->innerJoin("App\Entity\StationFuel", "sf", "sf.station = s.id")
+            ->where("1 = 1")
+        ;
 
         if(!empty($parameters["fuel"])) {
             $qb
-                ->innerJoin("App\Entity\StationFuel", "sf", "sf.station = s.id")
                 ->andWhere("sf.fuelKey LIKE :fuel")
                 ->setParameter("fuel", $parameters["fuel"])
             ;
@@ -101,14 +104,14 @@ class StationRepository extends ServiceEntityRepository
             if(!empty($parameters["address"])) {
                 $qb
                     ->andWhere("s.name LIKE :stationAddress")
-                    ->setParameter("stationAddress", $parameters["address"])
+                    ->setParameter("stationAddress", "%{$parameters["address"]}%")
                 ;
             }
 
             if(!empty($parameters["city"])) {
                 $qb
                     ->andWhere("s.city LIKE :stationCity")
-                    ->setParameter("stationCity", $parameters["city"])
+                    ->setParameter("stationCity", "%{$parameters["city"]}%")
                 ;
             }
         }
@@ -167,14 +170,14 @@ class StationRepository extends ServiceEntityRepository
             if(!empty($parameters["address"])) {
                 $qb
                     ->andWhere("s.name LIKE :stationAddress")
-                    ->setParameter("stationAddress", $parameters["address"])
+                    ->setParameter("stationAddress", "%{$parameters["address"]}%")
                 ;
             }
 
             if(!empty($parameters["city"])) {
                 $qb
                     ->andWhere("s.city LIKE :stationCity")
-                    ->setParameter("stationCity", $parameters["city"])
+                    ->setParameter("stationCity", "%{$parameters["city"]}%")
                 ;
             }
         }

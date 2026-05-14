@@ -30,6 +30,7 @@ export default function WyziwigField({fieldName, fieldValue, placeholder, update
             <CKEditor
                 editor={ClassicEditor}
                 config={{
+                    licenseKey: "GPL",
                     toolbar: [
                         'undo', 'redo', '|',
                         'heading', '|', 'bold', 'italic', '|',

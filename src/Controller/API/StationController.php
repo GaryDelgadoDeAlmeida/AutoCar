@@ -61,7 +61,7 @@ final class StationController extends AbstractController
             "offset" => $offset,
             "limit" => $this->limit,
             "results" => $this->stationRepository->searchStationsByParameters($searchAttributes, $offset, $this->limit),
-            "maxOffset" => ceil($this->stationRepository->countStationsByParameters($searchAttributes) / $this->limit),
+            "maxOffset" => ceil($this->stationRepository->countStationsByParameters($searchAttributes) / $this->limit), // TODO:: Fix count on inner join with other table
         ], Response::HTTP_OK, [], [ObjectNormalizer::IGNORED_ATTRIBUTES => ["stationFuels"]]);
     }
     

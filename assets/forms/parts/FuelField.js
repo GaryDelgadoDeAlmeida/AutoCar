@@ -11,8 +11,8 @@ export default function FuelField({fieldName = "fuel", fieldValue, useKey = fals
         load()
     }, [])
 
-    const generateOptions = (makerOptions) => {
-        let options = Object.values(makerOptions).map((item) => {
+    const generateOptions = (fuelOptions) => {
+        let options = Object.values(fuelOptions).map((item) => {
             return {
                 label: item.title,
                 value: useKey ? item.fuelKey : item.id

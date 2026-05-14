@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Fuel;
 use App\Entity\FuelPriceHistory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,6 +39,23 @@ class FuelPriceHistoryRepository extends ServiceEntityRepository
         if($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Get a fuel price history from a given date
+     * 
+     * @param string $date
+     * @return object|null
+     */
+    public function getFuelPriceHistoryFromDate(Fuel $fuel, string $date) : object|null {
+        return $this->createQueryBuilder("history")
+            ->where("history.createdAt LIKE :date")
+            ->andWhere("history.fuel = :fuel")
+            ->setParameter("date", $date . "%")
+            ->setParameter("fuel", $fuel)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
     /**

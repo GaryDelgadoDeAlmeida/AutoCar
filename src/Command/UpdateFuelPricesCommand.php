@@ -199,6 +199,15 @@ class UpdateFuelPricesCommand extends Command
             $this->updateFuel($priceMedianKey, $priceMedianValue["price"] / $priceMedianValue["nbr"]);
         }
 
+        $io->success("
+            Gazole/Diesel - {$station["gazole_prix"]} €\n\n
+            SP95 - {$station["sp95_prix"]} €\n\n
+            SP95-E10 - {$station["e10_prix"]} €\n\n
+            SP98 - {$station["sp98_prix"]} €\n\n
+            BioEthanol E85 - {$priceMedians[FuelKeyEnum::FUELKEY_E85]["price"]} €\n\n
+            GLPc - {$priceMedians[FuelKeyEnum::FUELKEY_GPLC]["price"]} €
+        ");
+
         $io->success('Fuels has been successfully updated');
         return Command::SUCCESS;
     }
@@ -281,18 +290,33 @@ class UpdateFuelPricesCommand extends Command
             return false;
         }
 
+        // Format price to what be store
+        $newPrice = floatval(number_format($newPrice, 3));
+
+        // Check if the price are the same
         if($fuel->getPrice() != $newPrice && $newPrice > 0) {
 
-            // Add a fuel history
-            $priceHistory = $this->fuelPriceHistoryManager->fillFuelPriceHistory([
-                FuelPriceHistoryEnum::HISTORY_FUEL => $fuel,
-                FuelPriceHistoryEnum::HISTORY_PRICE => $fuel->getPrice()
-            ]);
-            $this->fuelPriceHistoryRepository->save($priceHistory);
+            // Search if an history to the current day already exist (I can execute this command multiple times in the same day)
+            $priceHistory = $this->fuelPriceHistoryRepository->getFuelPriceHistoryFromDate($fuel, (new \DateTime())->format("Y-m-d"));
+            if(empty($priceHistory)) {
+                // Add a fuel history
+                $priceHistory = $this->fuelPriceHistoryManager->fillFuelPriceHistory([
+                    FuelPriceHistoryEnum::HISTORY_FUEL => $fuel,
+                    FuelPriceHistoryEnum::HISTORY_PRICE => $fuel->getPrice()
+                ]);
+            } else {
+                // Update a fuel history
+                $priceHistory = $this->fuelPriceHistoryManager->fillFuelPriceHistory([
+                    FuelPriceHistoryEnum::HISTORY_PRICE => $fuel->getPrice()
+                ], $priceHistory);
+            }
+
+            // Apply changes to database
+            $this->fuelPriceHistoryRepository->save($priceHistory, true);
 
             // Update existing fuel price
             $fuel = $this->fuelManager->fillFuel([
-                FuelEnum::FUEL_PRICE => floatval(number_format($newPrice, 3))
+                FuelEnum::FUEL_PRICE => $newPrice
             ], $fuel);
             $this->fuelRepository->save($fuel, true);
         }

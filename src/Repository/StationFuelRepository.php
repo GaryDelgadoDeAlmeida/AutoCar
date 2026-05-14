@@ -50,8 +50,9 @@ class StationFuelRepository extends ServiceEntityRepository
         return $this->createQueryBuilder("station_fuel")
             ->select("AVG(station_fuel.price) as avgPrice")
             ->where("station_fuel.fuelKey LIKE :fuelName")
+            ->setParameter("fuelName", $fuel)
             ->getQuery()
-            ->getSingleResult()["avgPrice"]
+            ->getSingleResult()["avgPrice"] ?? 0
         ;
     }
 }

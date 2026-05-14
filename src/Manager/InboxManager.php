@@ -20,11 +20,22 @@ class InboxManager {
             }
  
             if($fieldName == InboxEnum::INBOX_SENDER_FULLNAME) {
-                // 
+                if(strlen($fieldValue) > 255) {
+                    throw new \Exception(sprintf("The field '%s' can't exceed 255 caracters length", InboxEnum::INBOX_SENDER_FULLNAME));
+                }
             } elseif($fieldName == InboxEnum::INBOX_SENDER_EMAIL) {
-                // 
+                if(strlen($fieldValue) > 255) {
+                    throw new \Exception(sprintf("The field '%s' can't exceed 255 caracters length", InboxEnum::INBOX_SENDER_FULLNAME));
+                }
+
+                // Check if sender email is a valid one
+                if(filter_var($fieldValue, FILTER_SANITIZE_EMAIL) === false) {
+                    throw new \Exception(sprintf("The field '%s' must contain a valid email", InboxEnum::INBOX_SENDER_EMAIL));
+                }
             } elseif($fieldName == InboxEnum::INBOX_SUBJECT) {
-                // 
+                if(strlen($fieldValue) > 255) {
+                    throw new \Exception(sprintf("The field '%s' can't exceed 255 caracters length", InboxEnum::INBOX_SENDER_FULLNAME));
+                }
             } elseif($fieldName == InboxEnum::INBOX_MESSAGE) {
                 // 
             }

@@ -29,6 +29,12 @@ export default function Stations() {
             lng: station.longitude,
             stationID: station.id
         })
+
+        // Remove all active station items
+        document.querySelectorAll(".stations .station-item.-active").forEach((item) => item.classList.remove("-active"))
+
+        // Add active to the current station item
+        e.currentTarget.classList.add("-active")
     }
 
 
